@@ -15,3 +15,29 @@ jpineira@inia.cl
 
 ## Alumnos
 
+**Jaqueline Flores Salinas**
+Mexicana
+Licenciado en Biotecnología Genómica
+
+**Paula Valenzuela Avilés**
+Chilena
+Ingeniera en Biotecnología, Universidad Andrés Bello (sede Viña del mar)
+Magister en Biotecnología, Universidad Andrés Bello
+
+**Carlos Gutiérrez Ferreira**
+Ingeniero en Biotecnología
+Magíster en Biotecnología
+
+**Marie Fernández**
+Panameña
+Ingeniera en Biotecnología
+
+**Jacqueline Vásquez Navarrete**
+Chilena
+Magíster en Ciencias Biológicas, Mención Neurociencias. Universidad de Valparaíso
+Licenciatura en Ciencias, Mención Biología. Universidad de Valparaíso.
+
+**Cristal Muñoz Rojas**
+Chilena
+Ingeniero en Biotecnología, Universidad Andrés Bello
+Diplomado en creación de Negocios, Universidad Andrés Bello 
