@@ -1,0 +1,150 @@
+---
+title: "Introducción al análisis de secuencias NGS"
+subtitle: 'Curso Genética y Genómica en Producción Animal'
+author:
+ name: Dr. José A. Gallardo, Dr(c) Margarita Rivera.
+ affiliation: Pontificia Universidad Católica de Valparaíso
+ email: <jose.gallardo@pucv.cl>
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: hide
+  word_document: default
+  pdf_document: default
+---
+
+<style>
+#TOC {
+  color: black;
+  font-familiy: Calibri;
+  font-size: 14px;
+  border-color: #708090; 
+}
+body {
+   color: black;
+   font-familiy: Calibri;
+}
+
+pre {
+  color: black;
+  background-color: #F8F8FF;
+}
+# header {
+  color: #800000;
+  font-familiy: Calibri;
+  background-color: #F5F5F5;
+  opacity: 0.8;
+  font-size: 16px;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## INTRODUCCIÓN
+
+### FORMATO FASTQ
+
+Entrega la calidad de la secuencia.
+
+Las secuencias deben tener sobre un QFRED mayor a 30
+
+Quality score     0 ... 10 ... 20 ... 30
+Quality enconding ! ... +  ... 5  ... A
+
+## SOFTWARE DE BIOINFORMÁTICA PARA ANÁLISIS DE SECUENCIAS FASTQ Y CONTROL DE CALIDAD
+
+## **fastqc**
+
+**Descripción**
+[fastqc](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) es un software que permite realizar análisis de control de calidad de secuencias NGS.
+
+## **trimmomatic**
+
+**Descripción**
+[Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) es un software que permite filtrar y podar datos NGS desde secuenciadores Illumina. 
+
+Un manual del uso del software se puede descargar [aquí](http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf)
+
+## Objetivos del trabajo práctico
+
+Esta práctica tiene como propósito:
+
+Realizar un análisis integral de control de calidad de secuencias NGS.
+
+Etapas
+- Descargar secuencias NGS usando SRA toolkit.
+- Comprobar integridad de descarga de archivos usando md5sum o similar.
+- Realicar análisis de control de calidad.
+- Realizar filtrado y poda de secuencias.
+- Transferir archivos de control de calidad mediante protocolo FTP desde Servidor a Cliente.
+
+
+## 1 - CONECTAR A SERVIDOR POMEO
+
+Conecte al servidor pomeo usando la siguiente dirección IP: **200.54.220.141** puerto 22.
+
+Ese el software PuTTy y las claves de acceso dadas en la clase anterior.
+
+## 2 - CONFIGURAR BIOCONDA E INSTALAR SOFTWARES PARA ANÁLISIS
+
+Para configurar el canal bioconda se debe ejecutar el siguiente comando
+
+    conda config --add channels bioconda
+    
+Para la instalación de los software proceda a ejecutar los siguientes comandos en la terminal:
+
+    conda install -c bioconda fastqc
+
+    conda install -c bioconda trimmomatic
+
+Revise si estan correctamente instalados usando el siguiente comando
+
+    conda search -c bioconda fastqc
+    
+    conda search -c bioconda trimmomatic
+
+Usando el comando **mkdir** cree un directorio llamado SRA_samples
+
+    mkdir SRA_samples
+
+Acceda a este directorio con el comando cd y descargue ahí las siguientes biomuestras.
+
+Biomuestra 1:
+Biomuestra 2:
+
+## 3 - DESCARGA DE SECUENCIAS SRA
+
+
+## 4- COMPROBACIÓN DE INTEGRIDAD DE ARCHIVO
+
+a) Busque el código Md5 de las muestras en NCBI.
+
+Biomuestra 1: 
+
+b) Compruebe la integridad de ambas biomuestras usando md5sum o similar.
+
+
+## 5 - ANÁLISIS DE CONTROL DE CALIDAD
+
+- Análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS
+
+1. entrega archivo HTML
+2. entrega archivo .zip
+
+
+- Transferir archivos mediante protocolo FTP desde Servidor a Cliente
+
+
+## 6 - FILTRADO Y PODA
+
+
+## REFERENCIAS
+
+Grüning, B., Dale, R., Sjödin, A. et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. Nat Methods 15, 475–476 (2018). https://doi.org/10.1038/s41592-018-0046-7 
+
