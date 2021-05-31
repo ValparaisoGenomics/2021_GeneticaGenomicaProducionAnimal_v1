@@ -48,6 +48,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## INTRODUCCIÓN
 
+En esta práctica aprenderemos a realizar el análisis de calidad de datos de secuenciación masiva. Recordemos que las plataformas son susceptibles a una amplia gama de fallas químicas e instrumentales (Stephan et al., 2014), por lo que, los datos obtenidos pueden tener un fuerte ruido de fondo, contaminación de los adaptadores, baja calidad de secuenciación u otros (He et al., 2020).
+
+Por ello, el control de calidad, en el preprocesamiento de datos, se torna esencial, a fin de contar con datos limpios para evitar fallas en la detección de variantes o regiones genómicas objeto de análisis posteriores.
+
+Con este objetivo, ocuparemos el software **fastqc** y lecturas crudas obtenidas por secuenciación de extremos emparejados con Illumina HiSeq2000 de la cepa Aquagen de _Salmo salar_, a partir de un estudio de resistencia a la necrosis pancreática infecciosa.
+
 ### FORMATO FASTQ
 
 Entrega la calidad de la secuencia.
@@ -57,6 +63,8 @@ Las secuencias deben tener sobre un QFRED mayor a 30
 Quality score     0 ... 10 ... 20 ... 30
 Quality enconding ! ... +  ... 5  ... A
 
+
+## PRÁCTICA UNIDAD 3 - SUBTÓPICO 2.2: ANÁLISIS DE DATOS DE SECUENCIACIÓN MASIVA (NGS)
 ## SOFTWARE DE BIOINFORMÁTICA PARA ANÁLISIS DE SECUENCIAS FASTQ Y CONTROL DE CALIDAD
 
 ## **fastqc**
