@@ -48,13 +48,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## INTRODUCCIÓN
 
-En esta práctica aprenderemos a realizar el análisis de calidad de datos de secuenciación masiva. Recordemos que las plataformas son susceptibles a una amplia gama de fallas químicas e instrumentales (Stephan et al., 2014), por lo que, los datos obtenidos pueden tener un fuerte ruido de fondo, contaminación de los adaptadores, baja calidad de secuenciación u otros (He et al., 2020).
+Las tecnologías de secuenciación de próxima generación han evolucionado significativamente para proporcionar una mayor producción de datos (Taishan, Chitnis, Monos, & Dinh, 2021). Sin embargo, las plataformas son susceptibles a una amplia gama de fallas químicas e instrumentales (Stephan et al., 2014), por lo que, los datos obtenidos pueden tener un fuerte ruido de fondo, contaminación de los adaptadores, baja calidad de secuenciación, entre otros (He et al., 2020), lo que posteriormente representa problemas significativos en la precisión de la detección de variantes o regiones genómicas objetos de estudio. Por ello, el control de calidad, en el preprocesamiento de datos, se torna esencial, a fin de contar con datos limpios para evitar errores en análisis posteriores.
 
-Por ello, el control de calidad, en el preprocesamiento de datos, se torna esencial, a fin de contar con datos limpios para evitar fallas en la detección de variantes o regiones genómicas objeto de análisis posteriores.
-
-Con este objetivo, ocuparemos el software **fastqc** y lecturas crudas obtenidas por secuenciación de extremos emparejados con Illumina HiSeq2000 de la cepa Aquagen de _Salmo salar_, a partir de un estudio de resistencia a la necrosis pancreática infecciosa.
+Para efectuar el control de calidad se han desarrollado herramientas bioinformáticas como FastQC (Andrews, 2020), un software compatible con todas las principales plataformas de secuenciación. El Presente trabajo tiene como objetivo,realizar un análisis integral de control de calidad de secuencias NGS. Con fin ocuparemos el software **FastQC** y lecturas crudas obtenidas por secuenciación de extremos emparejados con Illumina HiSeq2000 de la cepa Aquagen de _Salmo salar_, a partir de un estudio de resistencia a la necrosis pancreática infecciosa.
 
 ### FORMATO FASTQ
+
+![Estructura archivo fastq](https://user-images.githubusercontent.com/80792310/120213418-ca98e500-c1f8-11eb-853b-0d36019e87ac.png)
 
 Entrega la calidad de la secuencia.
 
@@ -64,7 +64,7 @@ Quality score     0 ... 10 ... 20 ... 30
 Quality enconding ! ... +  ... 5  ... A
 
 
-## PRÁCTICA UNIDAD 3 - SUBTÓPICO 2.2: ANÁLISIS DE DATOS DE SECUENCIACIÓN MASIVA (NGS)
+
 ## SOFTWARE DE BIOINFORMÁTICA PARA ANÁLISIS DE SECUENCIAS FASTQ Y CONTROL DE CALIDAD
 
 ## **fastqc**
@@ -81,14 +81,16 @@ Un manual del uso del software se puede descargar [aquí](http://www.usadellab.o
 
 ## Objetivos del trabajo práctico
 
-Esta práctica tiene como propósito:
+Esta práctica tiene como propósito realizar un análisis integral de control de calidad de secuencias NGS. 
 
-Realizar un análisis integral de control de calidad de secuencias NGS.
+
+## PRÁCTICA UNIDAD 3 - SUBTÓPICO 2.2: ANÁLISIS DE DATOS DE SECUENCIACIÓN MASIVA (NGS)
+Realizar 
 
 Etapas
 - Descargar secuencias NGS usando SRA toolkit.
 - Comprobar integridad de descarga de archivos usando md5sum o similar.
-- Realicar análisis de control de calidad.
+- Realiczr análisis de control de calidad.
 - Realizar filtrado y poda de secuencias.
 - Transferir archivos de control de calidad mediante protocolo FTP desde Servidor a Cliente.
 
@@ -155,4 +157,7 @@ b) Compruebe la integridad de ambas biomuestras usando md5sum o similar.
 ## REFERENCIAS
 
 Grüning, B., Dale, R., Sjödin, A. et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. Nat Methods 15, 475–476 (2018). https://doi.org/10.1038/s41592-018-0046-7 
+Stephan, P., Dander, A., Fischer, M., Snajder, R., Sperk, M., Efremova, M., . . . Trajanoski, Z. (2014). A survey of tools for variant analysis of next-generation genome sequencing data. Briefings in Bioinformatics, 256-278.
+Taishan, H., Chitnis, N., Monos, D., & Dinh, A. (2021). Next-generation sequencing technologies: An overview. Human Immunology, 1-10.
+He, B., Shu, R., Yang, H., Lu, Q., Wang, W., Song, L., . . . Lang, J. (2020). Assessing the Impact of Data Preprocessing on Analyzing Next Generation Sequencing . Frontiers in Bioengineering and Biotechnology, 1-12 .
 
