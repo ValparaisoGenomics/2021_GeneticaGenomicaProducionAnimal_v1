@@ -50,7 +50,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Las tecnologías de secuenciación de próxima generación han evolucionado significativamente para proporcionar una mayor producción de datos (Taishan, Chitnis, Monos, & Dinh, 2021). Sin embargo, las plataformas son susceptibles a una amplia gama de fallas químicas e instrumentales (Stephan et al., 2014), por lo que, los datos obtenidos pueden tener un fuerte ruido de fondo, contaminación de los adaptadores, baja calidad de secuenciación, entre otros (He et al., 2020), lo que posteriormente representa problemas significativos en la precisión de la detección de variantes o regiones genómicas objetos de estudio. Por ello, el control de calidad, en el preprocesamiento de datos, se torna esencial, a fin de contar con datos limpios para evitar errores en análisis posteriores.
 
-Para efectuar el control de calidad se han desarrollado herramientas bioinformáticas como FastQC (Andrews, 2020), un software compatible con todas las principales plataformas de secuenciación. El Presente trabajo tiene como objetivo,realizar un análisis integral de control de calidad de secuencias NGS. Con fin ocuparemos el software **FastQC** y lecturas crudas obtenidas por secuenciación de extremos emparejados con Illumina HiSeq2000 de la cepa Aquagen de _Salmo salar_, a partir de un estudio de resistencia a la necrosis pancreática infecciosa.
+Para efectuar el control de calidad se han desarrollado herramientas bioinformáticas como FastQC (Andrews, 2020), un software compatible con todas las principales plataformas de secuenciación. El Presente trabajo tiene como objetivo,realizar un análisis integral de control de calidad de secuencias NGS. Con fin ocuparemos el software **FastQC** y lecturas crudas obtenidas por secuenciación de extremos emparejados con Illumina HiSeq2000 de la cepa Aquagen de _Salmo salar_, a partir de un estudio de resistencia a la necrosis pancreática infecciosa y posteriormente se realizará el filtrado y poda de las muestras con el software Trimmomatic.
 
 ### FORMATO FASTQ
 
@@ -138,7 +138,7 @@ Acceda a este directorio con el comando
 
 ## 3 - DESCARGA DE SECUENCIAS SRA
 
-Para esta práctica se trabajará con la biomuestra SRR2006763
+Para esta práctica se trabajará con la biomuestra **SRR2006763** proveniente de la cepa Aquagen de _Salmo salar_ y a partir de la que se obtendrán los dos archivos fastq, ya que los datos provienen de secuenciación pair-end.
 
 Biomuestra 1:SRR2006763_1.fastq
 Biomuestra 2:SRR2006763_2.fastq
@@ -151,10 +151,7 @@ Introducir y guardar la información del script como se detalla a continuación,
 
      #!/bin/bash
      #SBATCH -J fastqc01
-     #SBATCH --nodes=1           # Numero de nodos
-     #SBATCH --ntasks-per-node=1 # Numero de cores
-     #SBATCH --time=00:30        # Duración (D-HH:MM)
-    /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/prefetch --max-size 100G SRR2006763 -O /home2/usuario/SRA_samples/
+     /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/prefetch --max-size 100G SRR2006763 -O /home2/usuario/SRA_samples/
 
 Este script contiene las instrucciones necesarias para la descarga de la secuencia con el comando Prefetch que es parte del kit de herramientas de SRA y su función es descargar archivos de secuencia en formato SRA comprimido. La descarga demorará alrededor de dos minutos
 
@@ -163,35 +160,66 @@ Correr el script mediante el siguiente comando
 
      bash mr01.sh
 
-Al finalizar la ejecución listar la carpeta
+Al finalizar la ejecución listar la carpeta SRA_samples para comprobar que se creó el directorio de la secuencia descargada con el nombre **SRR2006763**
 
     ls -l -h SRA_samples
 
-Verificar la salida generada con el nombre
+Acceder a la carpeta **SRR2006763** y crear el siguiente script que permitirá obtener los archivos fastq de la muestra **SRR2006763**
 
-     SRR2006763
+     #!/bin/bash
+     #SBATCH - J fdump01
+     /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/fasterq-dump /home2/usuario/SRA_samples/SRR2006763/*.sra -O /home2/usuario/SRA_samples/SRR2006763/
 
 ## 4- COMPROBACIÓN DE INTEGRIDAD DE ARCHIVO
+
+md5sum es un algoritmo empleado para evitar algún daño que pudo generarse por algún motivo durante el proceso de descarga 
 
 a) Busque el código Md5 de las muestras en NCBI.
 
 Biomuestra 1: 
 
-b) Compruebe la integridad de ambas biomuestras usando md5sum o similar.
+b)
 
+c) Compruebe la integridad de ambas biomuestras usando md5sum o similar.
+
+md5sum test.txt
 
 ## 5 - ANÁLISIS DE CONTROL DE CALIDAD
 
 - Análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS
 
+      #!/bin/bash
+      #SBATCH - J fastqc01
+      fastqc /home2/mrivera/SRA_samples/SRR2006763/*.fastq
+
+La salida resultante de la ejecución del script anterior serán dos archivos:
+
 1. entrega archivo HTML
 2. entrega archivo .zip
 
+- Transferir archivos mediante protocolo FTP desde Servidor a Cliente, puede usar cualquier cliente o la línea de comandos.
 
-- Transferir archivos mediante protocolo FTP desde Servidor a Cliente
-
+1. Windows mediante Winscp 
+2. MAC: se puede crear un directorio temporal para la descarga de archivos
+- Colocar en la terminal `cd tmp` 
+- Crear un directorio `mkdir download`
+- Ingresar al directorio `cd download`
+- Ejecutar línea de comando para copia segura de documentos
+  
+       scp usuario@200.54.220.141:/home2/usuario/SRA_samples/SRR2006763/*.html .
+       
+ - Se solicitará el ingreso de la clave
+ - Se concluirá la descarga al computador local y se la puede revisar con `open .`
+ - Visualizar archivos generados
 
 ## 6 - FILTRADO Y PODA
+
+Entrar a la carpeta donde constan los archivos fastq y ejecutar el siguiente script
+
+    #!/bin/bash
+    #SBATCH - J trimm01
+    trimmomatic PE --phred33 SRR2006763_1.fastq SRR2006763_2.fastq output_forward_paired.fq.gz \
+    trimmomatic PE --phred33  /home2/mrivera/SRA_samples/SRR2006763/SRR2006763_1.fastq  /home2/mrivera/SRA_samples/SRR2006763/SRR2006763_2.fastq -baseout  /home2/mrivera/SRA_samples/SRR2006763/SRR2006763_filtered.fq.gz 
 
 
 ## REFERENCIAS
