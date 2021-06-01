@@ -138,7 +138,7 @@ Acceda a este directorio con el comando
 
 ## 3 - DESCARGA DE SECUENCIAS SRA
 
-Para esta práctica se trabajará con las siguientes biomuestras
+Para esta práctica se trabajará con la biomuestra SRR2006763
 
 Biomuestra 1:SRR2006763_1.fastq
 Biomuestra 2:SRR2006763_2.fastq
