@@ -176,9 +176,13 @@ md5sum es un algoritmo empleado para evitar algún daño que pudo generarse por 
 
 a) Busque el código Md5 de las muestras en NCBI.
 
-Biomuestra 1: 
+    md5sum SRR2006763_1.fastq
+    md5sum SRR2006763_2.fastq
 
-b)
+Códigos:
+
+fq_1: dd0bdf8c722226ea34611941f2391774
+fq_2: 1c63ca4a6e14de4f93f7621e3e990ec9
 
 c) Compruebe la integridad de ambas biomuestras usando md5sum o similar.
 
