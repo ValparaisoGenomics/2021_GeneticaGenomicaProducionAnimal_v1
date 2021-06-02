@@ -178,19 +178,30 @@ Acceder a la carpeta **SRR2006763** y crear el siguiente script que permitirá o
 
 md5sum es un algoritmo empleado para evitar algún daño que pudo generarse por algún motivo durante el proceso de descarga 
 
-a) Busque el código Md5 de las muestras en NCBI.
+a) Busque el código Md5 de las muestras y direccione la información a un archivo md5_samples, con el siguiente comando:
+   
+    md5sum SRR2006763_1.fastq SRR2006763_2.fastq > md5_samples
+    
+b) Verificar la salida generada
 
-    md5sum SRR2006763_1.fastq
-    md5sum SRR2006763_2.fastq
-
-Códigos:
-
-fq_1: dd0bdf8c722226ea34611941f2391774
-fq_2: 1c63ca4a6e14de4f93f7621e3e990ec9
+    cat md5_samples
+ 
+ Contendrá los valores md5 de las muestras como se describe a continuación
+ 
+    dd0bdf8c722226ea34611941f2391774  SRR2006763_1.fastq
+    1c63ca4a6e14de4f93f7621e3e990ec9  SRR2006763_2.fastq
 
 c) Compruebe la integridad de ambas biomuestras usando md5sum o similar.
+    
+    md5sum -c md5_samples
 
-md5sum test.txt
+El comando dará como resultado el siguiente mensaje 
+
+SRR2006763_1.fastq: La suma coincide
+SRR2006763_2.fastq: La suma coincide
+
+Con lo que se comprueba la integridad de los archivos descargados.
+
 
 ## 5 - ANÁLISIS DE CONTROL DE CALIDAD
 
@@ -202,13 +213,15 @@ md5sum test.txt
 
 La salida resultante de la ejecución del script anterior serán dos archivos:
 
-1. entrega archivo HTML
-2. entrega archivo .zip
+1. archivo HTML
+2. archivo .zip
 
 - Transferir archivos mediante protocolo FTP desde Servidor a Cliente, puede usar cualquier cliente o la línea de comandos.
 
-1. Windows mediante Winscp 
-2. MAC: se puede crear un directorio temporal para la descarga de archivos
+1. Windows mediante Winscp u otro 
+
+3. MAC: se puede crear un directorio temporal para la descarga de archivos
+
 - Colocar en la terminal `cd tmp` 
 - Crear un directorio `mkdir download`
 - Ingresar al directorio `cd download`
@@ -216,18 +229,32 @@ La salida resultante de la ejecución del script anterior serán dos archivos:
   
        scp usuario@200.54.220.141:/home2/usuario/SRA_samples/SRR2006763/*.html .
        
- - Se solicitará el ingreso de la clave
+ - Se solicitará el ingreso de su clave
  - Se concluirá la descarga al computador local y se la puede revisar con `open .`
  - Visualizar archivos generados
 
 ## 6 - FILTRADO Y PODA
 
-Entrar a la carpeta donde constan los archivos fastq y ejecutar el siguiente script
+a) Entrar a la carpeta donde constan los archivos fastq y ejecutar el siguiente script
 
     #!/bin/bash
     #SBATCH - J trimm01
-    trimmomatic PE --phred33 SRR2006763_1.fastq SRR2006763_2.fastq output_forward_paired.fq.gz \
-    trimmomatic PE --phred33  /home2/mrivera/SRA_samples/SRR2006763/SRR2006763_1.fastq  /home2/mrivera/SRA_samples/SRR2006763/SRR2006763_2.fastq -baseout  /home2/mrivera/SRA_samples/SRR2006763/SRR2006763_filtered.fq.gz 
+    trimmomatic PE SRR2006763_1.fastq SRR2006763_2.fastq -baseout SRR20067634_filtered.fastq.gz SLIDINGWINDOW:5:25 MINLEN:60
+
+b) De la ejecución anterior, resultarán 4 archivos comprimidos como se detalla a continuación
+
+    SRR20067634_filtered_1P.fastq.gz
+    SRR20067634_filtered_1U.fastq.gz
+    SRR20067634_filtered_2P.fastq.gz
+    SRR20067634_filtered_2U.fastq.gz
+
+c) Descomprimir los archivos con
+
+    unzip SRR20067634_filtered_1P.fastq.gz
+
+d) Volver a realizar un análisis de calidad de las muestras y comparar con el reporte de calidad inicial (en un script o directamente en la terminal)
+
+    fastqc  *.fastq.gz
 
 
 ## REFERENCIAS
