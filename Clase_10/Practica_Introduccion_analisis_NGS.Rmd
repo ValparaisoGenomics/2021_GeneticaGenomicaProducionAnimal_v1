@@ -54,7 +54,8 @@ Para efectuar el control de calidad se han desarrollado herramientas bioinformá
 
 ### FORMATO FASTQ
 
-![Estructura archivo fastq](https://user-images.githubusercontent.com/80792310/120213418-ca98e500-c1f8-11eb-853b-0d36019e87ac.png)
+![**Figura 1. Estructura archivo fastq**](https://user-images.githubusercontent.com/80792310/120566231-6d598b00-c3d4-11eb-910e-b64df229eaf4.png)
+
 
 
 El archivo fastq contiene las lecturas de secuenciación. Como se nota en la Figura 1, una lectura de secuenciación tiene 4 líneas, la primera representa el encabezado de la lectura, que inicia siempre con un @ y contiene datos informativos como, el número de serie del secuenciador y de carril, el swath que representa una región dentro del carril, las posiciones x e y dentro de cada swath y la dirección de las lecturas indicando una secuenciación pareada en este caso. 
@@ -68,7 +69,8 @@ Quality score     0 ... 10 ... 20 ... 30
 
 Quality enconding ! ... +  ... 5  ... A
 
-## SOFTWARE DE BIOINFORMÁTICA PARA ANÁLISIS DE SECUENCIAS FASTQ Y CONTROL DE CALIDAD
+## SOFTWARES DE BIOINFORMÁTICA
+**PARA ANÁLISIS DE CALIDAD Y FILTRADO DE SECUENCIAS FASTQ** 
 
 ## **FastQC**
 
@@ -95,17 +97,23 @@ Un manual del uso del software se puede descargar [aquí](http://www.usadellab.o
 
 - Filtrar y podar las secuencias con el software trimmomatic
 
-\vspace{12pt}
-\vspace{12pt}
 
-## PRÁCTICA UNIDAD 3 - SUBTÓPICO 2.2: ANÁLISIS DE DATOS DE SECUENCIACIÓN MASIVA (NGS)
+## PRÁCTICA UNIDAD 3 - SUBTÓPICO 2.2
+
+**ANÁLISIS DE DATOS DE SECUENCIACIÓN MASIVA (NGS)**
 
 Etapas
+
 - Descargar secuencias NGS usando SRA toolkit.
+
 - Comprobar integridad de descarga de archivos usando md5sum o similar.
+
 - Realizar análisis de control de calidad.
+
 - Realizar filtrado y poda de secuencias.
+
 - Transferir archivos de control de calidad mediante protocolo FTP desde Servidor a Cliente.
+
 
 ## 1 - CONECTAR A SERVIDOR POMEO
 
@@ -145,11 +153,12 @@ Acceda a este directorio con el comando
 Para esta práctica se trabajará con la biomuestra **SRR2006763** proveniente de la cepa Aquagen de _Salmo salar_ y a partir de la que se obtendrán los dos archivos fastq, ya que los datos provienen de secuenciación pair-end.
 
 Biomuestra 1:SRR2006763_1.fastq
+
 Biomuestra 2:SRR2006763_2.fastq
 
-Crear un archivo ejecutable (.sh) con nano que se denominará con las iniciales de su nombre y su número de alumno correspondiente e.g.
+Crear un archivo ejecutable (.sh) con nano que se denominará download.sh
 
-    nano mr01.sh
+    nano download.sh
 
 Introducir y guardar la información del script como se detalla a continuación, cambiando la segunda línea que representa el nombre de su trabajo, por fastqc y su número de alumno e.g "fastqc01"
 
@@ -162,9 +171,9 @@ Este script contiene las instrucciones necesarias para la descarga de la secuenc
 
 Correr el script mediante el siguiente comando
 
-     bash mr01.sh
+     bash download.sh
 
-Al finalizar la ejecución listar la carpeta SRA_samples para comprobar que se creó el directorio de la secuencia descargada con el nombre **SRR2006763**
+Al finalizar la ejecución listar la carpeta SRA_samples para comprobar que se creó el directorio de la secuencia descargada con el nombre **SRR2006763** y, dentro de este directorio deberá haberse generado el archivo SRR2006763.sra
 
     ls -l -h SRA_samples
 
@@ -178,11 +187,11 @@ Acceder a la carpeta **SRR2006763** y crear el siguiente script que permitirá o
 
 md5sum es un algoritmo empleado para evitar algún daño que pudo generarse por algún motivo durante el proceso de descarga 
 
-a) Busque el código Md5 de las muestras y direccione la información a un archivo md5_samples, con el siguiente comando:
-   
+Busque el código Md5 de las muestras y direccione la información a un archivo md5_samples, con el siguiente comando:
+  
     md5sum SRR2006763_1.fastq SRR2006763_2.fastq > md5_samples
     
-b) Verificar la salida generada
+Verificar la salida generada
 
     cat md5_samples
  
@@ -191,21 +200,21 @@ b) Verificar la salida generada
     dd0bdf8c722226ea34611941f2391774  SRR2006763_1.fastq
     1c63ca4a6e14de4f93f7621e3e990ec9  SRR2006763_2.fastq
 
-c) Compruebe la integridad de ambas biomuestras usando md5sum o similar.
-    
+Compruebe la integridad de ambas biomuestras usando md5sum o similar.
+
     md5sum -c md5_samples
 
 El comando dará como resultado el siguiente mensaje 
 
-SRR2006763_1.fastq: La suma coincide
-SRR2006763_2.fastq: La suma coincide
+    SRR2006763_1.fastq: La suma coincide
+    SRR2006763_2.fastq: La suma coincide
 
 Con lo que se comprueba la integridad de los archivos descargados.
 
 
 ## 5 - ANÁLISIS DE CONTROL DE CALIDAD
 
-- Análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS
+Para el análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS, en el directorio SRR2006763 crear y correr el siguiente script
 
       #!/bin/bash
       #SBATCH - J fastqc01
@@ -216,52 +225,52 @@ La salida resultante de la ejecución del script anterior serán dos archivos:
 1. archivo HTML
 2. archivo .zip
 
-- Transferir archivos mediante protocolo FTP desde Servidor a Cliente, puede usar cualquier cliente o la línea de comandos.
+Transferir archivos mediante protocolo FTP desde Servidor a Cliente, puede usar cualquier cliente o la línea de comandos.
 
-1. Windows mediante Winscp u otro 
+- Para Windows mediante Winscp u otro 
 
-3. MAC: se puede crear un directorio temporal para la descarga de archivos
+- Para MAC: se puede crear un directorio temporal para la descarga de archivos
 
-- Colocar en la terminal `cd tmp` 
-- Crear un directorio `mkdir download`
-- Ingresar al directorio `cd download`
-- Ejecutar línea de comando para copia segura de documentos
-  
-       scp usuario@200.54.220.141:/home2/usuario/SRA_samples/SRR2006763/*.html .
+      cd tmp
+      mkdir download
+      cd download
+      scp usuario@200.54.220.141:/home2/usuario/SRA_samples/SRR2006763/*.html .
        
- - Se solicitará el ingreso de su clave
- - Se concluirá la descarga al computador local y se la puede revisar con `open .`
- - Visualizar archivos generados
+- Se solicitará el ingreso de su clave
+ 
+- Se concluirá la descarga al computador local y se la puede revisar con `open .`
+ 
+Visualizar archivos generados
 
 ## 6 - FILTRADO Y PODA
 
-a) Entrar a la carpeta donde constan los archivos fastq y ejecutar el siguiente script
+Entrar a la carpeta donde constan los archivos fastq (SRR2006763/) y ejecutar el siguiente script
 
     #!/bin/bash
     #SBATCH - J trimm01
     trimmomatic PE SRR2006763_1.fastq SRR2006763_2.fastq -baseout SRR20067634_filtered.fastq.gz SLIDINGWINDOW:5:25 MINLEN:60
 
-b) De la ejecución anterior, resultarán 4 archivos comprimidos como se detalla a continuación
+De la ejecución anterior, resultarán 4 archivos comprimidos como se detalla a continuación
 
     SRR20067634_filtered_1P.fastq.gz
     SRR20067634_filtered_1U.fastq.gz
     SRR20067634_filtered_2P.fastq.gz
     SRR20067634_filtered_2U.fastq.gz
 
-c) Descomprimir los archivos con
+Descomprimir los archivos con
 
     unzip SRR20067634_filtered_1P.fastq.gz
 
-d) Volver a realizar un análisis de calidad de las muestras y comparar con el reporte de calidad inicial (en un script o directamente en la terminal)
+Volver a realizar un análisis de calidad de las muestras y comparar con el reporte de calidad inicial (en un script o directamente en la terminal)
 
     fastqc  *.fastq.gz
 
 
 ## REFERENCIAS
 
-Grüning, B., Dale, R., Sjödin, A. et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. Nat Methods 15, 475–476 (2018). https://doi.org/10.1038/s41592-018-0046-7 
-Brown, J., Pirrung, M., & McCue, L. (2017). FQC Dashboard: integrates FastQC results into a web-based, interactive, and extensible FASTQ quality control tool. Bioinformatics, 3137–3139.
-Stephan, P., Dander, A., Fischer, M., Snajder, R., Sperk, M., Efremova, M., . . . Trajanoski, Z. (2014). A survey of tools for variant analysis of next-generation genome sequencing data. Briefings in Bioinformatics, 256-278.
-Taishan, H., Chitnis, N., Monos, D., & Dinh, A. (2021). Next-generation sequencing technologies: An overview. Human Immunology, 1-10.
-He, B., Shu, R., Yang, H., Lu, Q., Wang, W., Song, L., . . . Lang, J. (2020). Assessing the Impact of Data Preprocessing on Analyzing Next Generation Sequencing . Frontiers in Bioengineering and Biotechnology, 1-12 .
-Bolger AM, Lohse M, Usadel B. Trimmomatic: a flexible trimmer for Illumina sequence data. Bioinformatics. 2014;30(15):2114-2120. doi:10.1093/bioinformatics/btu170
+- Grüning, B., Dale, R., Sjödin, A. et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. Nat Methods 15, 475–476 (2018). https://doi.org/10.1038/s41592-018-0046-7 
+- Brown, J., Pirrung, M., & McCue, L. (2017). FQC Dashboard: integrates FastQC results into a web-based, interactive, and extensible FASTQ quality control tool. Bioinformatics, 3137–3139.
+- Stephan, P., Dander, A., Fischer, M., Snajder, R., Sperk, M., Efremova, M., . . . Trajanoski, Z. (2014). A survey of tools for variant analysis of next-generation genome sequencing data. Briefings in Bioinformatics, 256-278.
+- Taishan, H., Chitnis, N., Monos, D., & Dinh, A. (2021). Next-generation sequencing technologies: An overview. Human Immunology, 1-10.
+- He, B., Shu, R., Yang, H., Lu, Q., Wang, W., Song, L., . . . Lang, J. (2020). Assessing the Impact of Data Preprocessing on Analyzing Next Generation Sequencing . Frontiers in Bioengineering and Biotechnology, 1-12 .
+- Bolger AM, Lohse M, Usadel B. Trimmomatic: a flexible trimmer for Illumina sequence data. Bioinformatics. 2014;30(15):2114-2120. doi:10.1093/bioinformatics/btu170
