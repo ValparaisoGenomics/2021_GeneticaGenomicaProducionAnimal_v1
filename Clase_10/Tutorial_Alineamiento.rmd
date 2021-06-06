@@ -1,1 +1,55 @@
+---
+title: "Introducción al análisis de secuencias NGS"
+subtitle: 'Curso Genética y Genómica en Producción Animal'
+author:
+ name: Dr. José A. Gallardo, Dr(c) Margarita Rivera.
+ affiliation: Pontificia Universidad Católica de Valparaíso
+ email: <jose.gallardo@pucv.cl>
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: hide
+  word_document: default
+  pdf_document: default
+---
+
+<style>
+#TOC {
+  color: black;
+  font-familiy: Calibri;
+  font-size: 14px;
+  border-color: #708090; 
+}
+body {
+   color: black;
+   font-familiy: Calibri;
+}
+
+pre {
+  color: black;
+  background-color: #F8F8FF;
+}
+# header {
+  color: #800000;
+  font-familiy: Calibri;
+  background-color: #F5F5F5;
+  opacity: 0.8;
+  font-size: 16px;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## INTRODUCCIÓN
+
+El paso de alineación de secuencias se considera una parte integral que contribuye directamente a las identificaciones de ADN, ARN o proteínas (Pham-Quoc, Kieu-Do, & Thinh, 2019). El problema del mapeo de reads consiste en ubicar o alinear dentro de un genoma de referencia previamente secuenciado los millones de reads para luego ensamblarlas a un nuevo genoma (Bak, Bodziony, Migdałek, Pareek, & Żukowski§, 2020). Esta carga de trabajo se la realiza con diferentes enfoques de alineación, sin embargo, al igual que cualquier software, cada enfoque presenta diferentes formas de ejecución y consecuentemente de análisis.
+Como se explicó, para averiguar el nivel de similitud entre una gran cantidad de datos genómicos se presenta un desafío computacional para los softwares de alineación y por ello, se han desarrollado varios programas que ayudan en esta tarea, como lo son, BWA (Li & Durbin, 2009), Bowtie 2 (JHU, 2016) y otros, cuya función principal es hacer coincidir secuencias cortas provenientes de NGS con secuencias de referencia (Bak, Bodziony, Migdałek, Pareek, & Żukowski§, 2020). De hecho, BWA es un software muy popular para fines de alineamiento, debido a su compatibilidad con datos de Illumina y la integración de distintos algoritmos de alineamiento con mayor rendimiento para reads de distintas longitudes (Li & Durbin, 2009).
+
+Los archivos SAM / BAM resultantes del alineamiento, generalmente contienen información de decenas a cientos de millones de lecturas y, como se sabe los datos pueden contener sesgos no deseados por fallas de secuenciación o los propios algoritmos de mapeo. Por ello es necesario realizar un análisis de calidad de los datos de secuenciación de la alineación. Una de las herramientas usadas para control de calidad de datos alineados es Qualimap (García, Okonechnikov, & Carbonell, 2012), que toma datos de alineación de secuencias y proporciona análisis gráficos y estadísticos para la evaluación de datos.
+El presente trabajo tiene por finalidad realizar el alineamiento de una muestra con secuenciación pair end con el software BWA y el posterior análisis de calidad de dicha muestra. A continuación, se detalla el procedimiento aplicado para el alineamiento, así como, la interpretación de los resultados del reporte generado por Qualimap.
 
