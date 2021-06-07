@@ -91,11 +91,16 @@ Para la instalación de los software proceda a ejecutar los siguientes comandos 
 Crear una carpeta de trabajo denominada alineamiento
 Descargar el genoma de referencia del organismo ____
 
+### 4 - INDEXACION DEL GENOMA DE REFERENCIA
 
-### 4 - ALINEAMIENTO
+
+
+### 5 - ALINEAMIENTO
 
 
 **Alineamiento de lecturas contra un genoma de referencia con la herramienta BWA, obteniendo como resultado un archivo en formato SAM.**
+
+Ejecutar el siguiente comando de alineamiento
 
     bwa mem -t 4 -M reference.fasta \
     muestra_R1.fastq.gz \
@@ -103,6 +108,10 @@ Descargar el genoma de referencia del organismo ____
     > muestra.sam
 
 bwa mem ../../GCF_000233375.1_ICSASG_v2_genomic.fna SRR2006763_1.fastq SRR2006763_2.fastq > SRR2006763.sam
+
+Inspeccionar el archivo .sam de salida con:
+
+    less SRR2006763.sam
 
 **Conversión del archivo SAM a BAM
 
