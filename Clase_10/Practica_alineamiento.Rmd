@@ -86,7 +86,10 @@ Para la instalación de los software proceda a ejecutar los siguientes comandos 
 ### 3 - DESCARGA DEL GENOMA DE REFERENCIA
 
 Crear una carpeta de trabajo denominada alineamiento
-Descargar el genoma de referencia del organismo ____
+
+Colocar las secuencias fastq para su alinemkento
+
+Descargar el genoma de referencia del organismo _Salmo salar_
 
 ### 4 - INDEXACION DEL GENOMA DE REFERENCIA
 
