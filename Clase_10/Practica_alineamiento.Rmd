@@ -54,17 +54,14 @@ En este tutorial se realiza el alineamiento
 
 ### FORMATO SAM
 
-
-### FORMATO BAM
+![image](https://user-images.githubusercontent.com/80792310/121112439-05d97c00-c7d6-11eb-8816-961022673034.png)
 
 
 ### SOFTWARES DE BIOINFORMÁTICA
 
 **BWA**
 
-
-
-
+Es un algoritmo de alineación para alinear lecturas de secuencia o secuencias de consulta largas con un genoma de referencia grande como el humano. Elige automáticamente entre alineaciones locales y de extremo a extremo, admite lecturas de extremos emparejados y realiza alineaciones quiméricas (Li, 2013)
 
 ## PRÁCTICA UNIDAD 3 - SUBTÓPICO 2.2
 
@@ -93,7 +90,7 @@ Descargar el genoma de referencia del organismo ____
 
 ### 4 - INDEXACION DEL GENOMA DE REFERENCIA
 
-
+    bwa index GCF_000233375.1_ICSASG_v2_genomic.fna
 
 ### 5 - ALINEAMIENTO
 
@@ -102,12 +99,8 @@ Descargar el genoma de referencia del organismo ____
 
 Ejecutar el siguiente comando de alineamiento
 
-    bwa mem -t 4 -M reference.fasta \
-    muestra_R1.fastq.gz \
-    muestra_R2.fastq.gz \
-    > muestra.sam
+    bwa mem GCF_000233375.1_ICSASG_v2_genomic.fna SRR2006763_1.fastq SRR2006763_2.fastq > SRR2006763.sam
 
-bwa mem ../../GCF_000233375.1_ICSASG_v2_genomic.fna SRR2006763_1.fastq SRR2006763_2.fastq > SRR2006763.sam
 
 Inspeccionar el archivo .sam de salida con:
 
