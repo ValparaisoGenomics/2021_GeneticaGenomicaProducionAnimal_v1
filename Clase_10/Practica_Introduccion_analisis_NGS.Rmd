@@ -50,12 +50,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Las tecnologías de secuenciación de próxima generación han evolucionado significativamente para proporcionar una mayor producción de datos (Taishan, Chitnis, Monos, & Dinh, 2021). Sin embargo, las plataformas son susceptibles a una amplia gama de fallas químicas e instrumentales (Stephan et al., 2014), por lo que, los datos obtenidos pueden tener un fuerte ruido de fondo, contaminación de los adaptadores, baja calidad de secuenciación, entre otros (He et al., 2020), lo que posteriormente representa problemas significativos en la precisión de la detección de variantes o regiones genómicas objetos de estudio. Por ello, el control de calidad, en el preprocesamiento de datos, se torna esencial, a fin de contar con datos limpios para evitar errores en análisis posteriores.
 
-Para efectuar el control de calidad se han desarrollado herramientas bioinformáticas como FastQC (Andrews, 2020), un software compatible con todas las principales plataformas de secuenciación. El Presente trabajo tiene como objetivo,realizar un análisis integral de control de calidad de secuencias NGS. Con fin ocuparemos el software **FastQC** y lecturas crudas obtenidas por secuenciación de extremos emparejados con Illumina HiSeq2000 de la cepa Aquagen de _Salmo salar_, a partir de un estudio de resistencia a la necrosis pancreática infecciosa y posteriormente se realizará el filtrado y poda de las muestras con el software Trimmomatic.
-
 ### FORMATO FASTQ
 
 ![**Figura 1. Estructura archivo fastq**](https://user-images.githubusercontent.com/80792310/120566231-6d598b00-c3d4-11eb-910e-b64df229eaf4.png)
-
 
 
 El archivo fastq contiene las lecturas de secuenciación. Como se nota en la Figura 1, una lectura de secuenciación tiene 4 líneas, la primera representa el encabezado de la lectura, que inicia siempre con un @ y contiene datos informativos como, el número de serie del secuenciador y de carril, el swath que representa una región dentro del carril, las posiciones x e y dentro de cada swath y la dirección de las lecturas indicando una secuenciación pareada en este caso. 
@@ -70,14 +67,14 @@ Quality score     0 ... 10 ... 20 ... 30
 Quality enconding ! ... +  ... 5  ... A
 
 ## SOFTWARES DE BIOINFORMÁTICA
+
 **PARA ANÁLISIS DE CALIDAD Y FILTRADO DE SECUENCIAS FASTQ** 
 
 ## **FastQC**
 
 **Descripción**
 
-[Fastqc](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) es un software que permite realizar análisis de control de calidad de secuencias NGS.
-uno de los softwares más empleados para análisis de calidad, siendo compatible con todas las principales plataformas de secuenciación (Andrews, 2010).
+Para efectuar el control de calidad se han desarrollado diversas herramientas bioinformáticas siendo una de las primeras y más populares **FastQC** [(Andrews, 2010)](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/), un software compatible con las principales plataformas de secuenciación, pero usada preferentemente con datos de secuenciación Illumina. 
 
 La versión del FastQC empleada en este trabajo es la 0.11.9. Este software tiene como objetivo proporcionar un conjunto modular de análisis para conocer si los datos tienen algún problema que deba tener en cuenta antes de realizar un análisis adicional.  FastQC resume la calidad de lectura por posición, informa al usuario del contenido del adaptador en secuencias, sobre frecuencias de tetrámeros y muchos otros aspectos que uno esperaría obtener de los datos de secuencia sin procesar (Brown, Pirrung, & McCue, 2017).
 
@@ -97,6 +94,9 @@ Un manual del uso del software se puede descargar [aquí](http://www.usadellab.o
 
 - Filtrar y podar las secuencias con el software trimmomatic
 
+## Origen de las muestras
+
+Las muestras para analizar provienen de la base de datos SRA del NCBI y corresponden lecturas crudas del salmón del Atlántico _Salmo salar_ en formato fastq, obtenidas por secuenciación de extremos emparejados con un secuenciador Illumina HiSeq2000.
 
 ## PRÁCTICA UNIDAD 3 - SUBTÓPICO 2.2
 

@@ -13,6 +13,12 @@ Doctor en Genética por la Universidad de Vigo, España.
 Investigador en Genética Animal de INIA Carillanca.  
 jpineira@inia.cl
 
+## Profesor ayudante
+Margarita Rivera
+Doctor (c) en Acuicultura.  
+Pontificia Universidad Católica de Valparaíso
+riveram3048@gmail.com
+
 ## Alumnos
 
 **Jaqueline Flores Salinas**  
