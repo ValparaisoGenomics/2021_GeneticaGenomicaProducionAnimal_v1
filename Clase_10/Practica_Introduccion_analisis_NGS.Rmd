@@ -123,17 +123,21 @@ Para configurar el canal bioconda se debe ejecutar el siguiente comando
 
     conda config --add channels bioconda
     
+Para buscar software en bioconda antes de instalar ejecute el siguiente comando. Note que si escribe el nombre de forma errada no encontrará el software.
+
+    conda search -c bioconda fast-qc
+    
+    conda search -c bioconda fastqc
+    
+    conda search -c bioconda trimmomatic
+    
+    
 Para la instalación de los software proceda a ejecutar los siguientes comandos en la terminal:
 
     conda install -c bioconda fastqc
 
     conda install -c bioconda trimmomatic
 
-Revise si estan correctamente instalados usando el siguiente comando
-
-    conda search -c bioconda fastqc
-    
-    conda search -c bioconda trimmomatic
 
 Usando el comando **mkdir** cree un directorio llamado SRA_samples
 
@@ -152,18 +156,17 @@ Biomuestra 1:SRR2006763_1.fastq
 
 Biomuestra 2:SRR2006763_2.fastq
 
-Crear un archivo ejecutable (.sh) con nano que se denominará download.sh
+Crear un archivo ejecutable (.sh) con nano denominado download.sh
 
     nano download.sh
 
-Introducir y guardar la información del script como se detalla a continuación, cambiando la segunda línea que representa el nombre de su trabajo, por fastqc y su número de alumno e.g "fastqc01"
+Introducir y guardar la información del script como se detalla a continuación, cambiando en la segunda y tercera línea por su nombre de usuario. Note que el script solo tiene 3 lineas.
 
      #!/bin/bash
-     #SBATCH -J fastqc01
+     #SBATCH -J prefetch_usuario
      /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/prefetch --max-size 100G SRR2006763 -O /home2/usuario/SRA_samples/
 
 Este script contiene las instrucciones necesarias para la descarga de la secuencia con el comando Prefetch que es parte del kit de herramientas de SRA y su función es descargar archivos de secuencia en formato SRA comprimido. La descarga demorará alrededor de dos minutos
-
 
 Correr el script mediante el siguiente comando
 
@@ -176,7 +179,7 @@ Al finalizar la ejecución listar la carpeta SRA_samples para comprobar que se c
 Acceder a la carpeta **SRR2006763** y crear el siguiente script que permitirá obtener los archivos fastq de la muestra **SRR2006763**
 
      #!/bin/bash
-     #SBATCH - J fdump01
+     #SBATCH - J fdump_usuario
      /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/fasterq-dump /home2/usuario/SRA_samples/SRR2006763/*.sra -O /home2/usuario/SRA_samples/SRR2006763/
 
 ### Actividad 4- Comprobación de integridad de archivos
@@ -213,8 +216,8 @@ Con lo que se comprueba la integridad de los archivos descargados.
 Para el análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS, en el directorio SRR2006763 crear y correr el siguiente script
 
       #!/bin/bash
-      #SBATCH - J fastqc01
-      fastqc /home2/mrivera/SRA_samples/SRR2006763/*.fastq
+      #SBATCH - J fastqc_usuario
+      fastqc /home2/usuario/SRA_samples/SRR2006763/*.fastq
 
 La salida resultante de la ejecución del script anterior serán dos archivos:
 
@@ -243,7 +246,7 @@ Visualizar archivos generados
 Entrar a la carpeta donde constan los archivos fastq (SRR2006763/) y ejecutar el siguiente script
 
     #!/bin/bash
-    #SBATCH - J trimm01
+    #SBATCH - J trimm_usuario
     trimmomatic PE SRR2006763_1.fastq SRR2006763_2.fastq -baseout SRR20067634_filtered.fastq.gz SLIDINGWINDOW:5:25 MINLEN:60
 
 De la ejecución anterior, resultarán 4 archivos comprimidos como se detalla a continuación
