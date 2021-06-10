@@ -109,13 +109,15 @@ Las muestras para analizar provienen de la base de datos SRA del NCBI y correspo
 - Transferir archivos de control de calidad mediante protocolo FTP desde Servidor a Cliente.
 
 
-#### 1 - CONECTAR A SERVIDOR POMEO
+### Actividades
+
+### Actividad 1 - Conectar a servidor Pomeo
 
 Conecte al servidor pomeo usando la siguiente dirección IP: **200.54.220.141** puerto 22.
 
 Ese el software PuTTy y las claves de acceso dadas en la clase anterior.
 
-#### 2 - CONFIGURAR BIOCONDA E INSTALAR SOFTWARES PARA ANÁLISIS
+### Actividad 2 - Configurar bioconda e instalación de software
 
 Para configurar el canal bioconda se debe ejecutar el siguiente comando
 
@@ -142,7 +144,7 @@ Acceda a este directorio con el comando
     cd SRA_samples 
 
 
-#### 3 - DESCARGA DE SECUENCIAS SRA
+### Actividad 3 - Descarga de biomuestra desde SRA
 
 Para esta práctica se trabajará con la biomuestra **SRR2006763** proveniente de la cepa Aquagen de _Salmo salar_ y a partir de la que se obtendrán los dos archivos fastq, ya que los datos provienen de secuenciación pair-end.
 
@@ -177,7 +179,7 @@ Acceder a la carpeta **SRR2006763** y crear el siguiente script que permitirá o
      #SBATCH - J fdump01
      /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/fasterq-dump /home2/usuario/SRA_samples/SRR2006763/*.sra -O /home2/usuario/SRA_samples/SRR2006763/
 
-#### 4- COMPROBACIÓN DE INTEGRIDAD DE ARCHIVO
+### Actividad 4- Comprobación de integridad de archivos
 
 md5sum es un algoritmo empleado para evitar algún daño que pudo generarse por algún motivo durante el proceso de descarga 
 
@@ -206,7 +208,7 @@ El comando dará como resultado el siguiente mensaje
 Con lo que se comprueba la integridad de los archivos descargados.
 
 
-#### 5 - ANÁLISIS DE CONTROL DE CALIDAD
+### Actividad 5 - Análisis de control de calidad
 
 Para el análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS, en el directorio SRR2006763 crear y correr el siguiente script
 
@@ -236,7 +238,7 @@ Transferir archivos mediante protocolo FTP desde Servidor a Cliente, puede usar 
  
 Visualizar archivos generados
 
-#### 6 - FILTRADO Y PODA
+### Actividad 6 - Filtrado y poda
 
 Entrar a la carpeta donde constan los archivos fastq (SRR2006763/) y ejecutar el siguiente script
 
@@ -260,7 +262,7 @@ Volver a realizar un análisis de calidad de las muestras y comparar con el repo
     fastqc  *.fastq.gz
 
 
-#### REFERENCIAS
+### REFERENCIAS
 
 - Grüning, B., Dale, R., Sjödin, A. et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. Nat Methods 15, 475–476 (2018). https://doi.org/10.1038/s41592-018-0046-7 
 - Brown, J., Pirrung, M., & McCue, L. (2017). FQC Dashboard: integrates FastQC results into a web-based, interactive, and extensible FASTQ quality control tool. Bioinformatics, 3137–3139.
