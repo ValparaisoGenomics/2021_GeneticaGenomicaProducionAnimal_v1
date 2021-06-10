@@ -138,6 +138,11 @@ Para la instalación de los software proceda a ejecutar los siguientes comandos 
 
     conda install -c bioconda trimmomatic
 
+Checa los software instalados con 
+
+    conda list
+    conda list fastqc
+    conda list trimmomatic
 
 Usando el comando **mkdir** cree un directorio llamado SRA_samples
 
@@ -147,26 +152,25 @@ Acceda a este directorio con el comando
 
     cd SRA_samples 
 
-
 ### Actividad 3 - Descarga de biomuestra desde SRA
 
 Para esta práctica se trabajará con la biomuestra **SRR2006763** proveniente de la cepa Aquagen de _Salmo salar_ y a partir de la que se obtendrán los dos archivos fastq, ya que los datos provienen de secuenciación pair-end.
 
 Biomuestra 1:SRR2006763_1.fastq
-
 Biomuestra 2:SRR2006763_2.fastq
 
 Crear un archivo ejecutable (.sh) con nano denominado download.sh
 
     nano download.sh
 
-Introducir y guardar la información del script como se detalla a continuación, cambiando en la segunda y tercera línea por su nombre de usuario. Note que el script solo tiene 3 lineas.
+Introducir y guardar la información del script como se detalla a continuación, cambiando en la segunda y tercera línea por su nombre de usuario. Note que el script solo tiene 4 líneas.
 
      #!/bin/bash
      #SBATCH -J prefetch_usuario
      /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/prefetch --max-size 100G SRR2006763 -O /home2/usuario/SRA_samples/
+     /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/vdb-validate /home2/usuario/SRA_samples/SRR2006763/SRR2006763.sra
 
-Este script contiene las instrucciones necesarias para la descarga de la secuencia con el comando Prefetch que es parte del kit de herramientas de SRA y su función es descargar archivos de secuencia en formato SRA comprimido. La descarga demorará alrededor de dos minutos
+Este script contiene las instrucciones necesarias para la descarga de la secuencia con el comando **prefetch** que es parte del kit de herramientas de SRA y su función es descargar archivos de secuencia en formato SRA comprimido. Además, incluye un segundo comando llamado vdb-validate que realiza varios chequeos luego de la descarga para hacegurar que esta se ha desarrollado correctamente. La descarga y chequeo demorará alrededor de dos minutos.
 
 Correr el script mediante el siguiente comando
 
@@ -174,13 +178,26 @@ Correr el script mediante el siguiente comando
 
 Al finalizar la ejecución listar la carpeta SRA_samples para comprobar que se creó el directorio de la secuencia descargada con el nombre **SRR2006763** y, dentro de este directorio deberá haberse generado el archivo SRR2006763.sra
 
-    ls -l -h SRA_samples
+    ls -l -h 
 
-Acceder a la carpeta **SRR2006763** y crear el siguiente script que permitirá obtener los archivos fastq de la muestra **SRR2006763**
+Acceder a la carpeta **SRR2006763** y crear el siguiente script (nano fdump.sh) que permitirá obtener los archivos fastq de la muestra **SRR2006763**
 
      #!/bin/bash
      #SBATCH - J fdump_usuario
      /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/fasterq-dump /home2/usuario/SRA_samples/SRR2006763/*.sra -O /home2/usuario/SRA_samples/SRR2006763/
+     
+Correr el script mediante el siguiente comando
+
+     bash fdump.sh
+     
+Al finalizar, además de extraer los archivos fastq debería indicarle el total de read leidos y escritos.
+
+spots read      : 2,856,007
+reads read      : 5,712,014
+reads written   : 5,712,014
+
+Biomuestra 1:SRR2006763_1.fastq
+Biomuestra 2:SRR2006763_2.fastq
 
 ### Actividad 4- Comprobación de integridad de archivos
 
@@ -194,7 +211,7 @@ Verificar la salida generada
 
     cat md5_samples
  
- Contendrá los valores md5 de las muestras como se describe a continuación
+Contendrá los valores md5 de las muestras como se describe a continuación
  
     dd0bdf8c722226ea34611941f2391774  SRR2006763_1.fastq
     1c63ca4a6e14de4f93f7621e3e990ec9  SRR2006763_2.fastq
@@ -210,10 +227,9 @@ El comando dará como resultado el siguiente mensaje
 
 Con lo que se comprueba la integridad de los archivos descargados.
 
-
 ### Actividad 5 - Análisis de control de calidad
 
-Para el análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS, en el directorio SRR2006763 crear y correr el siguiente script
+Para el análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS, en el directorio SRR2006763 crear y correr el siguiente script (nano fastqc.sh)
 
       #!/bin/bash
       #SBATCH - J fastqc_usuario
@@ -238,12 +254,16 @@ Transferir archivos mediante protocolo FTP desde Servidor a Cliente, puede usar 
 - Se solicitará el ingreso de su clave
  
 - Se concluirá la descarga al computador local y se la puede revisar con `open .`
- 
-Visualizar archivos generados
+
+Adicionalmente, POMEO tiene instalado Rstudio server por lo que es posible acceder sus archivos directamente ingresando al servidor a traves del puerto 8787.
+
+http://200.54.220.141:8787/
+
+Ingrese su usuario y password y visualice sus directorios y archivos.
 
 ### Actividad 6 - Filtrado y poda
 
-Entrar a la carpeta donde constan los archivos fastq (SRR2006763/) y ejecutar el siguiente script
+Entrar a la carpeta donde constan los archivos fastq (SRR2006763/) y ejecutar el siguiente script (nano trimm.sh)
 
     #!/bin/bash
     #SBATCH - J trimm_usuario

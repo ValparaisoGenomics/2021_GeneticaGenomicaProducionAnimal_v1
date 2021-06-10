@@ -1673,51 +1673,64 @@ pre {
 <li><p>Realizar filtrado y poda de secuencias.</p></li>
 <li><p>Transferir archivos de control de calidad mediante protocolo FTP desde Servidor a Cliente.</p></li>
 </ul>
-<div id="conectar-a-servidor-pomeo" class="section level4">
-<h4>1 - CONECTAR A SERVIDOR POMEO</h4>
+</div>
+<div id="actividades" class="section level3">
+<h3>Actividades</h3>
+</div>
+<div id="actividad-1---conectar-a-servidor-pomeo" class="section level3">
+<h3>Actividad 1 - Conectar a servidor Pomeo</h3>
 <p>Conecte al servidor pomeo usando la siguiente dirección IP: <strong>200.54.220.141</strong> puerto 22.</p>
 <p>Ese el software PuTTy y las claves de acceso dadas en la clase anterior.</p>
 </div>
-<div id="configurar-bioconda-e-instalar-softwares-para-análisis" class="section level4">
-<h4>2 - CONFIGURAR BIOCONDA E INSTALAR SOFTWARES PARA ANÁLISIS</h4>
+<div id="actividad-2---configurar-bioconda-e-instalación-de-software" class="section level3">
+<h3>Actividad 2 - Configurar bioconda e instalación de software</h3>
 <p>Para configurar el canal bioconda se debe ejecutar el siguiente comando</p>
 <pre><code>conda config --add channels bioconda</code></pre>
+<p>Para buscar software en bioconda antes de instalar ejecute el siguiente comando. Note que si escribe el nombre de forma errada no encontrará el software.</p>
+<pre><code>conda search -c bioconda fast-qc
+
+conda search -c bioconda fastqc
+
+conda search -c bioconda trimmomatic</code></pre>
 <p>Para la instalación de los software proceda a ejecutar los siguientes comandos en la terminal:</p>
 <pre><code>conda install -c bioconda fastqc
 
 conda install -c bioconda trimmomatic</code></pre>
-<p>Revise si estan correctamente instalados usando el siguiente comando</p>
-<pre><code>conda search -c bioconda fastqc
-
-conda search -c bioconda trimmomatic</code></pre>
 <p>Usando el comando <strong>mkdir</strong> cree un directorio llamado SRA_samples</p>
 <pre><code>mkdir SRA_samples</code></pre>
 <p>Acceda a este directorio con el comando</p>
 <pre><code>cd SRA_samples </code></pre>
 </div>
-<div id="descarga-de-secuencias-sra" class="section level4">
-<h4>3 - DESCARGA DE SECUENCIAS SRA</h4>
+<div id="actividad-3---descarga-de-biomuestra-desde-sra" class="section level3">
+<h3>Actividad 3 - Descarga de biomuestra desde SRA</h3>
 <p>Para esta práctica se trabajará con la biomuestra <strong>SRR2006763</strong> proveniente de la cepa Aquagen de <em>Salmo salar</em> y a partir de la que se obtendrán los dos archivos fastq, ya que los datos provienen de secuenciación pair-end.</p>
-<p>Biomuestra 1:SRR2006763_1.fastq</p>
-<p>Biomuestra 2:SRR2006763_2.fastq</p>
-<p>Crear un archivo ejecutable (.sh) con nano que se denominará download.sh</p>
+<p>Biomuestra 1:SRR2006763_1.fastq Biomuestra 2:SRR2006763_2.fastq</p>
+<p>Crear un archivo ejecutable (.sh) con nano denominado download.sh</p>
 <pre><code>nano download.sh</code></pre>
-<p>Introducir y guardar la información del script como se detalla a continuación, cambiando la segunda línea que representa el nombre de su trabajo, por fastqc y su número de alumno e.g “fastqc01”</p>
+<p>Introducir y guardar la información del script como se detalla a continuación, cambiando en la segunda y tercera línea por su nombre de usuario. Note que el script solo tiene 4 líneas.</p>
 <pre><code> #!/bin/bash
- #SBATCH -J fastqc01
- /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/prefetch --max-size 100G SRR2006763 -O /home2/usuario/SRA_samples/</code></pre>
-<p>Este script contiene las instrucciones necesarias para la descarga de la secuencia con el comando Prefetch que es parte del kit de herramientas de SRA y su función es descargar archivos de secuencia en formato SRA comprimido. La descarga demorará alrededor de dos minutos</p>
+ #SBATCH -J prefetch_usuario
+ /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/prefetch --max-size 100G SRR2006763 -O /home2/usuario/SRA_samples/
+ /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/vdb-validate /home2/usuario/SRA_samples/SRR2006763/SRR2006763.sra</code></pre>
+<p>Este script contiene las instrucciones necesarias para la descarga de la secuencia con el comando <strong>prefetch</strong> que es parte del kit de herramientas de SRA y su función es descargar archivos de secuencia en formato SRA comprimido. Además, incluye un segundo comando llamado vdb-validate que realiza varios chequeos luego de la descarga para hacegurar que esta se ha desarrollado correctamente. La descarga y chequeo demorará alrededor de dos minutos.</p>
 <p>Correr el script mediante el siguiente comando</p>
 <pre><code> bash download.sh</code></pre>
 <p>Al finalizar la ejecución listar la carpeta SRA_samples para comprobar que se creó el directorio de la secuencia descargada con el nombre <strong>SRR2006763</strong> y, dentro de este directorio deberá haberse generado el archivo SRR2006763.sra</p>
-<pre><code>ls -l -h SRA_samples</code></pre>
-<p>Acceder a la carpeta <strong>SRR2006763</strong> y crear el siguiente script que permitirá obtener los archivos fastq de la muestra <strong>SRR2006763</strong></p>
+<pre><code>ls -l -h </code></pre>
+<p>Acceder a la carpeta <strong>SRR2006763</strong> y crear el siguiente script (nano fdump.sh) que permitirá obtener los archivos fastq de la muestra <strong>SRR2006763</strong></p>
 <pre><code> #!/bin/bash
- #SBATCH - J fdump01
- /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/fasterq-dump /home2/usuario/SRA_samples/SRR2006763/*.sra -O /home2/usuario/SRA_samples/SRR2006763/</code></pre>
+ #SBATCH - J fdump_usuario
+ /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/fasterq-dump /home2/usuario/SRA_samples/SRR2006763/*.sra -O /home2/usuario/SRA_samples/SRR2006763/
+ </code></pre>
+<p>Correr el script mediante el siguiente comando</p>
+<pre><code> bash fdump.sh
+ </code></pre>
+<p>Al finalizar, además de extraer los archivos fastq debería indicarle el total de read leidos y escritos.</p>
+<p>spots read : 2,856,007 reads read : 5,712,014 reads written : 5,712,014</p>
+<p>Biomuestra 1:SRR2006763_1.fastq Biomuestra 2:SRR2006763_2.fastq</p>
 </div>
-<div id="comprobación-de-integridad-de-archivo" class="section level4">
-<h4>4- COMPROBACIÓN DE INTEGRIDAD DE ARCHIVO</h4>
+<div id="actividad-4--comprobación-de-integridad-de-archivos" class="section level3">
+<h3>Actividad 4- Comprobación de integridad de archivos</h3>
 <p>md5sum es un algoritmo empleado para evitar algún daño que pudo generarse por algún motivo durante el proceso de descarga</p>
 <p>Busque el código Md5 de las muestras y direccione la información a un archivo md5_samples, con el siguiente comando:</p>
 <pre><code>md5sum SRR2006763_1.fastq SRR2006763_2.fastq &gt; md5_samples</code></pre>
@@ -1733,12 +1746,12 @@ conda search -c bioconda trimmomatic</code></pre>
 SRR2006763_2.fastq: La suma coincide</code></pre>
 <p>Con lo que se comprueba la integridad de los archivos descargados.</p>
 </div>
-<div id="análisis-de-control-de-calidad" class="section level4">
-<h4>5 - ANÁLISIS DE CONTROL DE CALIDAD</h4>
-<p>Para el análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS, en el directorio SRR2006763 crear y correr el siguiente script</p>
+<div id="actividad-5---análisis-de-control-de-calidad" class="section level3">
+<h3>Actividad 5 - Análisis de control de calidad</h3>
+<p>Para el análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS, en el directorio SRR2006763 crear y correr el siguiente script (nano fastqc.sh)</p>
 <pre><code>  #!/bin/bash
-  #SBATCH - J fastqc01
-  fastqc /home2/mrivera/SRA_samples/SRR2006763/*.fastq</code></pre>
+  #SBATCH - J fastqc_usuario
+  fastqc /home2/usuario/SRA_samples/SRR2006763/*.fastq</code></pre>
 <p>La salida resultante de la ejecución del script anterior serán dos archivos:</p>
 <ol style="list-style-type: decimal">
 <li>archivo HTML</li>
@@ -1755,13 +1768,15 @@ scp usuario@200.54.220.141:/home2/usuario/SRA_samples/SRR2006763/*.html .</code>
 <li><p>Se solicitará el ingreso de su clave</p></li>
 <li><p>Se concluirá la descarga al computador local y se la puede revisar con <code>open .</code></p></li>
 </ul>
+<p>Adicionalmente, POMEO tiene instalado Rstudio server por lo que es posible acceder sus archivos directamente ingresando al servidor a traves del puerto 8787.</p>
+<p><a href="http://200.54.220.141:8787/" class="uri">http://200.54.220.141:8787/</a></p>
 <p>Visualizar archivos generados</p>
 </div>
-<div id="filtrado-y-poda" class="section level4">
-<h4>6 - FILTRADO Y PODA</h4>
+<div id="actividad-6---filtrado-y-poda" class="section level3">
+<h3>Actividad 6 - Filtrado y poda</h3>
 <p>Entrar a la carpeta donde constan los archivos fastq (SRR2006763/) y ejecutar el siguiente script</p>
 <pre><code>#!/bin/bash
-#SBATCH - J trimm01
+#SBATCH - J trimm_usuario
 trimmomatic PE SRR2006763_1.fastq SRR2006763_2.fastq -baseout SRR20067634_filtered.fastq.gz SLIDINGWINDOW:5:25 MINLEN:60</code></pre>
 <p>De la ejecución anterior, resultarán 4 archivos comprimidos como se detalla a continuación</p>
 <pre><code>SRR20067634_filtered_1P.fastq.gz
@@ -1773,8 +1788,8 @@ SRR20067634_filtered_2U.fastq.gz</code></pre>
 <p>Volver a realizar un análisis de calidad de las muestras y comparar con el reporte de calidad inicial (en un script o directamente en la terminal)</p>
 <pre><code>fastqc  *.fastq.gz</code></pre>
 </div>
-<div id="referencias" class="section level4">
-<h4>REFERENCIAS</h4>
+<div id="referencias" class="section level3">
+<h3>REFERENCIAS</h3>
 <ul>
 <li>Grüning, B., Dale, R., Sjödin, A. et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. Nat Methods 15, 475–476 (2018). <a href="https://doi.org/10.1038/s41592-018-0046-7" class="uri">https://doi.org/10.1038/s41592-018-0046-7</a></li>
 <li>Brown, J., Pirrung, M., &amp; McCue, L. (2017). FQC Dashboard: integrates FastQC results into a web-based, interactive, and extensible FASTQ quality control tool. Bioinformatics, 3137–3139.</li>
@@ -1783,7 +1798,6 @@ SRR20067634_filtered_2U.fastq.gz</code></pre>
 <li>He, B., Shu, R., Yang, H., Lu, Q., Wang, W., Song, L., . . . Lang, J. (2020). Assessing the Impact of Data Preprocessing on Analyzing Next Generation Sequencing . Frontiers in Bioengineering and Biotechnology, 1-12 .</li>
 <li>Bolger AM, Lohse M, Usadel B. Trimmomatic: a flexible trimmer for Illumina sequence data. Bioinformatics. 2014;30(15):2114-2120. <a href="doi:10.1093/bioinformatics/btu170" class="uri">doi:10.1093/bioinformatics/btu170</a></li>
 </ul>
-</div>
 </div>
 
 
