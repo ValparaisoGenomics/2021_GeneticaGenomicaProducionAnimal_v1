@@ -1625,9 +1625,10 @@ pre {
   font-size: 16px;
 }
 </style>
-<div id="introducción" class="section level2">
-<h2>INTRODUCCIÓN</h2>
+<div id="introducción" class="section level3">
+<h3>INTRODUCCIÓN</h3>
 <p>Las tecnologías de secuenciación de próxima generación han evolucionado significativamente para proporcionar una mayor producción de datos (Taishan, Chitnis, Monos, &amp; Dinh, 2021). Sin embargo, las plataformas son susceptibles a una amplia gama de fallas químicas e instrumentales (Stephan et al., 2014), por lo que, los datos obtenidos pueden tener un fuerte ruido de fondo, contaminación de los adaptadores, baja calidad de secuenciación, entre otros (He et al., 2020), lo que posteriormente representa problemas significativos en la precisión de la detección de variantes o regiones genómicas objetos de estudio. Por ello, el control de calidad, en el preprocesamiento de datos, se torna esencial, a fin de contar con datos limpios para evitar errores en análisis posteriores.</p>
+</div>
 <div id="formato-fastq" class="section level3">
 <h3>FORMATO FASTQ</h3>
 <div class="figure">
@@ -1640,39 +1641,31 @@ pre {
 <p>Quality score 0 … 10 … 20 … 30</p>
 <p>Quality enconding ! … + … 5 … A</p>
 </div>
-</div>
-<div id="softwares-de-bioinformática" class="section level2">
-<h2>SOFTWARES DE BIOINFORMÁTICA</h2>
-<p><strong>PARA ANÁLISIS DE CALIDAD Y FILTRADO DE SECUENCIAS FASTQ</strong></p>
-</div>
-<div id="fastqc" class="section level2">
-<h2><strong>FastQC</strong></h2>
+<div id="softwares-de-bioinformática" class="section level3">
+<h3>SOFTWARES DE BIOINFORMÁTICA</h3>
+<p><strong>FastQC</strong></p>
 <p><strong>Descripción</strong></p>
-<p>Para efectuar el control de calidad se han desarrollado diversas herramientas bioinformáticas siendo una de las primeras y más populares <strong>FastQC</strong> <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">(Andrews, 2010)</a>, un software compatible con las principales plataformas de secuenciación, pero usada preferentemente con datos de secuenciación Illumina.</p>
+<p>Para efectuar el análisis de control de calidad se han desarrollado diversas herramientas bioinformáticas siendo una de las primeras y más populares el software <strong>FastQC</strong> <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">(Andrews, 2010)</a>. Este sofitware es compatible con las principales plataformas de secuenciación, pero usada preferentemente con datos de secuenciación Illumina.</p>
 <p>La versión del FastQC empleada en este trabajo es la 0.11.9. Este software tiene como objetivo proporcionar un conjunto modular de análisis para conocer si los datos tienen algún problema que deba tener en cuenta antes de realizar un análisis adicional. FastQC resume la calidad de lectura por posición, informa al usuario del contenido del adaptador en secuencias, sobre frecuencias de tetrámeros y muchos otros aspectos que uno esperaría obtener de los datos de secuencia sin procesar (Brown, Pirrung, &amp; McCue, 2017).</p>
-</div>
-<div id="trimmomatic" class="section level2">
-<h2><strong>Trimmomatic</strong></h2>
+<p><strong>Trimmomatic</strong></p>
 <p><strong>Descripción</strong></p>
 <p><a href="http://www.usadellab.org/cms/?page=trimmomatic">Trimmomatic</a> es un software que permite filtrar y podar datos NGS desde secuenciadores Illumina.</p>
 <p>Es una herramienta de línea de comandos rápida y multiproceso que se puede utilizar para filtrar y recortar datos de Illumina (FASTQ), así como para eliminar adaptadores. Trabaja con archivos FASTQ utilizando puntuaciones de calidad phred + 33 o + 64, dependiendo de la tubería de Illumina utilizada (Bolger, Lohse &amp; Usadel, 2014). En este trabajo se emplea la versión 0.39.</p>
 <p>Un manual del uso del software se puede descargar <a href="http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf">aquí</a></p>
 </div>
-<div id="objetivos-del-trabajo-práctico" class="section level2">
-<h2>Objetivos del trabajo práctico</h2>
+<div id="objetivos-del-trabajo-práctico" class="section level3">
+<h3>Objetivos del trabajo práctico</h3>
 <ul>
 <li><p>Realizar un análisis integral de control de calidad de secuencias NGS con fastqc.</p></li>
-<li><p>Filtrar y podar las secuencias con el software trimmomatic</p></li>
+<li><p>Filtrar y podar las secuencias con el software trimmomatic.</p></li>
 </ul>
 </div>
-<div id="origen-de-las-muestras" class="section level2">
-<h2>Origen de las muestras</h2>
+<div id="origen-de-las-muestras" class="section level3">
+<h3>Origen de las muestras</h3>
 <p>Las muestras para analizar provienen de la base de datos SRA del NCBI y corresponden lecturas crudas del salmón del Atlántico <em>Salmo salar</em> en formato fastq, obtenidas por secuenciación de extremos emparejados con un secuenciador Illumina HiSeq2000.</p>
 </div>
-<div id="práctica-unidad-3---subtópico-2.2" class="section level2">
-<h2>PRÁCTICA UNIDAD 3 - SUBTÓPICO 2.2</h2>
-<p><strong>ANÁLISIS DE DATOS DE SECUENCIACIÓN MASIVA (NGS)</strong></p>
-<p>Etapas</p>
+<div id="etapas-del-análisis-de-control-de-calidad-filtrado-y-poda." class="section level3">
+<h3>Etapas del análisis de control de calidad, filtrado y poda.</h3>
 <ul>
 <li><p>Descargar secuencias NGS usando SRA toolkit.</p></li>
 <li><p>Comprobar integridad de descarga de archivos usando md5sum o similar.</p></li>
@@ -1680,14 +1673,13 @@ pre {
 <li><p>Realizar filtrado y poda de secuencias.</p></li>
 <li><p>Transferir archivos de control de calidad mediante protocolo FTP desde Servidor a Cliente.</p></li>
 </ul>
-</div>
-<div id="conectar-a-servidor-pomeo" class="section level2">
-<h2>1 - CONECTAR A SERVIDOR POMEO</h2>
+<div id="conectar-a-servidor-pomeo" class="section level4">
+<h4>1 - CONECTAR A SERVIDOR POMEO</h4>
 <p>Conecte al servidor pomeo usando la siguiente dirección IP: <strong>200.54.220.141</strong> puerto 22.</p>
 <p>Ese el software PuTTy y las claves de acceso dadas en la clase anterior.</p>
 </div>
-<div id="configurar-bioconda-e-instalar-softwares-para-análisis" class="section level2">
-<h2>2 - CONFIGURAR BIOCONDA E INSTALAR SOFTWARES PARA ANÁLISIS</h2>
+<div id="configurar-bioconda-e-instalar-softwares-para-análisis" class="section level4">
+<h4>2 - CONFIGURAR BIOCONDA E INSTALAR SOFTWARES PARA ANÁLISIS</h4>
 <p>Para configurar el canal bioconda se debe ejecutar el siguiente comando</p>
 <pre><code>conda config --add channels bioconda</code></pre>
 <p>Para la instalación de los software proceda a ejecutar los siguientes comandos en la terminal:</p>
@@ -1703,8 +1695,8 @@ conda search -c bioconda trimmomatic</code></pre>
 <p>Acceda a este directorio con el comando</p>
 <pre><code>cd SRA_samples </code></pre>
 </div>
-<div id="descarga-de-secuencias-sra" class="section level2">
-<h2>3 - DESCARGA DE SECUENCIAS SRA</h2>
+<div id="descarga-de-secuencias-sra" class="section level4">
+<h4>3 - DESCARGA DE SECUENCIAS SRA</h4>
 <p>Para esta práctica se trabajará con la biomuestra <strong>SRR2006763</strong> proveniente de la cepa Aquagen de <em>Salmo salar</em> y a partir de la que se obtendrán los dos archivos fastq, ya que los datos provienen de secuenciación pair-end.</p>
 <p>Biomuestra 1:SRR2006763_1.fastq</p>
 <p>Biomuestra 2:SRR2006763_2.fastq</p>
@@ -1724,8 +1716,8 @@ conda search -c bioconda trimmomatic</code></pre>
  #SBATCH - J fdump01
  /home2/usuario/sratoolkit.2.11.0-centos_linux64/bin/fasterq-dump /home2/usuario/SRA_samples/SRR2006763/*.sra -O /home2/usuario/SRA_samples/SRR2006763/</code></pre>
 </div>
-<div id="comprobación-de-integridad-de-archivo" class="section level2">
-<h2>4- COMPROBACIÓN DE INTEGRIDAD DE ARCHIVO</h2>
+<div id="comprobación-de-integridad-de-archivo" class="section level4">
+<h4>4- COMPROBACIÓN DE INTEGRIDAD DE ARCHIVO</h4>
 <p>md5sum es un algoritmo empleado para evitar algún daño que pudo generarse por algún motivo durante el proceso de descarga</p>
 <p>Busque el código Md5 de las muestras y direccione la información a un archivo md5_samples, con el siguiente comando:</p>
 <pre><code>md5sum SRR2006763_1.fastq SRR2006763_2.fastq &gt; md5_samples</code></pre>
@@ -1741,8 +1733,8 @@ conda search -c bioconda trimmomatic</code></pre>
 SRR2006763_2.fastq: La suma coincide</code></pre>
 <p>Con lo que se comprueba la integridad de los archivos descargados.</p>
 </div>
-<div id="análisis-de-control-de-calidad" class="section level2">
-<h2>5 - ANÁLISIS DE CONTROL DE CALIDAD</h2>
+<div id="análisis-de-control-de-calidad" class="section level4">
+<h4>5 - ANÁLISIS DE CONTROL DE CALIDAD</h4>
 <p>Para el análisis de control de calidad de secuencias fastq que provienen de secuenciadores NGS, en el directorio SRR2006763 crear y correr el siguiente script</p>
 <pre><code>  #!/bin/bash
   #SBATCH - J fastqc01
@@ -1765,8 +1757,8 @@ scp usuario@200.54.220.141:/home2/usuario/SRA_samples/SRR2006763/*.html .</code>
 </ul>
 <p>Visualizar archivos generados</p>
 </div>
-<div id="filtrado-y-poda" class="section level2">
-<h2>6 - FILTRADO Y PODA</h2>
+<div id="filtrado-y-poda" class="section level4">
+<h4>6 - FILTRADO Y PODA</h4>
 <p>Entrar a la carpeta donde constan los archivos fastq (SRR2006763/) y ejecutar el siguiente script</p>
 <pre><code>#!/bin/bash
 #SBATCH - J trimm01
@@ -1781,8 +1773,8 @@ SRR20067634_filtered_2U.fastq.gz</code></pre>
 <p>Volver a realizar un análisis de calidad de las muestras y comparar con el reporte de calidad inicial (en un script o directamente en la terminal)</p>
 <pre><code>fastqc  *.fastq.gz</code></pre>
 </div>
-<div id="referencias" class="section level2">
-<h2>REFERENCIAS</h2>
+<div id="referencias" class="section level4">
+<h4>REFERENCIAS</h4>
 <ul>
 <li>Grüning, B., Dale, R., Sjödin, A. et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. Nat Methods 15, 475–476 (2018). <a href="https://doi.org/10.1038/s41592-018-0046-7" class="uri">https://doi.org/10.1038/s41592-018-0046-7</a></li>
 <li>Brown, J., Pirrung, M., &amp; McCue, L. (2017). FQC Dashboard: integrates FastQC results into a web-based, interactive, and extensible FASTQ quality control tool. Bioinformatics, 3137–3139.</li>
@@ -1791,6 +1783,7 @@ SRR20067634_filtered_2U.fastq.gz</code></pre>
 <li>He, B., Shu, R., Yang, H., Lu, Q., Wang, W., Song, L., . . . Lang, J. (2020). Assessing the Impact of Data Preprocessing on Analyzing Next Generation Sequencing . Frontiers in Bioengineering and Biotechnology, 1-12 .</li>
 <li>Bolger AM, Lohse M, Usadel B. Trimmomatic: a flexible trimmer for Illumina sequence data. Bioinformatics. 2014;30(15):2114-2120. <a href="doi:10.1093/bioinformatics/btu170" class="uri">doi:10.1093/bioinformatics/btu170</a></li>
 </ul>
+</div>
 </div>
 
 
