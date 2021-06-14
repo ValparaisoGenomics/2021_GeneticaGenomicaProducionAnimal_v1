@@ -1,5 +1,5 @@
 ---
-title: "Introducción al análisis de secuencias NGS"
+title: "Introducción al análisis de secuencias NGS  - Alineamiento"
 subtitle: 'Curso Genética y Genómica en Producción Animal'
 author:
  name: Dr. José A. Gallardo, Dr(c) Margarita Rivera.
@@ -48,9 +48,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ## INTRODUCCIÓN
 
 El paso de alineación de secuencias se considera una parte integral que contribuye directamente a las identificaciones de ADN, ARN o proteínas (Pham-Quoc, Kieu-Do, & Thinh, 2019). El problema del mapeo de reads consiste en ubicar o alinear dentro de un genoma de referencia previamente secuenciado los millones de reads para luego ensamblarlas a un nuevo genoma (Bak, Bodziony, Migdałek, Pareek, & Żukowski§, 2020). Esta carga de trabajo se la realiza con diferentes enfoques de alineación, sin embargo, al igual que cualquier software, cada enfoque presenta diferentes formas de ejecución y consecuentemente de análisis.
+
 Como se explicó, para averiguar el nivel de similitud entre una gran cantidad de datos genómicos se presenta un desafío computacional para los softwares de alineación y por ello, se han desarrollado varios programas que ayudan en esta tarea, como lo son, BWA (Li & Durbin, 2009), Bowtie 2 (JHU, 2016) y otros, cuya función principal es hacer coincidir secuencias cortas provenientes de NGS con secuencias de referencia (Bak, Bodziony, Migdałek, Pareek, & Żukowski§, 2020). De hecho, BWA es un software muy popular para fines de alineamiento, debido a su compatibilidad con datos de Illumina y la integración de distintos algoritmos de alineamiento con mayor rendimiento para reads de distintas longitudes (Li & Durbin, 2009).
 
-En este tutorial se realiza el alineamiento 
+En este tutorial se realiza el alineamiento de las secuencias previamente filtradas en la práctica de "Control de calidad". Las muestras biológicas provienen de la cepa Aquagen de _Salmo salar_
 
 ### FORMATO SAM
 
@@ -61,7 +62,7 @@ En este tutorial se realiza el alineamiento
 
 **BWA**
 
-Es un algoritmo de alineación para alinear lecturas de secuencia o secuencias de consulta largas con un genoma de referencia grande como el humano. Elige automáticamente entre alineaciones locales y de extremo a extremo, admite lecturas de extremos emparejados y realiza alineaciones quiméricas (Li, 2013)
+Es un algoritmo de alineación para alinear lecturas de secuencia o secuencias de consulta largas con un genoma de referencia grande como el humano. Elige automáticamente entre alineaciones locales y de extremo a extremo y admite lecturas de extremos emparejados (Li, 2013)
 
 ## PRÁCTICA UNIDAD 3 - SUBTÓPICO 2.2
 
@@ -98,9 +99,13 @@ Descargar el genoma de referencia del organismo _Salmo salar_
 ### 5 - ALINEAMIENTO
 
 
-**Alineamiento de lecturas contra un genoma de referencia con la herramienta BWA, obteniendo como resultado un archivo en formato SAM.**
+**Alineamiento de lecturas contra un genoma de referencia con la herramienta BWA, obteniendo como resultado un archivo en formato .SAM**
 
-Ejecutar el siguiente comando de alineamiento
+Trabajaremos con el algoritmo mem del programa BWA, "mem"
+
+BWA-MEM se recomienda para secuencias de consulta de más de ~ 70 pb para una variedad de tasas de error (o divergencia de secuencia). Generalmente, BWA-MEM es más tolerante con los errores dadas las secuencias de consulta más largas, ya que la posibilidad de perder todas las semillas es pequeña. Como se muestra arriba, con configuraciones no predeterminadas, BWA-MEM funciona con lecturas Oxford Nanopore con una tasa de error de secuenciación superior al 20%. 
+
+
 
     bwa mem GCF_000233375.1_ICSASG_v2_genomic.fna SRR2006763_1.fastq SRR2006763_2.fastq > SRR2006763.sam
 
