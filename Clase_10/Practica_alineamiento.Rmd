@@ -62,11 +62,12 @@ En este tutorial se realiza el alineamiento de las secuencias previamente filtra
 
 **BWA**
 
-Es un algoritmo de alineación para alinear lecturas de secuencia o secuencias de consulta largas con un genoma de referencia grande como el humano. Elige automáticamente entre alineaciones locales y de extremo a extremo y admite lecturas de extremos emparejados (Li, 2013)
+Es un algoritmo de alineación para alinear lecturas de secuencia o secuencias de consulta largas con un genoma de referencia grande como el humano. Elige automáticamente entre alineaciones locales y de extremo a extremo y admite lecturas de extremos emparejados (Li, 2013).
+
+Puedes visualizar las opciones y más información de bwa [Aquí](http://bio-bwa.sourceforge.net/bwa.shtml)
 
 **Samtools**
-
-
+Es un conjunto de utilidades que manipulan alineaciones en los formatos SAM (Sequence Alignment / Map), BAM y CRAM. Convierte entre los formatos, clasifica, fusiona e indexa, y puede recuperar lecturas en cualquier región rápidamente, puedes tener más información sobre este programa [Aquí](https://www.htslib.org/doc/samtools.html)
 
 ## PRÁCTICA ALINEAMIENTO DE SECUENCIAS
 
@@ -135,13 +136,17 @@ En tu navegador entra al siguiente link
 
 Encontrarás una tabla con el listado del genoma de referencia donde se incluyen todos los cromosomas y el genoma de la mitocondria y a cuyo identificardor RefSeq darás clic, como se ve en la siguiente imagen
 
-![Reference genome](https://user-images.githubusercontent.com/80792310/122307752-90099a80-ced0-11eb-8737-9202443366d5.png)
+![Listado genoma _Salmo salar_](https://user-images.githubusercontent.com/80792310/122309216-83d30c80-ced3-11eb-9627-385f1a5018ee.png)
+
 
 Dar clic en la opción FASTA localizada bajo el título e identificador RefSeq de la referencia
 
+![Fasta option](https://user-images.githubusercontent.com/80792310/122309259-99483680-ced3-11eb-81d9-b2738c1cc93c.png)
+
 Enviar la secuencia FASTA del genoma mitocondrial a un archivo
 
-![Secuencia de genoma mitocondrial en formato FASTA](https://user-images.githubusercontent.com/80792310/122308189-85033a00-ced1-11eb-96f9-2a617ddd6e5a.png)
+![Genoma mitocondrial](https://user-images.githubusercontent.com/80792310/122309294-a9601600-ced3-11eb-9657-06f39cf839cc.png)
+
 
 Ve al lugar de descargas de tu computador y encontrarás el archivo denominado "sequence.fasta" al que debes renombrar como "mt.fasta" y subirlo a POMEO, para ello puedes trabajar con WINSCP o iniciando sesión online en el servidor
 
