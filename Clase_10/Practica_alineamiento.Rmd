@@ -89,7 +89,7 @@ Para la instalación de los software proceda a ejecutar los siguientes comandos 
 Crear una carpeta de trabajo denominada alineamiento
 
 Colocar las secuencias fastq para su alinemkento
-
+ 
 Descargar el genoma de referencia del organismo _Salmo salar_
 
 ### 4 - INDEXACION DEL GENOMA DE REFERENCIA
