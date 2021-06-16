@@ -131,11 +131,11 @@ Ahora descargaremos el genoma de referencia de la mitocondria de _Salmo salar_ e
 
 En tu navegador entra al siguiente link
 
-[genoma_m] (https://www.ncbi.nlm.nih.gov/genome/?term=salmo+salar)
+[genoma_mitocondria](https://www.ncbi.nlm.nih.gov/genome/?term=salmo+salar)
 
 Encontrarás una tabla con el listado del genoma de referencia donde se incluyen todos los cromosomas y el genoma de la mitocondria y a cuyo identificardor RefSeq darás clic, como se ve en la siguiente imagen
 
-![Reference genome](https://user-images.githubusercontent.com/80792310/122258111-4d2ad100-ce96-11eb-82fc-8857359e7e6a.png)
+![Reference genome](https://user-images.githubusercontent.com/80792310/122307752-90099a80-ced0-11eb-8737-9202443366d5.png)
 
 Dar clic en la opción FASTA localizada bajo el título e identificador RefSeq de la referencia
 
