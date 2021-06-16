@@ -139,11 +139,9 @@ Encontrarás una tabla con el listado del genoma de referencia donde se incluyen
 
 Dar clic en la opción FASTA localizada bajo el título e identificador RefSeq de la referencia
 
-![Secuencia de genoma mitocondrial en formato FASTA](https://user-images.githubusercontent.com/80792310/122258673-ebb73200-ce96-11eb-9e7a-6a5c29afb82c.png)
-
 Enviar la secuencia FASTA del genoma mitocondrial a un archivo
 
-![Archivo FASTA del genoma mitocondrial](https://user-images.githubusercontent.com/80792310/122259746-1786e780-ce98-11eb-81b0-ccb4171ae748.png)
+![Secuencia de genoma mitocondrial en formato FASTA](https://user-images.githubusercontent.com/80792310/122308189-85033a00-ced1-11eb-96f9-2a617ddd6e5a.png)
 
 Ve al lugar de descargas de tu computador y encontrarás el archivo denominado "sequence.fasta" al que debes renombrar como "mt.fasta" y subirlo a POMEO, para ello puedes trabajar con WINSCP o iniciando sesión online en el servidor
 
@@ -151,7 +149,7 @@ Ve al lugar de descargas de tu computador y encontrarás el archivo denominado "
 
 Si trabajas con WINSCP debes iniciar sesión, guardar tus datos y conectarte como se indica en la siguiente imagen
 
-![image](https://user-images.githubusercontent.com/80792310/122262144-b876a200-ce9a-11eb-89c4-c6f86f8333d8.png)
+![WINSCP](https://user-images.githubusercontent.com/80792310/122308313-c398f480-ced1-11eb-9abc-c5dbb7aeb67e.png)
 
 Al conectar debes ingresar nuevamente tu contraseña y aparecerá la interfaz de tu servidor con las carpetas que tienes creadas, aquí ingresarás en tu carpeta de alineamiento y arrastrarás el archivo descagado del genoma mitocondrial a la misma.
 
