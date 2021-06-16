@@ -64,6 +64,10 @@ En este tutorial se realiza el alineamiento de las secuencias previamente filtra
 
 Es un algoritmo de alineación para alinear lecturas de secuencia o secuencias de consulta largas con un genoma de referencia grande como el humano. Elige automáticamente entre alineaciones locales y de extremo a extremo y admite lecturas de extremos emparejados (Li, 2013)
 
+**Samtools**
+
+
+
 ## PRÁCTICA ALINEAMIENTO DE SECUENCIAS
 
 ### 1 - CONECTAR A SERVIDOR POMEO
@@ -79,19 +83,19 @@ Para configurar el canal bioconda se debe ejecutar el siguiente comando
 
     conda config --add channels bioconda
     
-Instalar los softwares samtools y bwa:
-
-    conda install -c bioconda samtools
+Instalar los software bwa
+   
     conda install -c bioconda bwa
+        
+Instalar samtools
     
-Es probable que cuando realices la instalación de samtools se presente un error común en los canales, si es el caso, puedes corregirlo colocando individualmente los siguientes comandos en la terminal: 
+    conda install -c bioconda samtools
+    
+    conda config --add channels bioconda 
 
-     
-     conda config --add channels bioconda 
+    conda config --add channels conda-forge 
 
-     conda config --add channels conda-forge 
-
-     conda install samtools==1.11
+    conda install samtools==1.11
 
 
 ### 3 - VERIFICAR DIRECTORIOS DE INSTALACIÓN 
@@ -108,14 +112,7 @@ La salida de cada comando indicará la ruta de instalación como sigue, para cad
      
 ### 4 - CREACIÓN DE DIRECTORIO DE TRABAJO Y DESCARGA DE DATOS PARA ALINEAMIENTO
 
-En la clase de análisis de calidad y poda de datos se obtuvieron los archivos filtrados de las secuencias en formato comprimido con los nombres:  
-
-_SRR20067634_filtered_1P.fastq.gz_
-_SRR20067634_filtered_2P.fastq.gz_
-_SRR20067634_filtered_1U.fastq.gz_
-_SRR20067634_filtered_2U.fastq.gz_
-
-Para el alineamiento, el program BWA admite los formatos fastq o fastq.gz, de tal forma que puedes trabajar con tus archivos filtrados o, para este caso, considerando que nuestras secuencias fastq originales tuvieron muy buena calidad, puedes trabajar directamente con ellas. Para ambos casos debes trasladar los archivos a una nueva carpeta, así:
+Considerando que nuestras secuencias fastq originales tuvieron muy buena calidad, puedes trabajar directamente con ellas. Para ambos casos debes trasladar los archivos a una nueva carpeta, así:
 
 Crear una carpeta denominada en tu usuario de home2
 
@@ -216,6 +213,7 @@ Ejecuta tu script con bash
 ### REFERENCIAS
 
 Pham-Quoc, C., Kieu-Do, B., & Thinh, T. N. (2019). A high-performance FPGA-based BWA-MEM DNA sequence alignment. Wiley, 1-12.
+
 Li, H., & Durbin, R. (2009). Fast and accurate short read alignment with Burrows-Wheeler Transform. Bioinformatics, 1754-60.
 JHU. (2016). Johns Hopkins University. Obtenido de Manual of Bowtie 2 - Fast and sensitive read alignment: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml
 
