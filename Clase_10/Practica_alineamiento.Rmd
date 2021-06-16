@@ -55,7 +55,7 @@ En este tutorial se realiza el alineamiento de las secuencias previamente filtra
 
 ### FORMATO SAM
 
-![image](https://user-images.githubusercontent.com/80792310/121112439-05d97c00-c7d6-11eb-8816-961022673034.png)
+![Formato SAM](https://user-images.githubusercontent.com/80792310/121112439-05d97c00-c7d6-11eb-8816-961022673034.png)
 
 
 ### SOFTWARES DE BIOINFORMÁTICA
@@ -64,68 +64,154 @@ En este tutorial se realiza el alineamiento de las secuencias previamente filtra
 
 Es un algoritmo de alineación para alinear lecturas de secuencia o secuencias de consulta largas con un genoma de referencia grande como el humano. Elige automáticamente entre alineaciones locales y de extremo a extremo y admite lecturas de extremos emparejados (Li, 2013)
 
-## PRÁCTICA UNIDAD 3 - SUBTÓPICO 2.2
-
-**ALINEAMIENTO DE SECUENCIAS**
+## PRÁCTICA ALINEAMIENTO DE SECUENCIAS
 
 ### 1 - CONECTAR A SERVIDOR POMEO
 
 Conecte al servidor pomeo usando la siguiente dirección IP: **200.54.220.141** puerto 22.
 
-Ese el software PuTTy y las claves de acceso dadas en la primera clase.
+Para Windows puede conectarse con el software PuTTy y las claves de acceso dadas en la primera clase.
 
-### 2 - CONFIGURAR BIOCONDA E INSTALAR SOFTWARES PARA ANÁLISIS
+
+### 2 - CONFIGURAR BIOCONDA E INSTALAR PROGRAMAS PARA ANÁLISIS
 
 Para configurar el canal bioconda se debe ejecutar el siguiente comando
 
     conda config --add channels bioconda
     
-Para la instalación de los software proceda a ejecutar los siguientes comandos en la terminal:
+Instalar los softwares samtools y bwa:
 
+    conda install -c bioconda samtools
     conda install -c bioconda bwa
+    
+Es probable que cuando realices la instalación de samtools se presente un error común en los canales, si es el caso, puedes corregirlo colocando individualmente los siguientes comandos en la terminal: 
 
-### 3 - DESCARGA DEL GENOMA DE REFERENCIA
+     
+     conda config --add channels bioconda 
 
-Crear una carpeta de trabajo denominada alineamiento
+     conda config --add channels conda-forge 
 
-Colocar las secuencias fastq para su alinemkento
- 
-Descargar el genoma de referencia del organismo _Salmo salar_
+     conda install samtools==1.11
 
-### 4 - INDEXACION DEL GENOMA DE REFERENCIA
 
-    bwa index GCF_000233375.1_ICSASG_v2_genomic.fna
+### 3 - VERIFICAR DIRECTORIOS DE INSTALACIÓN 
+
+Si deseas constatar la ruta de instalación de un programa determinado puedes colocar el comando "whereis" en la terminal más el programa del que desea obtener la ruta.
+
+     whereis sratoolkit 
+     whereis samtools
+     whereis bwa 
+
+La salida de cada comando indicará la ruta de instalación como sigue, para cada programa del que desees obtener información.
+
+    /home2/usuario/miniconda3/bin/bwa
+     
+### 4 - CREACIÓN DE DIRECTORIO DE TRABAJO Y DESCARGA DE DATOS PARA ALINEAMIENTO
+
+En la clase de análisis de calidad y poda de datos se obtuvieron los archivos filtrados de las secuencias en formato comprimido con los nombres:  
+
+_SRR20067634_filtered_1P.fastq.gz_
+_SRR20067634_filtered_2P.fastq.gz_
+_SRR20067634_filtered_1U.fastq.gz_
+_SRR20067634_filtered_2U.fastq.gz_
+
+Para el alineamiento, el program BWA admite los formatos fastq o fastq.gz, de tal forma que puedes trabajar con tus archivos filtrados o, para este caso, considerando que nuestras secuencias fastq originales tuvieron muy buena calidad, puedes trabajar directamente con ellas. Para ambos casos debes trasladar los archivos a una nueva carpeta, así:
+
+Crear una carpeta denominada en tu usuario de home2
+
+    mkdir alineamiento
+
+Ingresa a tu carpeta "alineamiento" y transfiere los archivos de clase anterior colocando los siguientes comandos en la terminal:
+
+    mv /home2/usuario/SRA_samples/SRR2006763/SRR2006763_1.fastq /home2/usuario/alineamiento/
+    mv /home2/usuario/SRA_samples/SRR2006763/SRR2006763_2.fastq /home2/usuario/alineamiento/
+
+Lista tu carpeta de alineamiento para verificar que tienes lo necesario para el alineamiento, hasta ahora deben constar tus dos secuencias "SRR2006763_1.fastq" y "SRR2006763_2.fastq"
+    
+    ls 
+
+Ahora descargaremos el genoma de referencia de la mitocondria de _Salmo salar_ en la misma carpeta de alineamiento, para ello:
+
+En tu navegador entra al siguiente link
+
+[genoma_m] (https://www.ncbi.nlm.nih.gov/genome/?term=salmo+salar)
+
+Encontrarás una tabla con el listado del genoma de referencia donde se incluyen todos los cromosomas y el genoma de la mitocondria y a cuyo identificardor RefSeq darás clic, como se ve en la siguiente imagen
+
+![Reference genome](https://user-images.githubusercontent.com/80792310/122258111-4d2ad100-ce96-11eb-82fc-8857359e7e6a.png)
+
+Dar clic en la opción FASTA localizada bajo el título e identificador RefSeq de la referencia
+
+![Secuencia de genoma mitocondrial en formato FASTA](https://user-images.githubusercontent.com/80792310/122258673-ebb73200-ce96-11eb-9e7a-6a5c29afb82c.png)
+
+Enviar la secuencia FASTA del genoma mitocondrial a un archivo
+
+![Archivo FASTA del genoma mitocondrial](https://user-images.githubusercontent.com/80792310/122259746-1786e780-ce98-11eb-81b0-ccb4171ae748.png)
+
+Ve al lugar de descargas de tu computador y encontrarás el archivo denominado "sequence.fasta" al que debes renombrar como "mt.fasta" y subirlo a POMEO, para ello puedes trabajar con WINSCP o iniciando sesión online en el servidor
+
+    http://200.54.220.141:8787/auth-sign-in
+
+Si trabajas con WINSCP debes iniciar sesión, guardar tus datos y conectarte como se indica en la siguiente imagen
+
+![image](https://user-images.githubusercontent.com/80792310/122262144-b876a200-ce9a-11eb-89c4-c6f86f8333d8.png)
+
+Al conectar debes ingresar nuevamente tu contraseña y aparecerá la interfaz de tu servidor con las carpetas que tienes creadas, aquí ingresarás en tu carpeta de alineamiento y arrastrarás el archivo descagado del genoma mitocondrial a la misma.
+
+Cuando termines lo anterior puedes ingresar a POMEO, listar tu carpeta de alineamiento con `ls` y verás tu archivo "mt.fasta" junto con tus secuencias fastq 
+
+### 5 - INDEXACION DEL GENOMA DE REFERENCIA
+
+Una vez que incluiste en tu carpeta de alineamiento todos los archivos descritos en pasos anteriores podemos proceder a la etapa inicial del alineamiento, que corresponde a la indexación del genoma de referencia con bwa:
+
+    bwa index mt.fasta
+    
+La salida del comando dará como resultado 5 archivos con extensiones "amb","ann","bwt","pac" y "sa"
 
 ### 5 - ALINEAMIENTO
 
+Para el alineamiento tendremos las siguientes etapas
 
-**Alineamiento de lecturas contra un genoma de referencia con la herramienta BWA, obteniendo como resultado un archivo en formato .SAM**
+- Alineamiento de las secuencias contra el genoma de referencia, cuya salida será un archivo con extensión ".sam"
+- Conversión del archivo SAM a BAM
+- Inspeccionar el archivo .sam de salida 
+- Ordenar lecturas alineadas por posición
+- Indexación con Samtools
+  
+Para ejecutar todas las etapas anteriores en ese orden se debe crear un script con nano 
 
-Trabajaremos con el algoritmo mem del programa BWA, "mem"
-
-BWA-MEM se recomienda para secuencias de consulta de más de ~ 70 pb para una variedad de tasas de error (o divergencia de secuencia). Generalmente, BWA-MEM es más tolerante con los errores dadas las secuencias de consulta más largas, ya que la posibilidad de perder todas las semillas es pequeña. Como se muestra arriba, con configuraciones no predeterminadas, BWA-MEM funciona con lecturas Oxford Nanopore con una tasa de error de secuenciación superior al 20%. 
-
-
-
-    bwa mem GCF_000233375.1_ICSASG_v2_genomic.fna SRR2006763_1.fastq SRR2006763_2.fastq > SRR2006763.sam
-
-
-Inspeccionar el archivo .sam de salida con:
-
-    less SRR2006763.sam
-
-**Conversión del archivo SAM a BAM
-
-    samtools view -Sb -q 30 SRR2006763.sam > SRR2006763.bam
+    nano aln_mt.sh
     
-    
-**Ordenar lecturas alineadas por posición**
+En el script coloca las siguientes instrucciones
 
-    samtools sort SRR2006763.bam -o SRR2006763.sort.bam
+    #!/bin/bash -l
+    bwa mem mt.fasta SRR2006763_1.fastq SRR2006763_2.fastq > SRR2006763.sam 
+    samtools view -Sb -q 30 SRR2006763.sam > SRR2006763.bam 
+    samtools sort SRR2006763.bam -o SRR2006763.sort.bam 
+    samtools index SRR2006763.sort.bam 
 
-**Indexación con Samtools**
+Ejecuta tu script con bash
 
-    samtools index SRR2006763.sort.bam
+    bash aln_mt.sh
+
+**Algunas observaciones adicionales**
+
+- BWA-MEM se recomienda para secuencias de más de ~70 pb, ya que, generalmente BWA-MEM es más tolerante con los errores dadas las secuencias más largas. 
+- Si quieres ver lo que sucede en cada etapa de alineamiento, puedes colocar en la terminal cada comando del script de forma individual, e.g.
+   
+   `bwa mem mt.fasta SRR2006763_1.fastq SRR2006763_2.fastq > SRR2006763.sam` # para alinear tus dos secuencias fastq al genoma mitocondrial
+   `samtools view -Sb -q 30 SRR2006763.sam > SRR2006763.bam` # Transformar tu archivo sam a bam
+   `samtools sort SRR2006763.bam -o SRR2006763.sort.bam` # ordenar tu archivo binario bam
+   `samtools index SRR2006763.sort.bam` # indexar tu archivo bam
+
+- Si quieres observar tu archivo sam puedes hacerlo con  
+ 
+ `less SRR2006763.sam`
+
+- El archivo bam no se puede visualizar
+- Procura listar tu carpeta cada vez que realices un trabajo, una descarga, o ejecutes un script para comprobar tus salidas. Si quieres comprobar los tamaños de tus archivos al mismo tiempo que los listas, puedes hacerlo con 
+
+ `ls -l -h`
     
 ### REFERENCIAS
 
