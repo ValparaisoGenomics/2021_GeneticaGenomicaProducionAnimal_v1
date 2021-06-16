@@ -67,6 +67,7 @@ Es un algoritmo de alineación para alinear lecturas de secuencia o secuencias d
 Puedes visualizar las opciones y más información de bwa [Aquí](http://bio-bwa.sourceforge.net/bwa.shtml)
 
 **Samtools**
+
 Es un conjunto de utilidades que manipulan alineaciones en los formatos SAM (Sequence Alignment / Map), BAM y CRAM. Convierte entre los formatos, clasifica, fusiona e indexa, y puede recuperar lecturas en cualquier región rápidamente, puedes tener más información sobre este programa [Aquí](https://www.htslib.org/doc/samtools.html)
 
 ## PRÁCTICA ALINEAMIENTO DE SECUENCIAS
