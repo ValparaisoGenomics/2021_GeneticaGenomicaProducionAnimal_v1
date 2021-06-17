@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2021-06-16" />
+<meta name="date" content="2021-06-17" />
 
 <title>Introducción al análisis de secuencias NGS - Alineamiento</title>
 
@@ -1596,7 +1596,7 @@ div.tocify {
 <address class="author_afil">
 Pontificia Universidad Católica de Valparaíso<br><a class="author_email" href="mailto:#"><a href="mailto:jose.gallardo@pucv.cl" class="email">jose.gallardo@pucv.cl</a></a>
 </address>
-<h4 class="date">16 June 2021</h4>
+<h4 class="date">17 June 2021</h4>
 
 </div>
 
@@ -1746,8 +1746,8 @@ mv /home2/usuario/SRA_samples/SRR2006763/SRR2006763_2.fastq /home2/usuario/aline
 <pre><code>bwa index mt.fasta</code></pre>
 <p>La salida del comando dará como resultado 5 archivos con extensiones “amb”,“ann”,“bwt”,“pac” y “sa”</p>
 </div>
-<div id="lineamiento" class="section level3">
-<h3>5 - lineamiento</h3>
+<div id="alineamiento" class="section level3">
+<h3>5 - Alineamiento</h3>
 <p>Para el alineamiento tendremos las siguientes etapas</p>
 <ul>
 <li><p>Alineamiento de las secuencias contra el genoma de referencia, cuya salida será un archivo con extensión “.sam”</p></li>
@@ -1755,28 +1755,36 @@ mv /home2/usuario/SRA_samples/SRR2006763/SRR2006763_2.fastq /home2/usuario/aline
 <li><p>Inspeccionar el archivo .sam de salida</p></li>
 <li><p>Ordenar lecturas alineadas por posición</p></li>
 <li><p>Indexación con Samtools</p></li>
+<li><p>Exploración de datos con Samtools</p></li>
 </ul>
 <p>Para ejecutar todas las etapas anteriores en ese orden se debe crear un script con nano denominado <strong>aln_mt.sh</strong></p>
 <pre><code>nano aln_mt.sh</code></pre>
 <p>En el script coloca las siguientes instrucciones</p>
 <pre><code>#!/bin/bash -l
+# para alinear tus dos secuencias fastq al genoma mitocondrial
 bwa mem mt.fasta SRR2006763_1.fastq SRR2006763_2.fastq &gt; SRR2006763.sam 
+# Transformar tu archivo sam a bam
 samtools view -Sb -q 30 SRR2006763.sam &gt; SRR2006763.bam 
+# ordenar tu archivo binario bam
 samtools sort SRR2006763.bam -o SRR2006763.sort.bam 
+# indexar tu archivo bam
 samtools index SRR2006763.sort.bam </code></pre>
 <p>Ejecuta tu script con bash</p>
 <pre><code>bash aln_mt.sh</code></pre>
-<p>Ahora que ya tienes tus archivos SAM/BAM puedes observar tu archivo sam con</p>
+<p>Ahora que ya tienes tus archivos SAM/BAM puedes observar tu archivo sam con el comando <strong>less</strong> de linux (recuerda que es un archivo de texto plano)</p>
 <pre><code>less SRR2006763.sam</code></pre>
-<p>y puedes realizar un análisis estadístico estandar con los siguientes comandos</p>
-<pre><code>samtools flagstat file.bam &gt; muestra_stat.txt</code></pre>
-<p>Profundidad por locus y promedio de los reads.</p>
-<pre><code>samtools depth muestra.bam &gt; muestra_covertura.txt
+<p>también puedes realizar un análisis estadístico estandar con los siguientes comandos</p>
+<pre><code>samtools flagstat SRR2006763.bam &gt; muestra_stat.txt
 
-samtools depth –a muestra.bam | awk '{c++;s+=$3}END{print s/c}’</code></pre>
+samtools flagstat SRR2006763.bam &gt; muestra_stat.txt</code></pre>
+<p>Profundidad por locus y promedio de los reads.</p>
+<pre><code>samtools depth SRR2006763.bam &gt; muestra_covertura.txt
+
+samtools depth –a SRR2006763.bam | awk '{c++;s+=$3}END{print s/c}’</code></pre>
+<p>Investiga otros comandos de samtools para explorar el alineamiento.</p>
 <p><strong>Algunas observaciones adicionales</strong></p>
 <ul>
-<li>BWA-MEM se recomienda para secuencias de más de ~70 pb, ya que, generalmente BWA-MEM es más tolerante con los errores dadas las secuencias más largas.</li>
+<li><p>BWA-MEM se recomienda para secuencias de más de ~70 pb, ya que, generalmente BWA-MEM es más tolerante con los errores dadas las secuencias más largas.</p></li>
 <li><p>Si quieres ver lo que sucede en cada etapa de alineamiento, puedes colocar en la terminal cada comando del script de forma individual, e.g.</p>
 <p><code>bwa mem mt.fasta SRR2006763_1.fastq SRR2006763_2.fastq &gt; SRR2006763.sam</code> # para alinear tus dos secuencias fastq al genoma mitocondrial <code>samtools view -Sb -q 30 SRR2006763.sam &gt; SRR2006763.bam</code> # Transformar tu archivo sam a bam <code>samtools sort SRR2006763.bam -o SRR2006763.sort.bam</code> # ordenar tu archivo binario bam <code>samtools index SRR2006763.sort.bam</code> # indexar tu archivo bam</p></li>
 <li><p>El archivo bam no se puede visualizar directamente porque está comprimido y en binario.</p></li>

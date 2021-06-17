@@ -195,7 +195,7 @@ Una vez que incluiste en tu carpeta de alineamiento todos los archivos descritos
     
 La salida del comando dará como resultado 5 archivos con extensiones "amb","ann","bwt","pac" y "sa"
 
-### 5 - lineamiento
+### 5 - Alineamiento
 
 Para el alineamiento tendremos las siguientes etapas
 
@@ -208,6 +208,8 @@ Para el alineamiento tendremos las siguientes etapas
 - Ordenar lecturas alineadas por posición
 
 - Indexación con Samtools
+
+- Exploración de datos con Samtools
   
 Para ejecutar todas las etapas anteriores en ese orden se debe crear un script con nano denominado **aln_mt.sh**
 
@@ -216,34 +218,44 @@ Para ejecutar todas las etapas anteriores en ese orden se debe crear un script c
 En el script coloca las siguientes instrucciones
 
     #!/bin/bash -l
+    # para alinear tus dos secuencias fastq al genoma mitocondrial
     bwa mem mt.fasta SRR2006763_1.fastq SRR2006763_2.fastq > SRR2006763.sam 
+    # Transformar tu archivo sam a bam
     samtools view -Sb -q 30 SRR2006763.sam > SRR2006763.bam 
+    # ordenar tu archivo binario bam
     samtools sort SRR2006763.bam -o SRR2006763.sort.bam 
+    # indexar tu archivo bam
     samtools index SRR2006763.sort.bam 
 
 Ejecuta tu script con bash
 
     bash aln_mt.sh
     
-Ahora que ya tienes tus archivos SAM/BAM puedes observar tu archivo sam con
+Ahora que ya tienes tus archivos SAM/BAM puedes observar tu archivo sam con el comando **less** de linux (recuerda que es un archivo de texto plano)
  
     less SRR2006763.sam
  
- y puedes realizar un análisis estadístico estandar con los siguientes comandos
+también puedes realizar un análisis estadístico estandar con los siguientes comandos
 
-    samtools flagstat file.bam > muestra_stat.txt
+    samtools flagstat SRR2006763.bam > muestra_stat.txt
+    
+    samtools flagstat SRR2006763.bam > muestra_stat.txt
 
 Profundidad por locus y promedio de los reads.
 
-    samtools depth muestra.bam > muestra_covertura.txt
+    samtools depth SRR2006763.bam > muestra_covertura.txt
 
-    samtools depth –a muestra.bam | awk '{c++;s+=$3}END{print s/c}’
+    samtools depth –a SRR2006763.bam | awk '{c++;s+=$3}END{print s/c}’
+    
+Investiga otros comandos de samtools para explorar el alineamiento. 
+    
 
 **Algunas observaciones adicionales**
 
 - BWA-MEM se recomienda para secuencias de más de ~70 pb, ya que, generalmente BWA-MEM es más tolerante con los errores dadas las secuencias más largas. 
+
 - Si quieres ver lo que sucede en cada etapa de alineamiento, puedes colocar en la terminal cada comando del script de forma individual, e.g.
-   
+  
    `bwa mem mt.fasta SRR2006763_1.fastq SRR2006763_2.fastq > SRR2006763.sam` # para alinear tus dos secuencias fastq al genoma mitocondrial
    `samtools view -Sb -q 30 SRR2006763.sam > SRR2006763.bam` # Transformar tu archivo sam a bam
    `samtools sort SRR2006763.bam -o SRR2006763.sort.bam` # ordenar tu archivo binario bam
