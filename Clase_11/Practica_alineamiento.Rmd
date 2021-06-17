@@ -47,13 +47,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## INTRODUCCIÓN
 
-El paso de alineación de secuencias se considera una parte integral que contribuye directamente a las identificaciones de ADN, ARN o proteínas (Pham-Quoc, Kieu-Do, & Thinh, 2019). El problema del mapeo de reads consiste en ubicar o alinear dentro de un genoma de referencia previamente secuenciado los millones de reads para luego ensamblarlas a un nuevo genoma (Bak, Bodziony, Migdałek, Pareek, & Żukowski§, 2020). Esta carga de trabajo se la realiza con diferentes enfoques de alineación, sin embargo, al igual que cualquier software, cada enfoque presenta diferentes formas de ejecución y consecuentemente de análisis.
+El paso de alineación o mapeo de secuencias cortas reads producto de la secuenciación NGS a un genoma de referencia se considera una parte integral de los análisis de genomas (Pham-Quoc, Kieu-Do, & Thinh, 2019). 
 
-Como se explicó, para averiguar el nivel de similitud entre una gran cantidad de datos genómicos se presenta un desafío computacional para los softwares de alineación y por ello, se han desarrollado varios programas que ayudan en esta tarea, como lo son, BWA (Li & Durbin, 2009), Bowtie 2 (JHU, 2016) y otros, cuya función principal es hacer coincidir secuencias cortas provenientes de NGS con secuencias de referencia (Bak, Bodziony, Migdałek, Pareek, & Żukowski§, 2020). De hecho, BWA es un software muy popular para fines de alineamiento, debido a su compatibilidad con datos de Illumina y la integración de distintos algoritmos de alineamiento con mayor rendimiento para reads de distintas longitudes (Li & Durbin, 2009).
+El problema del mapeo de reads consiste en ubicar o alinear dentro de un genoma de referencia previamente secuenciado los millones de reads para luego ensamblarlas a un nuevo genoma (Bak, Bodziony, Migdałek, Pareek, & Żukowski§, 2020) o en el caso de que no exista un genoma de referencia realizar un ensamble *de novo*. 
 
-En este tutorial se realiza el alineamiento de las secuencias previamente filtradas en la práctica de "Control de calidad". Las muestras biológicas provienen de la cepa Aquagen de _Salmo salar_
+Esta carga de trabajo se la realiza con diferentes enfoques de alineación, sin embargo, al igual que cualquier software, cada enfoque presenta diferentes formas de ejecución y consecuentemente de análisis. 
+
+Para realizar esta tarea se han desarrollado varios programas  como lo son, BWA (Li & Durbin, 2009), Bowtie 2 (JHU, 2016) y otros, cuya función principal es hacer coincidir secuencias cortas provenientes de NGS con secuencias de referencia (Bak, Bodziony, Migdałek, Pareek, & Żukowski§, 2020). Actualmente, BWA es un software muy popular para fines de alineamiento, debido a su compatibilidad con datos de Illumina y la integración de distintos algoritmos de alineamiento con mayor rendimiento para reads de distintas longitudes (Li & Durbin, 2009).
+
+El resultado del mapeo o alineamiento se guarda en un archivo d etexto plano con formato SAM (Sequence Alignment Map) o su equivalente comprimido en binario (BAM). Este archivo contiene de forma codificada toda la información de dónde y cómo cada read se alineo al genoma referencia. De el se pueden luego extraer información de variantes para análisis poblacional o estudios de asociación genómica o información de conteo de reads en regiones codificantes para en análisis de expresión de genes.
 
 ### FORMATO SAM
+
+El formato SAM consta de un encabezado que comienza con el símbolo @ y una sección de alineamiento que contiene la información de cada uno de los reads que alineo al genoma de referencia. Para conocer más acerca del formato SAM puedes revisar el [paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2723002/) que describe el formato o simplmente en [wikipedia](https://en.wikipedia.org/wiki/SAM_(file_format)). Los archivos SAM se pueden analizar y editar con el software SAMtools. A continuación se muestra un ejemplo del formato SAM con los 11 campos obligatorios del alineamiento y 1 campo opcional.
 
 ![Formato SAM](https://user-images.githubusercontent.com/80792310/121112439-05d97c00-c7d6-11eb-8816-961022673034.png)
 
@@ -68,18 +74,36 @@ Puedes visualizar las opciones y más información de bwa [Aquí](http://bio-bwa
 
 **Samtools**
 
-Es un conjunto de utilidades que manipulan alineaciones en los formatos SAM (Sequence Alignment / Map), BAM y CRAM. Convierte entre los formatos, clasifica, fusiona e indexa, y puede recuperar lecturas en cualquier región rápidamente, puedes tener más información sobre este programa [Aquí](https://www.htslib.org/doc/samtools.html)
+Es un conjunto de utilidades que manipulan alineaciones en los formatos SAM (Sequence Alignment Map), BAM y CRAM. Convierte entre los formatos, clasifica, fusiona e indexa, y puede recuperar lecturas en cualquier región rápidamente, puedes tener más información sobre este programa [Aquí](https://www.htslib.org/doc/samtools.html)
 
-## PRÁCTICA ALINEAMIENTO DE SECUENCIAS
+### Objetivos del trabajo práctico
 
-### 1 - CONECTAR A SERVIDOR POMEO
+- Realizar el alineamiento de una muestra en formato .fastq a un genoma de referencia. 
+
+### Origen de las muestras
+
+Para facilitar el proceso solo se utilizará una muestra la que provieme de la base de datos SRA del NCBI y corresponden a lecturas crudas del salmón del Atlántico _Salmo salar_ en formato fastq, obtenidas por secuenciación de extremos emparejados con un secuenciador Illumina HiSeq2000.
+
+La muestra se alineará al genoma de la mitocondria del salmón del Atlántico puesto que dado que su pequeño tamaño, el alineamiento no debería tardar más de unos pocos minutos.
+
+### Etapas del alineamiento.
+
+- Descargar Genoma de referencia de la mitocondria e indexar.
+
+- Alinear muestra con genoma de referencia.
+
+- Analizar el resultado del alineamiento.
+
+### Actividades
+
+### 1 - Conectar a servidor Pomeo
 
 Conecte al servidor pomeo usando la siguiente dirección IP: **200.54.220.141** puerto 22.
 
 Para Windows puede conectarse con el software PuTTy y las claves de acceso dadas en la primera clase.
 
 
-### 2 - CONFIGURAR BIOCONDA E INSTALAR PROGRAMAS PARA ANÁLISIS
+### 2 - Configurar bioconda e instalar programas para análisis
 
 Para configurar el canal bioconda se debe ejecutar el siguiente comando
 
@@ -89,7 +113,7 @@ Instalar los software bwa
    
     conda install -c bioconda bwa
         
-Instalar samtools
+Instalar samtools requiere un proceso de instalación un poco más largo, siga cada paso con atención.
     
     conda install -c bioconda samtools
     
@@ -100,9 +124,9 @@ Instalar samtools
     conda install samtools==1.11
 
 
-### 3 - VERIFICAR DIRECTORIOS DE INSTALACIÓN 
+### 3 - Verificar directorios de instalación
 
-Si deseas constatar la ruta de instalación de un programa determinado puedes colocar el comando "whereis" en la terminal más el programa del que desea obtener la ruta.
+Si desea constatar la ruta de instalación de un programa determinado puedes colocar el comando "whereis" en la terminal más el programa del que desea obtener la ruta.
 
      whereis sratoolkit 
      whereis samtools
@@ -112,7 +136,7 @@ La salida de cada comando indicará la ruta de instalación como sigue, para cad
 
     /home2/usuario/miniconda3/bin/bwa
      
-### 4 - CREACIÓN DE DIRECTORIO DE TRABAJO Y DESCARGA DE DATOS PARA ALINEAMIENTO
+### 4 - Creación de directorio de trabajo y descarga de datos para alineamiento
 
 Considerando que nuestras secuencias fastq originales tuvieron muy buena calidad, puedes trabajar directamente con ellas. Para ambos casos debes trasladar los archivos a una nueva carpeta, así:
 
@@ -139,7 +163,6 @@ Encontrarás una tabla con el listado del genoma de referencia donde se incluyen
 
 ![Listado genoma _Salmo salar_](https://user-images.githubusercontent.com/80792310/122309216-83d30c80-ced3-11eb-9627-385f1a5018ee.png)
 
-
 Dar clic en la opción FASTA localizada bajo el título e identificador RefSeq de la referencia
 
 ![Fasta option](https://user-images.githubusercontent.com/80792310/122309259-99483680-ced3-11eb-81d9-b2738c1cc93c.png)
@@ -149,9 +172,7 @@ Enviar la secuencia FASTA del genoma mitocondrial a un archivo
 ![Genoma mitocondrial](https://user-images.githubusercontent.com/80792310/122309294-a9601600-ced3-11eb-9657-06f39cf839cc.png)
 
 
-Ve al lugar de descargas de tu computador y encontrarás el archivo denominado "sequence.fasta" al que debes renombrar como "mt.fasta" y subirlo a POMEO, para ello puedes trabajar con WINSCP o iniciando sesión online en el servidor
-
-    http://200.54.220.141:8787/auth-sign-in
+Ve al lugar de descargas de tu computador y encontrarás el archivo denominado "sequence.fasta" al que debes renombrar como "mt.fasta" y subirlo a POMEO, para ello puedes trabajar con WINSCP
 
 Si trabajas con WINSCP debes iniciar sesión, guardar tus datos y conectarte como se indica en la siguiente imagen
 
@@ -159,27 +180,36 @@ Si trabajas con WINSCP debes iniciar sesión, guardar tus datos y conectarte com
 
 Al conectar debes ingresar nuevamente tu contraseña y aparecerá la interfaz de tu servidor con las carpetas que tienes creadas, aquí ingresarás en tu carpeta de alineamiento y arrastrarás el archivo descagado del genoma mitocondrial a la misma.
 
-Cuando termines lo anterior puedes ingresar a POMEO, listar tu carpeta de alineamiento con `ls` y verás tu archivo "mt.fasta" junto con tus secuencias fastq 
+Alternativamente puedes cargar el genoma iniciando sesión online en el servidor POMEO a traves del puerto 8787 precargado con Rstudio server.
 
-### 5 - INDEXACION DEL GENOMA DE REFERENCIA
+    http://200.54.220.141:8787/auth-sign-in
+    
+    
+Cuando termines lo anterior puedes ingresar a POMEO, listar tu carpeta de alineamiento con `ls` y verás tu archivo "mt.fasta" junto con tus secuencias fastq.
 
-Una vez que incluiste en tu carpeta de alineamiento todos los archivos descritos en pasos anteriores podemos proceder a la etapa inicial del alineamiento, que corresponde a la indexación del genoma de referencia con bwa:
+### 5 - Indexación del genoma de referencia
+
+Una vez que incluiste en tu carpeta de alineamiento todos los archivos descritos en pasos anteriores podemos proceder a la etapa inicial del alineamiento, que corresponde a la indexación del genoma de referencia con *bwa* usando el siguiente comando:
 
     bwa index mt.fasta
     
 La salida del comando dará como resultado 5 archivos con extensiones "amb","ann","bwt","pac" y "sa"
 
-### 5 - ALINEAMIENTO
+### 5 - lineamiento
 
 Para el alineamiento tendremos las siguientes etapas
 
 - Alineamiento de las secuencias contra el genoma de referencia, cuya salida será un archivo con extensión ".sam"
+
 - Conversión del archivo SAM a BAM
+
 - Inspeccionar el archivo .sam de salida 
+
 - Ordenar lecturas alineadas por posición
+
 - Indexación con Samtools
   
-Para ejecutar todas las etapas anteriores en ese orden se debe crear un script con nano 
+Para ejecutar todas las etapas anteriores en ese orden se debe crear un script con nano denominado **aln_mt.sh**
 
     nano aln_mt.sh
     
@@ -194,6 +224,20 @@ En el script coloca las siguientes instrucciones
 Ejecuta tu script con bash
 
     bash aln_mt.sh
+    
+Ahora que ya tienes tus archivos SAM/BAM puedes observar tu archivo sam con
+ 
+    less SRR2006763.sam
+ 
+ y puedes realizar un análisis estadístico estandar con los siguientes comandos
+
+    samtools flagstat file.bam > muestra_stat.txt
+
+Profundidad por locus y promedio de los reads.
+
+    samtools depth muestra.bam > muestra_covertura.txt
+
+    samtools depth –a muestra.bam | awk '{c++;s+=$3}END{print s/c}’
 
 **Algunas observaciones adicionales**
 
@@ -205,12 +249,11 @@ Ejecuta tu script con bash
    `samtools sort SRR2006763.bam -o SRR2006763.sort.bam` # ordenar tu archivo binario bam
    `samtools index SRR2006763.sort.bam` # indexar tu archivo bam
 
-- Si quieres observar tu archivo sam puedes hacerlo con  
- 
- `less SRR2006763.sam`
+- El archivo bam no se puede visualizar directamente porque está comprimido y en binario.
 
-- El archivo bam no se puede visualizar
-- Procura listar tu carpeta cada vez que realices un trabajo, una descarga, o ejecutes un script para comprobar tus salidas. Si quieres comprobar los tamaños de tus archivos al mismo tiempo que los listas, puedes hacerlo con 
+- Procura listar tu carpeta cada vez que realices un trabajo, una descarga, o ejecutes un script para comprobar tus salidas.
+
+Si quieres comprobar los tamaños de tus archivos al mismo tiempo que los listas, puedes hacerlo con 
 
  `ls -l -h`
     
@@ -219,6 +262,7 @@ Ejecuta tu script con bash
 Pham-Quoc, C., Kieu-Do, B., & Thinh, T. N. (2019). A high-performance FPGA-based BWA-MEM DNA sequence alignment. Wiley, 1-12.
 
 Li, H., & Durbin, R. (2009). Fast and accurate short read alignment with Burrows-Wheeler Transform. Bioinformatics, 1754-60.
+
 JHU. (2016). Johns Hopkins University. Obtenido de Manual of Bowtie 2 - Fast and sensitive read alignment: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml
 
 
