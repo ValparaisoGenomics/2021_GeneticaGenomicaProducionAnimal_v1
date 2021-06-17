@@ -234,8 +234,14 @@ Ejecuta tu script con bash
 Ahora que ya tienes tus archivos SAM/BAM puedes observar tu archivo sam con el comando **less** de linux (recuerda que es un archivo de texto plano)
  
     less SRR2006763.sam
- 
-también puedes realizar un análisis estadístico estandar con los siguientes comandos
+    
+La salida de tu archivo sam se verá como este ejemplo:
+
+![Archivo .sam](https://user-images.githubusercontent.com/80792310/122415251-60e53e80-cf4d-11eb-9af5-d378676ac25a.png)
+
+* _Recuerda para salir del archivo puedes presionar la letra "q"_
+
+También puedes realizar un análisis estadístico estandar con los siguientes comandos
 
     samtools flagstat SRR2006763.bam > muestra_stat.txt
     
