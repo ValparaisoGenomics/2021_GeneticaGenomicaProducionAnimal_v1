@@ -49,7 +49,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Uno de los principales usos de la secuenciación de próxima generación es descubrir variaciones entre grandes poblaciones de muestras relacionadas (Danecek et al., 2011), con este fin, se han desarrollado tuberías que incluyen el procesamiento de grandes volúmenes de datos, y dentro de las cuales, constan los pasos de alineamiento y llamado de variantes. Uno de los softwares más empleados para realizar este último paso, es GATK, que se comprende como un kit de herramientas de análisis del genoma desarrollados por el Broad Institute, que tiene la capacidad de realizar gran parte del análisis requerido para llamar variantes genómicas (Deatherage, 2020).
 
-
 Por otro lado, posterior al llamado de variantes se usan otros softwares en conjunto, que permiten realizar anotaciones de las mismas, como es el caso de SnpEff, que es una herramienta de predicción de efectos y anotaciones de variantes, como cambios de aminoácidos (Cingolani, y otros, 2012) o anotaciones de una variedad de modelos de genes codificantes y no codificantes de proteínas de una variedad de especies (Liu, y otros, 2015).
 
 El presente trabajo tiene por objeto realizar el llamado de variantes y la anotación de una muestra secuenciada mediante el uso de GATK, Snpeff y otras herramientas de anotación y visualización de la región blanco.
@@ -61,10 +60,11 @@ El presente trabajo tiene por objeto realizar el llamado de variantes y la anota
 
 ### SOFTWARES DE BIOINFORMÁTICA
 
-(GATK)[https://gatk.broadinstitute.org/hc/en-us] presenta ventajas para el llamado de variantes, como, la integración de evidencia de variantes de múltiples muestras con genotipado conjunto, permite el uso de polimorfismos de un solo nucleótido (SNP) e Indels validados para mejorar la precisión de la llamada de variante y sus métodos se implementan de una manera susceptible a lecturas que se originan en una variedad de preparación de plantillas (McCormick, Truong, & Mullet, 2015). Sin embargo y aunque, como se ha visto, la precisión de esta tubería ya es alta, los falsos positivos (FP) siguen siendo inevitables, por lo que, después de la llamada de variantes, se recomienda filtrar los FP como parte de las buenas prácticas del software (Tan, Zhang, Yang, & Yin, 2020).
+[GATK](https://gatk.broadinstitute.org/hc/en-us) O Genome Analysis Toolkit, es un software que presenta ciertas ventajas para el llamado de variantes, como, la integración de evidencia de variantes de múltiples muestras con genotipado conjunto, permite el uso de polimorfismos de un solo nucleótido (SNP) e Indels validados para mejorar la precisión de la llamada de variante y sus métodos se implementan de una manera susceptible a lecturas que se originan en una variedad de preparación de plantillas (McCormick, Truong, & Mullet, 2015). Sin embargo y aunque, como se ha visto, la precisión de esta tubería ya es alta, los falsos positivos (FP) siguen siendo inevitables, por lo que, después de la llamada de variantes, se recomienda filtrar los FP como parte de las buenas prácticas del software (Tan, Zhang, Yang, & Yin, 2020).
 
 ### Objetivos del trabajo práctico
 
+- Realizar el llamado y anotación de variantes de una secuencia de _Salmo salar_ obtenida por secuenciación de extremos emparejados 
 
 ### Origen de las muestras
 
