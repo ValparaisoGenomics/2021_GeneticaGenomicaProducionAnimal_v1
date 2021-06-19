@@ -195,7 +195,7 @@ Una vez que incluiste en tu carpeta de alineamiento todos los archivos descritos
     
 La salida del comando dará como resultado 5 archivos con extensiones "amb","ann","bwt","pac" y "sa"
 
-### 5 - Alineamiento
+### 6 - Alineamiento
 
 Para el alineamiento tendremos las siguientes etapas
 
@@ -231,6 +231,8 @@ Ejecuta tu script con bash
 
     bash aln_mt.sh
     
+### 7 - VISUALIZACIÓN DE ALINEAMIENTOS
+
 Ahora que ya tienes tus archivos SAM/BAM puedes observar tu archivo sam con el comando **less** de linux (recuerda que es un archivo de texto plano)
  
     less SRR2006763.sam
@@ -241,21 +243,20 @@ La salida de tu archivo sam se verá como este ejemplo:
 
 * _Recuerda para salir del archivo puedes presionar la letra "q"_
 
-También puedes realizar un análisis estadístico estandar con los siguientes comandos
+También puedes realizar análisis adicionales con los siguientes comandos:
 
-    samtools flagstat SRR2006763.bam > muestra_stat.txt
-    
-    samtools flagstat SRR2006763.bam > muestra_stat.txt
-
-Profundidad por locus y promedio de los reads.
-
-    samtools depth SRR2006763.bam > muestra_covertura.txt
-
-    samtools depth –a SRR2006763.bam | awk '{c++;s+=$3}END{print s/c}’
+|         Comando             |        Descripción   |
+|-----------------------------|----------------------|
+|samtools flagstat SRR2006763.bam > muestra_stat.txt| análisis estadístico estándar
+|samtools flagstat SRR2006763.bam > muestra_stat.txt|análisis estadístico estándar
+|samtools flags unmap|proporciona los reads no mapeados|
+|samtools flags 77|read 1 - emparejado no mapeado|
+|samtools flags 141|read 2 - emparejado no mapeado|
+|samtools flags 99|Reverse de un read 1 adecuadamente emparejado|
+|"samtools view -f 66 SRR2006763.bam | head -n 10" | Busca solo reads emparejados en el archivo bam|    
     
 Investiga otros comandos de samtools para explorar el alineamiento. 
     
-
 **Algunas observaciones adicionales**
 
 - BWA-MEM se recomienda para secuencias de más de ~70 pb, ya que, generalmente BWA-MEM es más tolerante con los errores dadas las secuencias más largas. 
