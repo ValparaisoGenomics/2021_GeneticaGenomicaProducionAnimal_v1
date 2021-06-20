@@ -1,5 +1,5 @@
 ---
-title: "Introducción al análisis de secuencias NGS  - Alineamiento"
+title: "Introducción al análisis de secuencias NGS  - Llamado de variantes"
 subtitle: 'Curso Genética y Genómica en Producción Animal'
 author:
  name: Dr. José A. Gallardo, Dr(c) Margarita Rivera.
@@ -70,9 +70,17 @@ El presente trabajo tiene por objeto realizar el llamado de variantes y la anota
 
 
 
-### Etapas del alineamiento.
+### Etapas del llamado de variantes
 
-
+- Identificación de variantes con HaplotypeCaller de GATK
+- Aplicar filtros a las variantes,por separado para Snps e Indels
+- Combinación de los archivos
+- Extraer SNPs
+- Filtrar SNPs
+- Extraer InDels
+- Filtrar InDels
+- Combinar VCFs filtrados
+- Anotación de variantes
 
 ### Actividades
 
