@@ -56,11 +56,16 @@ El presente trabajo tiene por objeto realizar el llamado de variantes y la anota
 
 ### FORMATO VCF
 
+![Estructura formato VCF, tomado de: https://www.slideshare.net/AmazonWebServices/dat311-largescale-genomic-analysis-with-amazon-redshift ](https://user-images.githubusercontent.com/80792310/122835931-e6068580-d2b6-11eb-8086-6149d46916fb.png)
 
 
 ### SOFTWARES DE BIOINFORMÁTICA
 
 [GATK](https://gatk.broadinstitute.org/hc/en-us) O Genome Analysis Toolkit, es un software que presenta ciertas ventajas para el llamado de variantes, como, la integración de evidencia de variantes de múltiples muestras con genotipado conjunto, permite el uso de polimorfismos de un solo nucleótido (SNP) e Indels validados para mejorar la precisión de la llamada de variante y sus métodos se implementan de una manera susceptible a lecturas que se originan en una variedad de preparación de plantillas (McCormick, Truong, & Mullet, 2015). Sin embargo y aunque, como se ha visto, la precisión de esta tubería ya es alta, los falsos positivos (FP) siguen siendo inevitables, por lo que, después de la llamada de variantes, se recomienda filtrar los FP como parte de las buenas prácticas del software (Tan, Zhang, Yang, & Yin, 2020).
+
+[PICARD TOOLS]()
+
+[HAPLOTYPE CALLER]()
 
 ### Objetivos del trabajo práctico
 
@@ -68,7 +73,7 @@ El presente trabajo tiene por objeto realizar el llamado de variantes y la anota
 
 ### Origen de las muestras
 
-
+- Las muestras SRR2009653.fastq_1, SRR2009653.fastq_2. Provienen de un set de 45 secuencias de salmón del atlántico  obtenidas por secuenciación de extremos emparejados con Illumina HiSeq2000 para analizar la resistencia a la necrosis pancreática infecciosa, con el fin de identificar polimorfismos que mostraban un gran contraste entre los grupos de genotipos.
 
 ### Etapas del llamado de variantes
 
@@ -99,47 +104,55 @@ Para configurar el canal bioconda se debe ejecutar el siguiente comando
     
 Instalar los software bwa
    
-    conda install -c bioconda bwa
+    conda install -c bioconda gatk4
+    
+Instalar picard tools
+
+    wget https://github.com/broadinstitute/picard/releases/download/2.8.1/picard.jar
         
-Instalar samtools requiere un proceso de instalación un poco más largo, siga cada paso con atención.
-    
-    conda install -c bioconda samtools
-    
-    conda config --add channels bioconda 
-
-    conda config --add channels conda-forge 
-
-    conda install samtools==1.11
+En este tutorial también se utilizará Samtools (instalado en la clase anterior)
 
 
-### 3 - Verificar directorios de instalación
+### 3 - Crear directorio de trabajo 
 
-Si desea constatar la ruta de instalación de un programa determinado puedes colocar el comando "whereis" en la terminal más el programa del que desea obtener la ruta.
+Este directorio ya fue creado para usted
 
-     whereis sratoolkit 
-     whereis samtools
-     whereis bwa 
-
-La salida de cada comando indicará la ruta de instalación como sigue, para cada programa del que desees obtener información.
-
-    /home2/usuario/miniconda3/bin/bwa
+     mkdir variant_call
      
-### 4 - Creación de directorio de trabajo y descarga de datos para alineamiento
+ Ingresar a su directorio de trabajo y listar
+ 
+     ls 
 
+ Cnstará de los siguientes archivos necesarios para efectuar el llamado de variantes
 
+    "SRR2009653.sort.bam": previamente obtenido con las actividades aprendidas en clases anteriores.
+    ref_genome.fna: genoma de referencia de _Salmo salar_
+    ref_genome.fna.fai: archivo indexado del genoma de referencia
+ 
+Para obtener el genoma de referencia (ref_genome.fna) se aplicó el comando wget para efectuar la descarga desde NCBI
 
+    wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/233/375/GCF_000233375.1_ICSASG_v2/GCF_000233375.1_ICSASG_v2_genomic.fna.gz
+ 
+Para indexar el genoma de referencia (ref_genome.fna.fai) se aplicó el comando
 
-### 5 - Indexación del genoma de referencia
+    samtools faidx ref_genome.fna
+    
+Adicionalmente para el llamado de variantes debe obtener un archivo que representará un "diccionario de referencias"
 
+    java -jar picard.jar CreateSequenceDictionary R=ref_genome.fna O=ref_genome.dict
 
-### 6 - Alineamiento
+La salidad del comando anterior será el archivo
 
+    ref_genome.dict
 
-  
+### 5 - Llamado de variantes
+
+    gatk HaplotypeCaller -R ref_genome.fna -I SRR2009653.sort.bam -O raw_variants.vcf
+    java -jar GenomeAnalysisTK.jar -T HaplotypeCaller -R ref_genome.fna -I SRR2009653.sort.bam -o raw_variants.vcf
 
 
     
-### 7 - VISUALIZACIÓN DE ALINEAMIENTOS
+### 7 - Visualización de variantes con IGV
 
 
 **Algunas observaciones adicionales**
