@@ -49,7 +49,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Uno de los principales usos de la secuenciación de próxima generación es descubrir variaciones entre grandes poblaciones de muestras relacionadas (Danecek et al., 2011), con este fin, se han desarrollado tuberías que incluyen el procesamiento de grandes volúmenes de datos, y dentro de las cuales, constan los pasos de alineamiento y llamado de variantes. Uno de los softwares más empleados para realizar este último paso, es GATK, que se comprende como un kit de herramientas de análisis del genoma desarrollados por el Broad Institute, que tiene la capacidad de realizar gran parte del análisis requerido para llamar variantes genómicas (Deatherage, 2020).
 
-Por otro lado, posterior al llamado de variantes se usan otros softwares en conjunto, que permiten realizar anotaciones de las mismas, como es el caso de SnpEff, que es una herramienta de predicción de efectos y anotaciones de variantes, como cambios de aminoácidos (Cingolani, y otros, 2012) o anotaciones de una variedad de modelos de genes codificantes y no codificantes de proteínas de una variedad de especies (Liu, y otros, 2015).
+Por otro lado, posterior al llamado de variantes se usan otros softwares en conjunto, que permiten realizar anotaciones de las mismas, como es el caso de SnpEff, que es una herramienta de predicción de efectos y anotaciones de variantes, como cambios de aminoácidos (Cingolani, y otros, 2012) o anotaciones de una variedad de modelos de genes codificantes y no codificantes de proteínas de una variedad de especies (Liu et al., 2015).
 
 El presente trabajo tiene por objeto realizar el llamado de variantes y la anotación de una muestra secuenciada mediante el uso de GATK, Snpeff y otras herramientas de anotación y visualización de la región blanco.
 
@@ -119,11 +119,11 @@ Este directorio ya fue creado para usted
 
      mkdir variant_call
      
- Ingresar a su directorio de trabajo y listar
+Ingresar a su directorio de trabajo y listar
  
      ls 
 
- Cnstará de los siguientes archivos necesarios para efectuar el llamado de variantes
+Constará de los siguientes archivos necesarios para efectuar el llamado de variantes
 
     "SRR2009653.sort.bam": previamente obtenido con las actividades aprendidas en clases anteriores.
     ref_genome.fna: genoma de referencia de _Salmo salar_
@@ -144,13 +144,16 @@ Adicionalmente para el llamado de variantes debe obtener un archivo que represen
 La salidad del comando anterior será el archivo
 
     ref_genome.dict
-
+    
 ### 5 - Llamado de variantes
 
-    gatk HaplotypeCaller -R ref_genome.fna -I SRR2009653.sort.bam -O raw_variants.vcf
-    java -jar GenomeAnalysisTK.jar -T HaplotypeCaller -R ref_genome.fna -I SRR2009653.sort.bam -o raw_variants.vcf
+Añadir grupos de lectura al archivo sort bam
 
+java -jar picard.jar AddOrReplaceReadGroups I=SRR2009653.sort.bam O=SRR2009653_sorted_RG.bam ID=sample LB=Paired-end PL=Illumina PU=Unknown SM=sample
 
+Ejecutar el siguiente comando para el llamado de variantes
+
+gatk HaplotypeCaller -R ref_genome.fna -I SRR2009653.sort.bam -O raw_variants.vcf
     
 ### 7 - Visualización de variantes con IGV
 
@@ -161,5 +164,15 @@ La salidad del comando anterior será el archivo
 
 ### REFERENCIAS
 
+Danecek, P., Auton, A., Abecasis, G., Albers, C., Banks, E., DePristo, M., . . . Durbin, R. (2011). The variant call format and VCFtools. Bioinformatics, 2156–2158.
 
+Deatherage, E. (2020). Genome Analysis Toolkit (GATK). Obtenido de https://wikis.utexas.edu/display/bioiteam/Genome+Analysis+Toolkit+%28GATK%29+.+--+GVA2020
+
+Cingolani, P., Platts, A., Wang, L., Coon, M., Nguyen, T., Wang, L., . . . Ruden, D. (2012). A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff. Fly, 80-92.
+
+Liu, X., White, S., Peng, B., Johnson, A., Brody, J., Li, A., . . . Klein, B. E. (2015). WGSA: an annotation pipeline for human genome sequencing studies. JMG, 1-3.
+
+McCormick, R., Truong, S., & Mullet, J. (2015). RIG: Recalibration and Interrelation of Genomic Sequence Data with the GATK. G3: Genes, Genomes, Genetics, 655 - 665.
+
+Tan, Y., Zhang, Y., Yang, H., & Yin, Z. (2020). FPfilter: A false-positive-specific filter for whole-genome sequencing variant calling from GATK. bioRxiv, 1-16.
 
