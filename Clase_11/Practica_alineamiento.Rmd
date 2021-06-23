@@ -238,15 +238,7 @@ Ahora que ya tienes tus archivos SAM/BAM puedes observar tu archivo sam con el c
 también puedes realizar un análisis estadístico estandar con los siguientes comandos
 
     samtools flagstat SRR2006763.bam > muestra_stat.txt
-    
-    samtools flagstat SRR2006763.bam > muestra_stat.txt
 
-Profundidad por locus y promedio de los reads.
-
-    samtools depth SRR2006763.bam > muestra_covertura.txt
-
-    samtools depth –a SRR2006763.bam | awk '{c++;s+=$3}END{print s/c}’
-    
 Investiga otros comandos de samtools para explorar el alineamiento. 
     
 

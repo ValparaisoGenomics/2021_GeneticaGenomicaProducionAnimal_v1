@@ -1774,13 +1774,7 @@ samtools index SRR2006763.sort.bam </code></pre>
 <p>Ahora que ya tienes tus archivos SAM/BAM puedes observar tu archivo sam con el comando <strong>less</strong> de linux (recuerda que es un archivo de texto plano)</p>
 <pre><code>less SRR2006763.sam</code></pre>
 <p>también puedes realizar un análisis estadístico estandar con los siguientes comandos</p>
-<pre><code>samtools flagstat SRR2006763.bam &gt; muestra_stat.txt
-
-samtools flagstat SRR2006763.bam &gt; muestra_stat.txt</code></pre>
-<p>Profundidad por locus y promedio de los reads.</p>
-<pre><code>samtools depth SRR2006763.bam &gt; muestra_covertura.txt
-
-samtools depth –a SRR2006763.bam | awk '{c++;s+=$3}END{print s/c}’</code></pre>
+<pre><code>samtools flagstat SRR2006763.bam &gt; muestra_stat.txt</code></pre>
 <p>Investiga otros comandos de samtools para explorar el alineamiento.</p>
 <p><strong>Algunas observaciones adicionales</strong></p>
 <ul>
