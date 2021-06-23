@@ -63,13 +63,13 @@ El presente trabajo tiene por objeto realizar el llamado de variantes y la anota
 
 [GATK](https://gatk.broadinstitute.org/hc/en-us) O Genome Analysis Toolkit, es un software que presenta ciertas ventajas para el llamado de variantes, como, la integración de evidencia de variantes de múltiples muestras con genotipado conjunto, permite el uso de polimorfismos de un solo nucleótido (SNP) e Indels validados para mejorar la precisión de la llamada de variante y sus métodos se implementan de una manera susceptible a lecturas que se originan en una variedad de preparación de plantillas (McCormick, Truong, & Mullet, 2015). Sin embargo y aunque, como se ha visto, la precisión de esta tubería ya es alta, los falsos positivos (FP) siguen siendo inevitables, por lo que, después de la llamada de variantes, se recomienda filtrar los FP como parte de las buenas prácticas del software (Tan, Zhang, Yang, & Yin, 2020).
 
-[PICARD TOOLS]()
+[PICARD TOOLS](https://broadinstitute.github.io/picard/) Es un conjunto de herramientas para manipular datos y formatos de secuenciación de alto rendimiento (HTS) como SAM / BAM / CRAM y VCF. El kit de herramientas de Picard es de código abierto y gratuito para todos los usos.
 
-[HAPLOTYPE CALLER]()
+[HAPLOTYPECALLER](https://gatk.broadinstitute.org/hc/en-us/articles/360035531412-HaplotypeCaller-in-a-nutshell) Es una herramienta que contiene una serie de funciones  aplicadas al descubrimiento de variantes de la línea germinal de ADN.
 
 ### Objetivos del trabajo práctico
 
-- Realizar el llamado y anotación de variantes de una secuencia de _Salmo salar_ obtenida por secuenciación de extremos emparejados 
+- Realizar el llamado de variantes de una secuencia de _Salmo salar_ obtenida por secuenciación de extremos emparejados 
 
 ### Origen de las muestras
 
@@ -77,15 +77,13 @@ El presente trabajo tiene por objeto realizar el llamado de variantes y la anota
 
 ### Etapas del llamado de variantes
 
+- Descarga de secuencia y genoma de referencia
+- Indexación del genoma de referencia
+- Descarga, filtrado y alineamiento de secuencia de estudio (Secuencia sort.bam)
+- Añadir grupos de lectura al archivo "bam"
+- Indexación del archivo obtenido al añadir los grupos de lectura
 - Identificación de variantes con HaplotypeCaller de GATK
-- Aplicar filtros a las variantes,por separado para Snps e Indels
-- Combinación de los archivos
-- Extraer SNPs
-- Filtrar SNPs
-- Extraer InDels
-- Filtrar InDels
-- Combinar VCFs filtrados
-- Anotación de variantes
+- Visualización de archivo "vcf" generado en IGV
 
 ### Actividades
 
@@ -115,29 +113,35 @@ En este tutorial también se utilizará Samtools (instalado en la clase anterior
 
 ### 3 - Crear directorio de trabajo 
 
-Este directorio ya fue creado para usted
+3.1 - Este directorio ya fue creado para usted
 
      mkdir variant_call
      
-Ingresar a su directorio de trabajo y listar
+3.2 - Ingresar a su directorio de trabajo y listar
  
      ls 
 
-Constará de los siguientes archivos necesarios para efectuar el llamado de variantes
+3.3 - Constará de los siguientes archivos necesarios para efectuar el llamado de variantes
 
-    "SRR2009653.sort.bam": previamente obtenido con las actividades aprendidas en clases anteriores.
+    "SRR2006763.sort.bam": previamente obtenido con las actividades aprendidas en clases anteriores.
     ref_genome.fna: genoma de referencia de _Salmo salar_
     ref_genome.fna.fai: archivo indexado del genoma de referencia
  
-Para obtener el genoma de referencia (ref_genome.fna) se aplicó el comando wget para efectuar la descarga desde NCBI
+Para obtener los 3 archivos mencionados anteriormente se emplearon los siguiente comandos, puede probarlos posterior a la práctica por el tiempo que demoran en ejecutarse:
+
+3.3.1 - Secuencia de estudio
+
+La secuencia "SRR2006763.sort.bam" ordenada se obtuvo con los pasos de descarga, descompresión y alineamiento realizados en clases anteriores
+
+3.3.2 - Genoma de referencia (ref_genome.fna) se aplicó el comando wget para efectuar la descarga desde NCBI**
 
     wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/233/375/GCF_000233375.1_ICSASG_v2/GCF_000233375.1_ICSASG_v2_genomic.fna.gz
  
-Para indexar el genoma de referencia (ref_genome.fna.fai) se aplicó el comando
+3.3.3 - Para indexar el genoma de referencia (ref_genome.fna.fai) se aplicó el comando**
 
     samtools faidx ref_genome.fna
     
-Adicionalmente para el llamado de variantes debe obtener un archivo que representará un "diccionario de referencias"
+3.4 - Adicionalmente para el llamado de variantes debe obtener un archivo que representará un "diccionario de referencias" del genoma de referencia
 
     java -jar picard.jar CreateSequenceDictionary R=ref_genome.fna O=ref_genome.dict
 
@@ -145,24 +149,36 @@ La salidad del comando anterior será el archivo
 
     ref_genome.dict
     
-### 5 - Llamado de variantes
+### 4 - Llamado de variantes
 
-Añadir grupos de lectura al archivo sort bam
+4.1 - Añadir grupos de lectura al archivo sort bam
 
-java -jar picard.jar AddOrReplaceReadGroups I=SRR2009653.sort.bam O=SRR2009653_sorted_RG.bam ID=sample LB=Paired-end PL=Illumina PU=Unknown SM=sample
+    java -jar picard.jar AddOrReplaceReadGroups I=SRR2006763.sort.bam O=SSRR2006763_sorted_RG.bam ID=sample LB=Paired-end PL=Illumina PU=Unknown SM=sample
 
-Ejecutar el siguiente comando para el llamado de variantes
+4.2 - Indexar archivo generado con Read groups
 
-gatk HaplotypeCaller -R ref_genome.fna -I SRR2009653.sort.bam -O raw_variants.vcf
+    samtools index SSRR2006763_sorted_RG.bam
+
+4.3 - Ejecutar el siguiente comando para el llamado de variantes, debe considerar que este proceso demorará al rededor de una hora
+
+    gatk HaplotypeCaller -R ref_genome.fna -I SRR2006763_sorted_RG.bam -O raw_variants.vcf
     
-### 7 - Visualización de variantes con IGV
+Al culminar la ejecución del comando liste su directorio con ls y verifique que se ha creado su archivo de salida
+
+    raw_variants.vcf
+
+### 5 - Visualización de variantes con IGV
+
+5.1 - Descargue el archivo raw_variants.vcf generado en su directorio "variant_call", 
+
+![Variante SNP localizada en el archivo vcf de la secuencia SRR2006763](https://user-images.githubusercontent.com/80792310/123166136-b1bbd200-d43a-11eb-910c-db6e8d628322.png)
 
 
-**Algunas observaciones adicionales**
+
+![Zoom a la región seleccionada en el archivo vcf](https://user-images.githubusercontent.com/80792310/123166253-d152fa80-d43a-11eb-838d-8d4f04545664.png)
 
 
-
-### REFERENCIAS
+### 6 - REFERENCIAS
 
 Danecek, P., Auton, A., Abecasis, G., Albers, C., Banks, E., DePristo, M., . . . Durbin, R. (2011). The variant call format and VCFtools. Bioinformatics, 2156–2158.
 
