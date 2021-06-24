@@ -1629,8 +1629,7 @@ pre {
 <h2>INTRODUCCIÓN</h2>
 <p>Uno de los principales usos de la secuenciación de próxima generación es descubrir variantes genéticas o mutaciones entre individuos que pertenecen a diferentes poblaciones (Danecek et al., 2011). Con este fin, se han desarrollado tuberías que incluyen el procesamiento de grandes volúmenes de datos como el proyecto internacional <a href="https://www.internationalgenome.org/">1000 genomas humanos</a>, o el <a href="http://www.1000genomas.cl/">proyecto chileno</a> de 1000 genomas que pretende secuenciar e identificar varianes en 1000 personas y en algunas especies endémicas de interes.</p>
 <p>Uno de los softwares más empleados para realizar esta tarea denominada “llamado de variantes”, es <a href="https://gatk.broadinstitute.org/hc/en-us"><strong>GATK</strong></a>, que se comprende como un kit de herramientas de análisis de genomas desarrollado por el Broad Institute de los Estados Unidos, que tiene la capacidad de realizar gran parte del análisis requerido para llamar variantes genómicas (Deatherage, 2020).</p>
-<p>Por otro lado, posterior al llamado de variantes se usan otros softwares en conjunto, que permiten realizar anotaciones de las mismas, como es el caso de <strong>SnpEff</strong>, que es una herramienta de predicción de efectos y anotaciones de variantes, como cambios de aminoácidos (Cingolani, y otros, 2012) o anotaciones de una variedad de modelos de genes codificantes y no codificantes de proteínas de una variedad de especies (Liu et al., 2015).</p>
-<p>El presente trabajo tiene por objeto realizar el llamado de variantes y la anotación de una muestra secuenciada mediante el uso de GATK, Snpeff y otras herramientas de anotación y visualización de la región blanco.</p>
+<p>El presente trabajo tiene por objeto realizar el llamado de variantes y la anotación de una muestra secuenciada mediante el uso de GATK, Linux, vcftools y otras herramientas de anotación y visualización de la región blanco.</p>
 <div id="formato-vcf" class="section level3">
 <h3>FORMATO VCF</h3>
 <div class="figure">
@@ -1643,6 +1642,7 @@ pre {
 <p><a href="https://gatk.broadinstitute.org/hc/en-us">GATK</a> O Genome Analysis Toolkit, es un software que presenta ciertas ventajas para el llamado de variantes, como, la integración de evidencia de variantes de múltiples muestras con genotipado conjunto, permite el uso de polimorfismos de un solo nucleótido (SNP) e Indels validados para mejorar la precisión de la llamada de variante y sus métodos se implementan de una manera susceptible a lecturas que se originan en una variedad de preparación de plantillas (McCormick, Truong, &amp; Mullet, 2015). Sin embargo y aunque, como se ha visto, la precisión de esta tubería ya es alta, los falsos positivos (FP) siguen siendo inevitables, por lo que, después de la llamada de variantes, se recomienda filtrar los FP como parte de las buenas prácticas del software (Tan, Zhang, Yang, &amp; Yin, 2020).</p>
 <p><a href="https://broadinstitute.github.io/picard/">PICARD TOOLS</a> Es un conjunto de herramientas para manipular datos y formatos de secuenciación de alto rendimiento (HTS) como SAM / BAM / CRAM y VCF. El kit de herramientas de Picard es de código abierto y gratuito para todos los usos.</p>
 <p><a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035531412-HaplotypeCaller-in-a-nutshell">HAPLOTYPECALLER</a> Es una herramienta que contiene una serie de funciones aplicadas al descubrimiento de variantes de la línea germinal de ADN.</p>
+<p><a href="https://vcftools.github.io/index.html">vcftools</a> VCFtools es un software diseñado para trabajar con archivos VCF, como los generados por el Proyecto 1000 Genomas. El objetivo de VCFtools es proporcionar métodos de fácil acceso para trabajar con datos complejos de variación genética en forma de archivos VCF. El manual actualizado de comandos se puede encontrar en este <a href="https://vcftools.github.io/man_latest.html">link</a></p>
 </div>
 <div id="objetivos-del-trabajo-práctico" class="section level3">
 <h3>Objetivos del trabajo práctico</h3>
@@ -1665,7 +1665,8 @@ pre {
 <li>Añadir grupos de lectura al archivo “bam”</li>
 <li>Indexación del archivo obtenido al añadir los grupos de lectura</li>
 <li>Identificación de variantes con HaplotypeCaller de GATK</li>
-<li>Visualización de archivo “vcf” generado en IGV</li>
+<li>Análisis de variantes con linux y vcftools</li>
+<li>Visualización de variantes con IGV</li>
 </ul>
 </div>
 <div id="actividades" class="section level3">
@@ -1725,7 +1726,7 @@ grep -c 'NW_' ref_genome.fna.fai</code></pre>
 <p>3.3.2 - Genoma de referencia sin genes (ref_genome.fna) se aplicó el comando wget para efectuar la descarga desde NCBI</p>
 <pre><code>wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/233/375/GCF_000233375.1_ICSASG_v2/GCF_000233375.1_ICSASG_v2_genomic.fna.gz</code></pre>
 <p>Pero también podría intentar explorar el genoma anotado (con genes) <a href="https://www.ncbi.nlm.nih.gov/genome/annotation_euk/Salmo_salar/100/" class="uri">https://www.ncbi.nlm.nih.gov/genome/annotation_euk/Salmo_salar/100/</a></p>
-<p>wget <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/8030/100/GCF_000233375.1_ICSASG_v2/" class="uri">https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/8030/100/GCF_000233375.1_ICSASG_v2/</a></p>
+<pre><code>wget https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/8030/100/GCF_000233375.1_ICSASG_v2/</code></pre>
 <p>3.3.3 - Para indexar el genoma de referencia (ref_genome.fna.fai) se aplicó el comando</p>
 <pre><code>samtools faidx ref_genome.fna</code></pre>
 </div>

@@ -172,7 +172,7 @@ La secuencia "SRR2006763.sort.bam" ordenada se obtuvo con los pasos de descarga,
     
 Pero también podría intentar explorar el genoma anotado (con genes) https://www.ncbi.nlm.nih.gov/genome/annotation_euk/Salmo_salar/100/
 
-wget https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/8030/100/GCF_000233375.1_ICSASG_v2/
+    wget https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/8030/100/GCF_000233375.1_ICSASG_v2/
  
 3.3.3 - Para indexar el genoma de referencia (ref_genome.fna.fai) se aplicó el comando
 
