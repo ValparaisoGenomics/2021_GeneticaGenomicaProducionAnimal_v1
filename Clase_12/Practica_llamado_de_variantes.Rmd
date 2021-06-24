@@ -51,9 +51,7 @@ Uno de los principales usos de la secuenciación de próxima generación es desc
 
 Uno de los softwares más empleados para realizar esta tarea denominada "llamado de variantes", es [**GATK**](https://gatk.broadinstitute.org/hc/en-us), que se comprende como un kit de herramientas de análisis de genomas desarrollado por el Broad Institute de los Estados Unidos, que tiene la capacidad de realizar gran parte del análisis requerido para llamar variantes genómicas (Deatherage, 2020).
 
-Por otro lado, posterior al llamado de variantes se usan otros softwares en conjunto, que permiten realizar anotaciones de las mismas, como es el caso de **SnpEff**, que es una herramienta de predicción de efectos y anotaciones de variantes, como cambios de aminoácidos (Cingolani, y otros, 2012) o anotaciones de una variedad de modelos de genes codificantes y no codificantes de proteínas de una variedad de especies (Liu et al., 2015).
-
-El presente trabajo tiene por objeto realizar el llamado de variantes y la anotación de una muestra secuenciada mediante el uso de GATK, Snpeff y otras herramientas de anotación y visualización de la región blanco.
+El presente trabajo tiene por objeto realizar el llamado de variantes y la anotación de una muestra secuenciada mediante el uso de GATK, Linux, vcftools y otras herramientas de anotación y visualización de la región blanco.
 
 ### FORMATO VCF
 
@@ -68,9 +66,11 @@ El presente trabajo tiene por objeto realizar el llamado de variantes y la anota
 
 [HAPLOTYPECALLER](https://gatk.broadinstitute.org/hc/en-us/articles/360035531412-HaplotypeCaller-in-a-nutshell) Es una herramienta que contiene una serie de funciones  aplicadas al descubrimiento de variantes de la línea germinal de ADN.
 
+[vcftools](https://vcftools.github.io/index.html) VCFtools es un software diseñado para trabajar con archivos VCF, como los generados por el Proyecto 1000 Genomas. El objetivo de VCFtools es proporcionar métodos de fácil acceso para trabajar con datos complejos de variación genética en forma de archivos VCF. El manual actualizado de comandos se puede encontrar en este [link](https://vcftools.github.io/man_latest.html)
+
 ### Objetivos del trabajo práctico
 
-- Realizar el llamado de variantes de una secuencia de _Salmo salar_ obtenida por secuenciación de extremos emparejados 
+- Realizar el llamado de variantes de una secuencia de _Salmo salar_ obtenida por secuenciación de extremos emparejados.
 
 ### Origen de las muestras
 
@@ -84,7 +84,8 @@ El presente trabajo tiene por objeto realizar el llamado de variantes y la anota
 - Añadir grupos de lectura al archivo "bam"
 - Indexación del archivo obtenido al añadir los grupos de lectura
 - Identificación de variantes con HaplotypeCaller de GATK
-- Visualización de archivo "vcf" generado en IGV
+- Análisis de variantes con linux y vcftools
+- Visualización de variantes con IGV
 
 ### Actividades
 
@@ -101,7 +102,7 @@ Para configurar el canal bioconda se debe ejecutar el siguiente comando
 
     conda config --add channels bioconda
     
-Instalar los software bwa
+Instalar los software gatk4
    
     conda install -c bioconda gatk4
     
@@ -111,75 +112,183 @@ Instalar picard tools
         
 En este tutorial también se utilizará Samtools (instalado en la clase anterior)
 
+Instalar los software vcftools
+   
+    conda install -c bioconda vcftools
 
-### 3 - Crear directorio de trabajo 
+### 3 - Crear directorio de trabajo "variant_call" y preparar archivos para el llamado de variantes.
 
-3.1 - Este directorio ya fue creado para usted
+Este directorio y los archivos necesarios para ejecutar esta práctica ya fue creados e instalados en su directorio personal. Por ahora solo es necesario que ingrese al directorio "variant_call" y explore los archivos de trabajo.
 
-     mkdir variant_call
-     
-3.2 - Ingresar a su directorio de trabajo y listar
+3.1 -  Ingresar a su directorio de trabajo **variant_call** con el comando **cd** y liste con **ls** los archivos que están contenidos
  
-     ls 
+    cd variant_call
+    ls -l -h
 
-3.3 - Constará de los siguientes archivos necesarios para efectuar el llamado de variantes
+3.2 - variant_call contiene los siguientes archivos necesarios para efectuar el llamado de variantes
 
     "SRR2006763.sort.bam": previamente obtenido con las actividades aprendidas en clases anteriores.
-    ref_genome.fna: genoma de referencia de _Salmo salar_
-    ref_genome.fna.fai: archivo indexado del genoma de referencia
+    ref_genome.fna: genoma de referencia de _Salmo salar_ en formato FASTA
+    ref_genome.fna.fai: archivo indexado del genoma de referencia con 5 columna que corresponden a columnas 1= contig, 2 = tamaño, 3= ubicación, 4= basesPerLine y 5= bytesPerLine.
  
-Para obtener los 3 archivos mencionados anteriormente se emplearon los siguiente comandos, puede probarlos posterior a la práctica por el tiempo que demoran en ejecutarse:
+3.2.1 - Explore los archivos "ref_genome.fna" y "ref_genome.fna.bai" con los comandos **less**, **head**, **tail**
 
+El genoma de salmon tiene 29 cromosomas denominados NC_027300.1, NC_027301.1, NC_027302.1, hasta el NC_027328.1, pero además muchos contigs sin mapear a ninguno de ellos los que puede identificar porque comienzan con *NW* por ejemplo NW_012341867.1.
+
+    less ref_genome.fna
+    less ref_genome.fna.fai
+    
+    head -n 20 ref_genome.fna
+    head -n 30 ref_genome.fna.fai 
+    
+    tail -n 20 ref_genome.fna
+    tail -n 20 ref_genome.fna.fai
+    
+3.2.2 Investigue ahora los cromosomas del salmón con los siguientes comandos
+
+    grep 'NC_' ref_genome.fna
+    grep -c 'NC_' ref_genome.fna
+    
+    grep 'NC_' ref_genome.fna.fai
+    grep -c 'NC_' ref_genome.fna.fai
+
+3.2.3 Investigue ahora los contigs no mapeados del salmón con los siguientes comandos
+
+    grep -c 'NW_' ref_genome.fna
+    grep -c 'NW_' ref_genome.fna.fai
+
+Note que en todos los casos el comando trabaja más rápido en el archivo indexado .fai
+
+3.3 Trabajo post clase
+Posterior a la práctica y por el tiempo que demoran en ejecutarse puede probarlos usted mismo. Para obtener los 3 archivos mencionados anteriormente solo borre los archivos originales con el comando **rm** y ejecute los siguientes comandos:
+     
 3.3.1 - Secuencia de estudio
 
 La secuencia "SRR2006763.sort.bam" ordenada se obtuvo con los pasos de descarga, descompresión y alineamiento realizados en clases anteriores
 
-3.3.2 - Genoma de referencia (ref_genome.fna) se aplicó el comando wget para efectuar la descarga desde NCBI**
+3.3.2 - Genoma de referencia sin genes (ref_genome.fna) se aplicó el comando wget para efectuar la descarga desde NCBI
 
     wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/233/375/GCF_000233375.1_ICSASG_v2/GCF_000233375.1_ICSASG_v2_genomic.fna.gz
+    
+Pero también podría intentar explorar el genoma anotado (con genes) https://www.ncbi.nlm.nih.gov/genome/annotation_euk/Salmo_salar/100/
+
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/8030/100/GCF_000233375.1_ICSASG_v2/
  
-3.3.3 - Para indexar el genoma de referencia (ref_genome.fna.fai) se aplicó el comando**
+3.3.3 - Para indexar el genoma de referencia (ref_genome.fna.fai) se aplicó el comando
 
     samtools faidx ref_genome.fna
     
-3.4 - Adicionalmente para el llamado de variantes debe obtener un archivo que representará un "diccionario de referencias" del genoma de referencia
+### 4 - Llamado de variantes
+
+4.1 - Para realizar el llamado de variantes debe obtener primero un archivo que representará un "diccionario de referencias" del genoma de referencia
 
     java -jar picard.jar CreateSequenceDictionary R=ref_genome.fna O=ref_genome.dict
 
-La salidad del comando anterior será el archivo
+La salidad del comando anterior será un archivo con extensión .dict, explorero con less o head.
 
     ref_genome.dict
-    
-### 4 - Llamado de variantes
 
-4.1 - Añadir grupos de lectura al archivo sort bam
+4.2 - Añadir grupos de reads al archivo sort bam
 
     java -jar picard.jar AddOrReplaceReadGroups I=SRR2006763.sort.bam O=SSRR2006763_sorted_RG.bam ID=sample LB=Paired-end PL=Illumina PU=Unknown SM=sample
 
-4.2 - Indexar archivo generado con Read groups
+4.3 - Indexar archivo generado con Read groups
 
     samtools index SSRR2006763_sorted_RG.bam
 
-4.3 - Ejecutar el siguiente comando para el llamado de variantes, debe considerar que este proceso demorará al rededor de una hora
+4.4 - Finalmente, para el llamado de variantes se debe ejecutar el comando **HaplotypeCaller** del sofatware **GATK**. Ejecutar el siguiente comando para el llamado de variantes, debe considerar que este proceso demorará al menos una hora
 
     gatk HaplotypeCaller -R ref_genome.fna -I SRR2006763_sorted_RG.bam -O raw_variants.vcf
     
 Al culminar la ejecución del comando liste su directorio con ls y verifique que se ha creado su archivo de salida
 
     raw_variants.vcf
+    
+4.5 Explore el archivo de llamado de variantes con los comandos **less**, **head**, **tail**
+    
+    less raw_variants.vcf
+    head -n 30 raw_variants.vcf
+    tail -n 30 raw_variants.vcf
 
-### 5 - Visualización de variantes con IGV
+Note que la mayoría corresponde a los cromosomas y contigs, por lo que las variantes están muy abajo en el archivo y solo podemos ver algunas variantes del genoma mitocondrial cuando usamos el comando **tail**.
 
-5.1 - Descargue el archivo raw_variants.vcf generado en su directorio "variant_call", 
+Use **grep** para contar el numero de lineas en el "vcf header". 
+
+    grep "^#" -c  raw_variants.vcf
+
+Ahora, use grep para contar el número de variantes detectadas
+    
+    grep "^#" -c -v raw_variants.vcf
+
+El llamado de variantes lo hemos hecho con una sola biomuestra, por lo que podríamos listar el nombre de esta muestra usando el siguiente comando
+
+    grep "^#CHROM" raw_variants.vcf | cut -f 10-
+
+4.6 ¿Cómo entender la codificación de los archivos vcf?
+
+La principal complejidad de los archivos vcf radica en la forma en que está codificada la información contenida en el. Afortunadamente en el mismo archivo podemos encontrar alguna información para poder comprender de mejor forma como interpretar las variantes encontradas.
+
+Primero, ejecute el siguiente comando para imprimir el nombre de las columnas del llamado de variantes
+
+    grep "^#CHROM" raw_variants.vcf
+
+Luego, ejecute el siguiente comando para listar las 10 primeras variantes.
+
+    grep "^#" -v raw_variants.vcf | head
+
+Finalmente, ejecute estos comandos para entender la codificación de la columna INFO y FORMAT que contine la información del genotipo de la muestra para las primeras 10 variantes
+
+    grep "##INFO" raw_variants.vcf
+    grep "##FORMAT" raw_variants.vcf
+    
+4.7 Extraer variantes con alta calidad
+
+Ya hemos determinado que existen cera de 50.000 variantes, pero no todas ellas tienen alta calidad, lo que está determinado básicamente por el numero de reads sobre los cuales se han identificado las variantes. En terminos muy básicos la mayor calidad estará dada por un alto número de reads. Use el siguiente comando para extraer las variantes con calidad mayor a 100. 
+
+Note que el comando se divide en tres partes, la primera extrae solo las variantes del archivo .vcf, luego con una tubería y el comando **awk** de linux extraemos e imprimimos solo las filas con calidad mayor a 100 (en la columna 6 está la calidad) y finalmente llevamos el print a un fichero denominado hq_variant.txt (variantes de alta calidad) el cual podemos explorar.
+
+    grep -v "#" raw_variants.vcf | awk '{if ($6 > 100 ) print }' > hq_variant.txt
+    
+    grep "NC_" -c -v hq_variant.txt
+    grep "NW_" -c -v hq_variant.txt
+    
+
+### 5 - Análisis de variantes con vcftools
+
+vcftools es una potente herramienta de análisis de archivos vcf, lo que nos permite simplificar esta tarea.
+
+5.1 Para contar individuos y variantes de un archivo .vcf ejecute el siguiente comando
+
+    vcftools --vcf raw_variants.vcf
+
+5.2 Para determinar las frecuencias de todos los alelos ejecute el siguiente comando
+
+    vcftools --vcf raw_variants.vcf --freq -c > hq.freqs.txt
+    
+5.3 También es posible filtrar por algún cromosoma particular incluyendo el argumento **--chr**, o podemos excluir por ejemplo el genoma mitocondrial con **–not-chr**
+
+    vcftools --vcf raw_variants.vcf --chr NC_027300.1
+    vcftools --vcf raw_variants.vcf --freq -c --chr NC_027300.1
+    
+    vcftools --vcf raw_variants.vcf –not-chr NC_001960.1
+    vcftools --vcf raw_variants.vcf --freq -c --not-chr NC_001960.1
+    
+5.4 Finalmente podemos extraer solo los INDELS con el argumento **--keep-only-indel** o solo los SNP **--remove-indels**
+
+    vcftools --vcf raw_variants.vcf --freq -c --chr NC_027300.1 --keep-only-indel
+    vcftools --vcf raw_variants.vcf --freq -c --chr NC_027300.1 --remove-indel
+
+### 6 - Visualización de variantes con IGV
+
+6.1 - Descargue el archivo raw_variants.vcf generado en su directorio "variant_call" y explore con el software IGV.
 
 ![Variante SNP localizada en el archivo vcf de la secuencia SRR2006763](https://user-images.githubusercontent.com/80792310/123166136-b1bbd200-d43a-11eb-910c-db6e8d628322.png)
-
 
 
 ![Zoom a la región seleccionada en el archivo vcf](https://user-images.githubusercontent.com/80792310/123166253-d152fa80-d43a-11eb-838d-8d4f04545664.png)
 
 
-### 6 - REFERENCIAS
+### 7 - REFERENCIAS
 
 Danecek, P., Auton, A., Abecasis, G., Albers, C., Banks, E., DePristo, M., . . . Durbin, R. (2011). The variant call format and VCFtools. Bioinformatics, 2156–2158.
 
