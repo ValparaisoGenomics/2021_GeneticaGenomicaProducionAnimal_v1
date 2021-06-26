@@ -19,6 +19,12 @@ Doctor (c) en Acuicultura.
 Pontificia Universidad Católica de Valparaíso
 riveram3048@gmail.com
 
+## Profesor ayudante
+Nicol Delgado
+Bioquímica. 
+Pontificia Universidad Católica de Valparaíso
+nicol.delgado.g@mail.pucv.cl
+
 ## Alumnos
 
 **Jaqueline Flores Salinas**  
