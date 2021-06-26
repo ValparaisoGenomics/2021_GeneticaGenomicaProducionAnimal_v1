@@ -15,15 +15,15 @@ jpineira@inia.cl
 
 ## Profesor ayudante
 Margarita Rivera
-Doctor (c) en Acuicultura.  
-Pontificia Universidad Católica de Valparaíso
-riveram3048@gmail.com
+Doctor (c) en Acuicultura.    
+Pontificia Universidad Católica de Valparaíso. 
+riveram3048@gmail.com.   
 
 ## Profesor ayudante
-Nicol Delgado
-Bioquímica. 
-Pontificia Universidad Católica de Valparaíso
-nicol.delgado.g@mail.pucv.cl
+Nicol Delgado. 
+Bioquímica.     
+Pontificia Universidad Católica de Valparaíso. 
+nicol.delgado.g@mail.pucv.cl. 
 
 ## Alumnos
 
