@@ -1,0 +1,106 @@
+---
+title: "Introducción a genómica poblacional y ancestría"
+subtitle: 'Curso Genética y Genómica en Producción Animal'
+author:
+ name: Dr. José A. Gallardo, Nicol Delgado.
+ affiliation: Pontificia Universidad Católica de Valparaíso
+ email: <jose.gallardo@pucv.cl>
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: hide
+  word_document: default
+  pdf_document: default
+---
+
+<style>
+#TOC {
+  color: black;
+  font-familiy: Calibri;
+  font-size: 14px;
+  border-color: #708090; 
+}
+body {
+   color: black;
+   font-familiy: Calibri;
+}
+
+pre {
+  color: black;
+  background-color: #F8F8FF;
+}
+# header {
+  color: #800000;
+  font-familiy: Calibri;
+  background-color: #F5F5F5;
+  opacity: 0.8;
+  font-size: 16px;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## INTRODUCCIÓN
+
+
+El presente trabajo tiene por objeto realizar ... .
+
+### FORMATO PLINK
+
+
+
+
+### SOFTWARES DE BIOINFORMÁTICA
+
+PLINK
+
+
+### Objetivos del trabajo práctico
+
+- Realizar un análisis de genómica poblacional y ancestría en _Salmo salar_ a partir de archivo de variantes VCF.
+
+### Origen de las muestras
+
+
+### Etapas del análisis poblacional
+
+
+
+### Actividades
+
+### 1 - Conectar a servidor Pomeo
+
+Conecte al servidor pomeo usando la siguiente dirección IP: **200.54.220.141** puerto 22.
+
+Para MAC use la terminal y para Windows puede conectarse con el software PuTTy y las claves de acceso dadas en la primera clase.
+
+
+### 2 - Configurar bioconda e instalar programas para análisis
+
+Para configurar el canal bioconda se debe ejecutar el siguiente comando
+
+    conda config --add channels bioconda
+    
+Instalar los software plink
+   
+    conda install -c bioconda ....
+    
+Instalar admixture
+
+    conda install -c bioconda ....
+
+### 3 - Crear directorio de trabajo "population" y preparar archivos para el análisis poblacional con plink.
+
+### 4 - Analisis de diversidad
+
+### 5 - Análisis de estructura poblacional
+
+### 6 - Análisis de admixture
+
+### 7 - REFERENCIAS
+
