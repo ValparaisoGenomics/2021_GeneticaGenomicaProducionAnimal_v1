@@ -14,16 +14,16 @@ Investigador en Genética Animal de INIA Carillanca.
 jpineira@inia.cl
 
 ## Profesor ayudante
-Margarita Rivera
-Doctor (c) en Acuicultura.    
-Pontificia Universidad Católica de Valparaíso. 
+Margarita Rivera. 
+Doctor (c) en Acuicultura.      
+Pontificia Universidad Católica de Valparaíso.   
 riveram3048@gmail.com.   
 
 ## Profesor ayudante
-Nicol Delgado. 
-Bioquímica.     
-Pontificia Universidad Católica de Valparaíso. 
-nicol.delgado.g@mail.pucv.cl. 
+Nicol Delgado.
+Bioquímica.    
+Pontificia Universidad Católica de Valparaíso.  
+nicol.delgado.g@mail.pucv.cl.   
 
 ## Alumnos
 
