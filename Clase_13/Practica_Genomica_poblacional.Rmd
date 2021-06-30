@@ -47,31 +47,54 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## INTRODUCCI√ìN
 
-
 El presente trabajo tiene por objeto realizar ... .
+
 
 ### FORMATO PLINK
 
-
+![Estructura formato PLINK, tomado de: https://www.researchgate.net/figure/Overview-of-various-commonly-used-PLINK-files-SNP-single-nucleotide-polymorphism_fig3_323424714](https://www.researchgate.net/publication/323424714/figure/fig3/AS:667766705098757@1536219397189/Overview-of-various-commonly-used-PLINK-files-SNP-single-nucleotide-polymorphism.png)
 
 
 ### SOFTWARES DE BIOINFORM√ÅTICA
 
 PLINK
 
+PLINK es un conjunto de herramientas de an·lisis de asociaciÛn de genoma completo de cÛdigo abierto y gratuito, diseÒado para realizar una variedad de an·lisis genÈticos b·sicos a gran escala de forma eficiente (https://www.cog-genomics.org/plink2).
+
+ADMIXTURE
+
+ADMIXTURE es un software para estimar la m·xima probabilidad de ancestrÌa individual e inferir poblaciones a partir de un conjunto de datos de genotipos de m˙ltiples SNP. Utiliza el mismo modelo estadÌstico que el software STRUCTURE pero el algoritmo de optimizaciÛn numÈrico que utiliza realiza estimaciones con mayor rapidez (https://bioinformaticshome.com/tools/descriptions/ADMIXTURE.html).
+
 
 ### Objetivos del trabajo pr√°ctico
 
 - Realizar un an√°lisis de gen√≥mica poblacional y ancestr√≠a en _Salmo salar_ a partir de archivo de variantes VCF.
 
+
 ### Origen de las muestras
+
+El archivo vcf contiene muestras provenientes de tres poblaciones de salmÛn del Atl·ntico (Salmo salar): Europa (2_WG0341511-DNA_A02_5408, 3_WG0341511-DNA_A03_5416, 5_WG0341511-DNA_A05_5450), OceanÌa (FR07958834, FR07958842, FR07958850) y Norte AmÈrica (GNB12-1, GNB12-10, GNB12-11). Las 3 muestras de la poblaciÛn europea provienen de un set de 1392 peces. Las 3 muestras de la poblaciÛn de OceanÌa provienen de un set de 19 animales. Las 3 muestras de la poblaciÛn norteamericana provienen de un set de 80 individuos.
 
 
 ### Etapas del an√°lisis poblacional
 
+-Descarga del archivo vcf
+
+-EstimaciÛn de algunas medidas comunes de diversidad genÈtica
+
+-TransformaciÛn del archivo vcf a formato plink
+
+-TransformaciÛn del archivo plink a formato plink binario
+
+-Filtrado por equilibrio de Hardy-Weinberg, frecuencia del alelo menor y desequilibrio de ligamiento
+
+-An·lisis y detecciÛn de estructura poblacional con PLINK o ADMIXTURE
+
+-VisualizaciÛn de la subestructura de la poblaciÛn mediante gr·ficas realizadas en R
 
 
 ### Actividades
+
 
 ### 1 - Conectar a servidor Pomeo
 
@@ -88,19 +111,97 @@ Para configurar el canal bioconda se debe ejecutar el siguiente comando
     
 Instalar los software plink
    
-    conda install -c bioconda ....
+    conda install -c bioconda plink
     
 Instalar admixture
 
-    conda install -c bioconda ....
+    conda install -c bioconda admixture
+
 
 ### 3 - Crear directorio de trabajo "population" y preparar archivos para el an√°lisis poblacional con plink.
 
+  FILE = EU_OC_NA.vcf
+
+    mkdir population
+
+    cd population
+
+
 ### 4 - Analisis de diversidad
+
+
+
 
 ### 5 - An√°lisis de estructura poblacional
 
+5.1 - Generar el archivo de entrada en formato plink
+
+    plink --vcf EU_OC_NA.vcf --recode --out EU_OC_NA --double-id --allow-extra-chr --chr-set 29
+
+5.2 - Generar el archivo de entrada en formato plink binario
+
+    plink --file EU_OC_NA --make-bed --out EU_OC_NA --allow-extra-chr --chr-set 29
+
+5.3 - Filtrar basado en equilibrio de Hardy-Weinberg y frecuencia del alelo menor
+
+    plink --bfile EU_OC_NA --hwe 0.01 --maf 0.05 --make-bed --out EU_OC_NA.Filtered --allow-extra-chr --chr-set 29
+
+5.4 - Filtrar y excluir marcadores por desequilibrio de ligamiento
+
+    plink --bfile EU_OC_NA.Filtered --indep-pairwise 50 10 0.05 --make-bed --out EU_OC_NA.Filtered --allow-extra-chr --chr-set 29
+    
+    plink --bfile EU_OC_NA.Filtered --extract EU_OC_NA.Filtered.prune.in --make-bed --out EU_OC_NA.FilteredPruned --allow-extra-chr --chr-set 29
+
+5.5 - Crear una matriz de distancia por pares basada en identidad por estado (IBS) para visualizar la subestructura en la muestra. Se genera un archivo ibd_view.mibs
+
+    plink --bfile EU_OC_NA.FilteredPruned --cluster --matrix --out ibd_view --allow-extra-chr --chr-set 29
+
+5.6 - Realizar en R los siguientes comandos para generar un gr·fico de escala multidimensional (nota: obviamente, se requiere R instalado para realizar los comandos mostrados a continuaciÛn)
+
+    m <- as.matrix(read.table("ibd_view.mibs"))
+    
+    mds <- cmdscale(as.dist(1-m))
+    
+    k <- c(rep("green",3), rep("blue",3), rep("red",3))
+    
+    plot(mds, pch=20 ,col=k)
+    
+    legend(x="bottomleft", legend=c("Europe", "Oceania", "North America"), title = "POPULATION", col=c("green","blue","red"), pch=20, cex=0.8)
+
+
 ### 6 - An√°lisis de admixture
+
+6.1 - An·lisis de ancestrÌa para 2, 4 y 6 poblaciones
+
+    admixture EU_OC_NA.FilteredPruned.bed 2
+    
+    admixture EU_OC_NA.FilteredPruned.bed 4
+    
+    admixture EU_OC_NA.FilteredPruned.bed 6
+
+ADMIXTURE genera 2 archivos: .Q que contiene asignaciones de grupos para cada individuo y .P que contiene para cada SNP las frecuencias alÈlicas de la poblaciÛn
+
+6.2 - Gr·ficos de ADMIXTURE para 2, 4 y 6 poblaciones
+
+```{r, echo=FALSE}
+source("Admixture_plot.R")
+
+    pops <- read_delim("EU_OC_NA.FilteredPruned.fam", delim = " ",col_names = F)
+
+    K2 <- read_delim("EU_OC_NA.FilteredPruned.2.Q", delim = " ",col_names = F)
+    A <- admixtureplot(str_out = K2,k = 2, pops = pops, xaxis = T)
+
+    K4 <- read_delim("EU_OC_NA.FilteredPruned.4.Q", delim = " ", col_names = F)
+    B <- admixtureplot(str_out = K4,k = 4, pops = pops, xaxis = T)
+
+    K6 <- read_delim("EU_OC_NA.FilteredPruned.6.Q", delim = " ", col_names = F)
+    C <- admixtureplot(str_out = K6,k = 6, pops = pops, xaxis = T)
+```
 
 ### 7 - REFERENCIAS
 
+Marees A., de Kluiver H., Stringer S., Vorspan F., Curis E., Marie-Claire C., Derks E. (2018). A tutorial on conducting genome-wide association studies: Quality control and statistical analysis. International Journal of Methods in Psychiatric Research. 27. e1608. 10.1002/mpr.1608.
+
+A PLINK tutorial: https://zzz.bwh.harvard.edu/plink/tutorial.shtml
+
+Speciation & Population Genomics: a how-to-guide: https://speciationgenomics.github.io/ADMIXTURE/
