@@ -180,9 +180,9 @@ EU <- read_delim("EU.geno.ld", delim = "\t")
 OC <- read_delim("OC.geno.ld", delim = "\t")
 NA <- read_delim("NA.geno.ld", delim = "\t")
 
-EU$dist <- ceiling((EU$POS2 - EU$POS1)/1000)*1000
-OC$dist <- ceiling((OC$POS2 - OC$POS1)/1000)*1000
-NA$dist <- ceiling((NA$POS2 - NA$POS1)/1000)*1000
+#EU$dist <- ceiling((EU$POS2 - EU$POS1)/1000)*1000
+#OC$dist <- ceiling((OC$POS2 - OC$POS1)/1000)*1000
+#NA$dist <- ceiling((NA$POS2 - NA$POS1)/1000)*1000
 
 dd <-   EU %>%
   group_by(dist) %>%
