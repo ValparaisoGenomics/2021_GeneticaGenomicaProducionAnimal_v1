@@ -1,9 +1,9 @@
 ---
-title: "Introducci√≥n a gen√≥mica poblacional y ancestr√≠a"
-subtitle: 'Curso Gen√©tica y Gen√≥mica en Producci√≥n Animal'
+title: "IntroducciÛn a genÛmica poblacional y ancestrÌa"
+subtitle: 'Curso GenÈtica y GenÛmica en ProducciÛn Animal'
 author:
- name: Dr. Jos√© A. Gallardo, Nicol Delgado.
- affiliation: Pontificia Universidad Cat√≥lica de Valpara√≠so
+ name: Dr. JosÈ A. Gallardo, Nicol Delgado.
+ affiliation: Pontificia Universidad CatÛlica de ValparaÌso
  email: <jose.gallardo@pucv.cl>
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
@@ -45,7 +45,7 @@ pre {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## INTRODUCCI√ìN
+## INTRODUCCI”N
 
 El presente trabajo tiene por objeto realizar ... .
 
@@ -55,7 +55,7 @@ El presente trabajo tiene por objeto realizar ... .
 ![Estructura formato PLINK, tomado de: https://www.researchgate.net/figure/Overview-of-various-commonly-used-PLINK-files-SNP-single-nucleotide-polymorphism_fig3_323424714](https://www.researchgate.net/publication/323424714/figure/fig3/AS:667766705098757@1536219397189/Overview-of-various-commonly-used-PLINK-files-SNP-single-nucleotide-polymorphism.png)
 
 
-### SOFTWARES DE BIOINFORM√ÅTICA
+### SOFTWARES DE BIOINFORMATICA
 
 PLINK
 
@@ -66,9 +66,9 @@ ADMIXTURE
 ADMIXTURE es un software para estimar la m·xima probabilidad de ancestrÌa individual e inferir poblaciones a partir de un conjunto de datos de genotipos de m˙ltiples SNP. Utiliza el mismo modelo estadÌstico que el software STRUCTURE pero el algoritmo de optimizaciÛn numÈrico que utiliza realiza estimaciones con mayor rapidez (https://bioinformaticshome.com/tools/descriptions/ADMIXTURE.html).
 
 
-### Objetivos del trabajo pr√°ctico
+### Objetivos del trabajo pr·ctico
 
-- Realizar un an√°lisis de gen√≥mica poblacional y ancestr√≠a en _Salmo salar_ a partir de archivo de variantes VCF.
+- Realizar un an·lisis de genÛmica poblacional y ancestrÌa en _Salmo salar_ a partir de archivo de variantes VCF.
 
 
 ### Origen de las muestras
@@ -76,7 +76,7 @@ ADMIXTURE es un software para estimar la m·xima probabilidad de ancestrÌa indivi
 El archivo vcf contiene muestras provenientes de tres poblaciones de salmÛn del Atl·ntico (Salmo salar): Europa (2_WG0341511-DNA_A02_5408, 3_WG0341511-DNA_A03_5416, 5_WG0341511-DNA_A05_5450), OceanÌa (FR07958834, FR07958842, FR07958850) y Norte AmÈrica (GNB12-1, GNB12-10, GNB12-11). Las 3 muestras de la poblaciÛn europea provienen de un set de 1392 peces. Las 3 muestras de la poblaciÛn de OceanÌa provienen de un set de 19 animales. Las 3 muestras de la poblaciÛn norteamericana provienen de un set de 80 individuos.
 
 
-### Etapas del an√°lisis poblacional
+### Etapas del an·lisis poblacional
 
 -Descarga del archivo vcf
 
@@ -86,7 +86,7 @@ El archivo vcf contiene muestras provenientes de tres poblaciones de salmÛn del 
 
 -TransformaciÛn del archivo plink a formato plink binario
 
--Filtrado por equilibrio de Hardy-Weinberg, frecuencia del alelo menor y desequilibrio de ligamiento
+-Filtrado por equilibrio de Hardy-Weinberg, frecuencia del alelo menor,  desequilibrio de ligamiento e individuos relacionados
 
 -An·lisis y detecciÛn de estructura poblacional con PLINK o ADMIXTURE
 
@@ -98,12 +98,12 @@ El archivo vcf contiene muestras provenientes de tres poblaciones de salmÛn del 
 
 ### 1 - Conectar a servidor Pomeo
 
-Conecte al servidor pomeo usando la siguiente direcci√≥n IP: **200.54.220.141** puerto 22.
+Conecte al servidor pomeo usando la siguiente direcciÛn IP: **200.54.220.141** puerto 22.
 
 Para MAC use la terminal y para Windows puede conectarse con el software PuTTy y las claves de acceso dadas en la primera clase.
 
 
-### 2 - Configurar bioconda e instalar programas para an√°lisis
+### 2 - Configurar bioconda e instalar programas para an·lisis
 
 Para configurar el canal bioconda se debe ejecutar el siguiente comando
 
@@ -118,21 +118,148 @@ Instalar admixture
     conda install -c bioconda admixture
 
 
-### 3 - Crear directorio de trabajo "population" y preparar archivos para el an√°lisis poblacional con plink.
+### 3 - Crear directorio de trabajo "population" y preparar archivos para el an·lisis poblacional con plink y admixture.
 
-  FILE = EU_OC_NA.vcf
+  Este directorio y los archivos necesarios para ejecutar esta pr·ctica ya fueron creados e instalados en su directorio personal. Por ahora solo es necesario que ingrese al directorio "population" y explore los archivos de trabajo.
 
-    mkdir population
-
+3.1 -  Ingresar a su directorio de trabajo **population** con el comando **cd** y liste con **ls** los archivos que est·n contenidos
+ 
     cd population
+    ls -l -h
+
+3.2 - population contiene los siguientes archivos necesarios para efectuar el an·lisis poblacional con plink y admixture
+EU_OC_NA.vcf: Archivo vcf que contiene las muestras provenientes de tres poblaciones de salmÛn del Atl·ntico (Salmo salar): Europa (2_WG0341511-DNA_A02_5408, 3_WG0341511-DNA_A03_5416, 5_WG0341511-DNA_A05_5450), OceanÌa (FR07958834, FR07958842, FR07958850) y Norte AmÈrica (GNB12-1, GNB12-10, GNB12-11).
+Admixture_plot.R: Script que contiene el cÛdigo para crear una funciÛn llamada admixtureplot (), utilizada para realizar los diagramas de admixture.
 
 
-### 4 - Analisis de diversidad
+### 4 - An·lisis de diversidad
+
+4.1 - Estimar el n˙mero de sitios heterocigotos para cada individuo y la heterocigosidad observada y esperada para cada marcador   
+    
+    vcftools --vcf vcf EU_OC_NA.vcf --het --out vcf EU_OC_NA
+    
+    vcftools --vcf vcf EU_OC_NA.vcf --hardy --out vcf EU_OC_NA
+    
+Utilice ls -l, head, cat, less, etc., seg˙n corresponda, para explorar los archivos de salida de cada uno de estos an·lisis.
+
+4.2 - Calcular la diversidad en una ventana no superpuesta de 200 kb para cada individuo de las tres poblaciones  
+
+#Para la poblaciÛn de Europa
+    
+    vcftools --vcf EU_OC_NA.vcf --window-pi 200000 --indv 2_WG0341511-DNA_A02_5408 --indv 3_WG0341511-DNA_A03_5416 --indv 5_WG0341511-DNA_A05_5450 --out EU
+
+#Para la poblaciÛn de OceanÌa
+
+    vcftools --vcf EU_OC_NA.vcf --window-pi 200000 --indv FR07958834 --indv FR07958842 --indv FR07958850 --out OC
+
+#Para la poblaciÛn de Estados Unidos
+
+    vcftools --vcf EU_OC_NA.vcf --window-pi 200000 --indv GNB12-1 --indv GNB12-10 --indv GNB12-11 --out NA
+
+4.3 - Calcular el desequilibrio de ligamiento (LD) para las tres poblaciones 
+
+#Para la poblaciÛn de Europa
+
+    vcftools --vcf EU_OC_NA.vcf --geno-r2 --chr 8 --ld-window-bp 100000 --min-r2 0.001 --indv 2_WG0341511-DNA_A02_5408 --indv 3_WG0341511-DNA_A03_5416 --indv 5_WG0341511-DNA_A05_5450 --out EU
+
+#Para la poblaciÛn de OceanÌa
+
+    vcftools --vcf EU_OC_NA.vcf --geno-r2 --chr 8 --ld-window-bp 100000 --min-r2 0.001 --indv FR07958834 --indv FR07958842 --indv FR07958850 --out OC
+
+#Para la poblaciÛn de Estados Unidos
+    
+    vcftools --vcf EU_OC_NA.vcf --geno-r2 --chr 8 --ld-window-bp 100000 --min-r2 0.001 --indv GNB12-1 --indv GNB12-10 --indv GNB12-11 --out NA
+
+Utilizar ls - l para mirar el tamaÒo de los archivos de salida.
+
+R
+
+library(tidyverse)
+
+EU <- read_delim("EU.geno.ld", delim = "\t")
+OC <- read_delim("OC.geno.ld", delim = "\t")
+NA <- read_delim("NA.geno.ld", delim = "\t")
+
+EU$dist <- ceiling((EU$POS2 - EU$POS1)/1000)*1000
+OC$dist <- ceiling((OC$POS2 - OC$POS1)/1000)*1000
+NA$dist <- ceiling((NA$POS2 - NA$POS1)/1000)*1000
+
+dd <-   EU %>%
+  group_by(dist) %>%
+  summarise(meanR2 = mean(`R^2`)) %>%
+  mutate(pop = "EU") %>%
+  bind_rows(OC %>%
+  group_by(dist) %>%
+  summarise(meanR2 = mean(`R^2`)) %>%
+  mutate(pop = "OC"))
+  bind_rows(NA %>%
+  group_by(dist) %>%
+  summarise(meanR2 = mean(`R^2`)) %>%
+  mutate(pop = "NA"))
+  
+write_csv(dd,"EU_OC_NA.windowed.ld.csv")  
+
+4.4 - Gr·ficos de heterogocidad individual, diversidad de nucleÛtidos y LD
+
+#Heterogocidad individual
+
+het <- read_delim("EU_OC_NA.het",delim = "\t")
+het
+het$Heterozygosity <- 1-(het$`O(HOM)`/het$N_SITES) 
+het$Population <- c(rep("EU",3),rep("OC",3),rep("NA",3),)
+A <- ggplot(het,aes(x = Population, y = Heterozygosity, col = Population)) +
+  geom_point()+
+  theme_bw()+
+  theme(legend.position = "none")+
+  xlab("")
+
+A
+
+#Diversidad de nucleÛtidos
+
+pi_EU <- read_delim("EU.windowed.pi",delim = "\t")
+pi_EU
+
+pi_OC <- read_delim("OC.windowed.pi",delim = "\t")
+pi_OC
+
+pi_NA <- read_delim("NA.windowed.pi",delim = "\t")
+pi_NA
+
+pi_all <- bind_rows(pi_EU,pi_OC,pi_NA)
+pi_both$Population <- c(rep("EU",nrow(pi_EU)),rep("OC",nrow(pi_OC),rep("NA",nrow(pi_NA)))
+
+B <- ggplot(pi_all,aes(x = Population, y = PI, col = Population))+
+      geom_jitter(col = "grey",width = 0.1)+ 
+      geom_boxplot(notch = T, alpha = 0,outlier.shape = NA)+ 
+      theme_bw()+
+      theme(legend.position = "none")+
+      xlab("")+
+      ylab(expression(pi))
+B
+
+#Desequilibrio de ligamiento
+
+ld <- read_csv("EU_OC_NA.windowed.ld.csv")
+ld
+
+C <- ggplot(ld,aes(x = dist/1000, y = meanR2, col = pop)) +
+      geom_point()+
+      geom_line()+
+      theme_bw()+
+      xlab("Distance (kb)")+
+      ylab(expression(R^2))+
+      scale_colour_discrete(name = "Population")
+C
+
+4.5 - Gr·fico de paneles m˙ltiples
+
+library(cowplot)
+top_row <- plot_grid(A,B,labels = "AUTO")
+plot_grid(top_row,C,nrow = 2,labels = c("","C"))
 
 
-
-
-### 5 - An√°lisis de estructura poblacional
+### 5 - An·lisis de estructura poblacional
 
 5.1 - Generar el archivo de entrada en formato plink
 
@@ -152,11 +279,17 @@ Instalar admixture
     
     plink --bfile EU_OC_NA.Filtered --extract EU_OC_NA.Filtered.prune.in --make-bed --out EU_OC_NA.FilteredPruned --allow-extra-chr --chr-set 29
 
-5.5 - Crear una matriz de distancia por pares basada en identidad por estado (IBS) para visualizar la subestructura en la muestra. Se genera un archivo ibd_view.mibs
+5.5 - Filtrar para remover individuos relacionados
 
-    plink --bfile EU_OC_NA.FilteredPruned --cluster --matrix --out ibd_view --allow-extra-chr --chr-set 29
+    plink --bfile EU_OC_NA.FilteredPruned --rel-cutoff 0.4 --out EU_OC_NA.FilteredPruned --allow-extra-chr --chr-set 29
+    
+    plink --bfile EU_OC_NA.FilteredPruned --keep EU_OC_NA.FilteredPruned.rel.id --make-bed --out EU_OC_NA.FilteredPrunedUnrel --allow-extra-chr --chr-set 29
 
-5.6 - Realizar en R los siguientes comandos para generar un gr·fico de escala multidimensional (nota: obviamente, se requiere R instalado para realizar los comandos mostrados a continuaciÛn)
+5.6 - Crear una matriz de distancia por pares basada en identidad por estado (IBS) para visualizar la subestructura en la muestra. Se genera un archivo ibd_view.mibs
+
+    plink --bfile EU_OC_NA.FilteredPrunedUnrel --cluster --matrix --out ibd_view --allow-extra-chr --chr-set 29
+
+5.7 - Realizar en R los siguientes comandos para generar un gr·fico de escala multidimensional (nota: obviamente, se requiere R instalado para realizar los comandos mostrados a continuaciÛn)
 
     m <- as.matrix(read.table("ibd_view.mibs"))
     
@@ -167,36 +300,79 @@ Instalar admixture
     plot(mds, pch=20 ,col=k)
     
     legend(x="bottomleft", legend=c("Europe", "Oceania", "North America"), title = "POPULATION", col=c("green","blue","red"), pch=20, cex=0.8)
-
-
-### 6 - An√°lisis de admixture
-
-6.1 - An·lisis de ancestrÌa para 2, 4 y 6 poblaciones
-
-    admixture EU_OC_NA.FilteredPruned.bed 2
     
-    admixture EU_OC_NA.FilteredPruned.bed 4
+5.8 - PCA (Principal Component Analysis)
+
+    plink --bfile EU_OC_NA.FilteredPrunedUnrel --pca 4 --out EU_OC_NA.FilteredPrunedUnrel --allow-extra-chr --chr-set 29
     
-    admixture EU_OC_NA.FilteredPruned.bed 6
+5.9 - Gr·ficos de PCA
+
+    pca1 <- read_delim("EU_OC_NA.FilteredPrunedUnrel.eigenvec", delim = " ",col_names = F)
+    head(pca1)
+
+    colnames(pca1) <- c("Population","Individual",paste0("PC",c(1:4)))
+    head(pca1)
+
+    mycols <- c("#a6cee3",
+              "#1f78b4",
+              "#b2df8a",
+              "#33a02c",
+              "#fb9a99",
+              "#e31a1c",
+              "#fdbf6f",
+              "#ff7f00",
+              "#cab2d6")
+
+    D <- ggplot(pca1,aes(x = PC1,y = PC2,col = Population))+
+      gom_point()+
+      theme_bw()+
+      scale_colour_manual(values = mycols)
+    D
+    
+### 6 - An·lisis de admixture
+
+6.1 SelecciÛn al azar del 1% de los marcadores
+
+    plink --bfile EU_OC_NA.FilteredPrunedUnrel --thin 0.01 --make-bed --out EU_OC_NA.Thinned --allow-extra-chr --chr-set 29
+
+6.2 - An·lisis de ancestrÌa de 2 a 6 poblaciones
+
+    for K in `seq 2 6`;
+    do
+    admixture EU_OC_NA.Thinned.bed $K;
+    done
 
 ADMIXTURE genera 2 archivos: .Q que contiene asignaciones de grupos para cada individuo y .P que contiene para cada SNP las frecuencias alÈlicas de la poblaciÛn
 
-6.2 - Gr·ficos de ADMIXTURE para 2, 4 y 6 poblaciones
+6.3 - Gr·ficos de ADMIXTURE para 2, 4 y 6 poblaciones
 
 ```{r, echo=FALSE}
+library(readr)
 source("Admixture_plot.R")
 
-    pops <- read_delim("EU_OC_NA.FilteredPruned.fam", delim = " ",col_names = F)
+    pops <- read_delim("EEU_OC_NA.Thinned.fam", delim = " ",col_names = F)
 
-    K2 <- read_delim("EU_OC_NA.FilteredPruned.2.Q", delim = " ",col_names = F)
-    A <- admixtureplot(str_out = K2,k = 2, pops = pops, xaxis = T)
+    K2 <- read_delim("EU_OC_NA.Thinned.2.Q", delim = " ",col_names = F)
+    E <- admixtureplot(str_out = K2,k = 2, pops = pops, xaxis = F)
+    E
 
-    K4 <- read_delim("EU_OC_NA.FilteredPruned.4.Q", delim = " ", col_names = F)
-    B <- admixtureplot(str_out = K4,k = 4, pops = pops, xaxis = T)
+    K4 <- read_delim("EU_OC_NA.Thinned.4.Q", delim = " ", col_names = F)
+    F <- admixtureplot(str_out = K4,k = 4, pops = pops, xaxis = F)
+    F
 
-    K6 <- read_delim("EU_OC_NA.FilteredPruned.6.Q", delim = " ", col_names = F)
-    C <- admixtureplot(str_out = K6,k = 6, pops = pops, xaxis = T)
+    K6 <- read_delim("EU_OC_NA.Thinned.6.Q", delim = " ", col_names = F)
+    G <- admixtureplot(str_out = K6,k = 6, pops = pops, xaxis = T)
+    G
 ```
+
+6.4 Gr·fico de paneles m˙ltiples
+
+    left_col <- plot_grid(A,nrow = 1)
+
+    right_col <- plot_grid(B,C,D,nrow = 3,rel_heights = c(0.5,0.5,1))
+
+    plot_grid(left_col,right_col,ncol = 2)
+
 
 ### 7 - REFERENCIAS
 
