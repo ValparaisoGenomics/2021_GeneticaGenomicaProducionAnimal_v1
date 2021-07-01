@@ -128,7 +128,7 @@ Instalar admixture
     ls -l -h
 
 3.2 - population contiene los siguientes archivos necesarios para efectuar el analisis poblacional con plink y admixture
-EU_OC_NA.vcf: Archivo vcf que contiene las muestras provenientes de tres poblaciones de salmon del Atlantico (Salmo salar): Europa (2_WG0341511-DNA_A02_5408, 3_WG0341511-DNA_A03_5416, 5_WG0341511-DNA_A05_5450), Oceania (FR07958834, FR07958842, FR07958850) y Norteamerica (GNB12-1, GNB12-10, GNB12-11).
+EU_OC_US.vcf: Archivo vcf que contiene las muestras provenientes de tres poblaciones de salmon del Atlantico (Salmo salar): Europa (2_WG0341511-DNA_A02_5408, 3_WG0341511-DNA_A03_5416, 5_WG0341511-DNA_A05_5450), Oceania (FR07958834, FR07958842, FR07958850) y Norteamerica (GNB12-1, GNB12-10, GNB12-11).
 Admixture_plot.R: Script que contiene el codigo para crear una funcion llamada admixtureplot (), utilizada para realizar los diagramas de admixture.
 
 
