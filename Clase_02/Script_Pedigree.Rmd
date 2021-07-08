@@ -1,0 +1,85 @@
+---
+title: "Genealogía familiar profesor Jose Gallardo"
+author:
+  affiliation: Profesor adjunto de la Pontificia Universidad Católica de Valparaíso.
+  email: <jose.gallardo@pucv.cl>
+  name: Dr. José A. Gallardo.
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    code_folding: hide
+  pdf_document: default
+subtitle: Curso Genes y Genomas
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(kinship2)
+library(knitr)
+library(pander)
+```
+
+### DATOS FAMILIA GALLARDO
+
+```{r, echo=TRUE}
+## Construcción de vectores genealogía profesor José Gallardo
+
+id<-c("Ana","Aliro","Elba","Santiago","Jose","Edith","Profesor","David")
+padres<-c(NA,NA,NA,NA,"Aliro","Santiago","Jose","Jose")
+madres<-c(NA,NA,NA,NA,"Ana","Elba","Edith","Edith")
+sexo<-c(2,1,2,1,1,2,1,1)
+afectado<-c(0,0,0,0,0,0,0,0)
+estado<-c(0,1,0,1,0,0,0,0)
+
+## Construcción de tabla genealogía profesor José Gallardo en formato data.frama
+
+Genealogia <- data.frame(id,padres,madres,sexo,afectado,estado)
+
+```
+
+
+```{r, echo=TRUE}
+
+## Impresión de tabla de genealogía profesor José Gallardo
+
+knitr::kable(Genealogia, caption = "Tabla de genealogía profesor Gallardo")
+```
+
+\newpage
+
+## GENEALOGÍA Y PARENTESCO FAMILIA GALLARDO SEPULVEDA
+
+```{r, echo=TRUE}
+##  Elaboración de objeto de pedigree
+
+Ped <- with(Genealogia, pedigree(id=id,dadid=padres,momid=madres, sex=sexo, affected=afectado, status=estado))
+
+```
+
+
+
+```{r , echo=TRUE, fig.cap='Genealogía familia Gallardo'}
+
+##  Elaboración de genealogía con leyenda 
+
+plot(Ped, cex = 1)
+
+```
+
+
+```{r , echo=TRUE}
+
+# Calculo de matriz de coeficientes de parentesco
+
+kin <- kinship(Ped)*2
+
+# Impresión de matriz de coeficientes de parentesco
+knitr::kable(kin,  row.names = TRUE, caption = "Matriz de coeficientes de parentesco Profesor Gallardo")
+
+```
+
+#### REFERENCIAS
+
+**Sinnwell J, P, Therneau T, M, Schaid D, J**. The kinship2 R Package for Pedigree Data. Hum Hered 2014;78:91-93.
+
+**Sewall Wright**. Coefficients of Inbreeding and Relationship. The American Naturalist 1922 56:645, 330-338.
