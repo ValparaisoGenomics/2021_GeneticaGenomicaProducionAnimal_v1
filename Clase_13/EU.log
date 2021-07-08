@@ -1,0 +1,23 @@
+
+VCFtools - 0.1.16
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf EU_OC_NA.vcf
+	--chr 1
+	--ld-window-bp 100000
+	--max-alleles 2
+	--min-alleles 2
+	--min-r2 0.001
+	--geno-r2
+	--out EU
+	--indv 2_WG0341511-DNA_A02_5408
+	--indv 3_WG0341511-DNA_A03_5416
+	--indv 5_WG0341511-DNA_A05_5450
+
+Warning: Expected at least 2 parts in INFO entry: ID=PR,Number=0,Type=Flag,Description="Provisional reference allele, may not be based on real reference genome">
+Keeping individuals in 'keep' list
+After filtering, kept 3 out of 9 Individuals
+Outputting Pairwise LD (bi-allelic only)
+After filtering, kept 1158 out of a possible 21446 Sites
+Run Time = 0.00 seconds

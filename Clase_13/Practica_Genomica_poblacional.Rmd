@@ -41,30 +41,38 @@ pre {
 }
 </style>
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warning=FALSE, comment=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(readr)
+library(dplyr)
+library(tidyverse)
+library(cowplot)
 ```
-
-## INTRODUCCION
-
-El presente trabajo tiene por objeto realizar ... .
-
 
 ### FORMATO PLINK
 
 ![Estructura formato PLINK, tomado de: https://www.researchgate.net/figure/Overview-of-various-commonly-used-PLINK-files-SNP-single-nucleotide-polymorphism_fig3_323424714](https://www.researchgate.net/publication/323424714/figure/fig3/AS:667766705098757@1536219397189/Overview-of-various-commonly-used-PLINK-files-SNP-single-nucleotide-polymorphism.png)
 
-
 ### SOFTWARES DE BIOINFORMATICA
 
 PLINK
 
-PLINK es un conjunto de herramientas de analisis de asociacion de genoma completo de codigo abierto y gratuito, disenado para realizar una variedad de analisis geneticos basicos a gran escala de forma eficiente (https://www.cog-genomics.org/plink2).
+PLINK es un conjunto de herramientas de analisis de asociación de genoma completo de codigo abierto y gratuito, disenado para realizar una variedad de análisis genéticos básicos a gran escala de forma eficiente (https://www.cog-genomics.org/plink2).
 
 ADMIXTURE
 
 ADMIXTURE es un software para estimar la maxima probabilidad de ancestria individual e inferir poblaciones a partir de un conjunto de datos de genotipos de multiples SNP. Utiliza el mismo modelo estadistico que el software STRUCTURE pero el algoritmo de optimizacion numerico que utiliza realiza estimaciones con mayor rapidez (https://bioinformaticshome.com/tools/descriptions/ADMIXTURE.html).
 
+### LIBRERIAS R
+
+Para elaborar algunas gráficas se usarán las siguientes librerías de R
+
+**ggplot2**
+**readr**
+**dplyr**
+**tidyverse**
+**cowplot**
 
 ### Objetivos del trabajo practico
 
@@ -73,8 +81,7 @@ ADMIXTURE es un software para estimar la maxima probabilidad de ancestria indivi
 
 ### Origen de las muestras
 
-El archivo vcf contiene muestras provenientes de tres poblaciones de salmon del Atlantico (Salmo salar): Europa (2_WG0341511-DNA_A02_5408, 3_WG0341511-DNA_A03_5416, 5_WG0341511-DNA_A05_5450), Oceania (FR07958834, FR07958842, FR07958850) y Norteamerica (GNB12-1, GNB12-10, GNB12-11). Las 3 muestras de la poblacion europea provienen de un set de 1392 peces. Las 3 muestras de la poblacion de Oceania provienen de un set de 19 animales. Las 3 muestras de la poblacion norteamericana provienen de un set de 80 individuos.
-
+El archivo vcf contiene muestras provenientes de tres poblaciones domesticadas de salmon del Atlantico (*Salmo salar*) provenientes de Europa, Oceania y Norteamerica.
 
 ### Etapas del analisis poblacional
 
@@ -86,7 +93,7 @@ El archivo vcf contiene muestras provenientes de tres poblaciones de salmon del 
 
 -Transformacion del archivo plink a formato plink binario
 
--Filtrado por equilibrio de Hardy-Weinberg, frecuencia del alelo menor, desequilibrio de ligamiento e individuos relacionados
+-Filtrado por equilibrio de Hardy-Weinberg, frecuencia del alelo menor, desequilibrio de ligamiento e individuos emparentados
 
 -Analisis y deteccion de estructura poblacional con PLINK o ADMIXTURE
 
@@ -127,9 +134,21 @@ Instalar admixture
     cd population
     ls -l -h
 
-3.2 - population contiene los siguientes archivos necesarios para efectuar el analisis poblacional con plink y admixture
-EU_OC_US.vcf: Archivo vcf que contiene las muestras provenientes de tres poblaciones de salmon del Atlantico (Salmo salar): Europa (2_WG0341511-DNA_A02_5408, 3_WG0341511-DNA_A03_5416, 5_WG0341511-DNA_A05_5450), Oceania (FR07958834, FR07958842, FR07958850) y Norteamerica (GNB12-1, GNB12-10, GNB12-11).
-Admixture_plot.R: Script que contiene el codigo para crear una funcion llamada admixtureplot (), utilizada para realizar los diagramas de admixture.
+3.2 - El directorio **population** contiene los siguientes archivos necesarios para efectuar el analisis poblacional con plink y admixture.
+
+**EU_OC_US.vcf**  
+Archivo vcf que contiene las muestras provenientes de tres poblaciones de salmon del Atlantico (*Salmo salar*).  
+
+**Europa**: 2_WG0341511-DNA_A02_5408, 3_WG0341511-DNA_A03_5416, 5_WG0341511-DNA_A05_5450.  
+
+**Oceania**: FR07958834, FR07958842, FR07958850.  
+
+**Norteamerica**: GNB12-1, GNB12-10, GNB12-11.  
+
+Adicionalmente, contiene un Script para realizar los diagramas de admixture.
+
+**Admixture_plot.R**  
+Script que contiene el codigo para crear una funcion llamada admixtureplot (), utilizada para realizar los diagramas de admixture.
 
 
 ### 4 - Analisis de diversidad
@@ -144,32 +163,34 @@ Utilice ls -l, head, cat, less, etc., segun corresponda, para explorar los archi
 
 4.2 - Calcular la diversidad en una ventana no superpuesta de 200 kb para cada individuo de las tres poblaciones  
 
-#Para la poblacion de Europa
+### Para la poblacion de Europa
     
     vcftools --vcf EU_OC_US.vcf --window-pi 200000 --indv 2_WG0341511-DNA_A02_5408 --indv 3_WG0341511-DNA_A03_5416 --indv 5_WG0341511-DNA_A05_5450 --out EU
 
-#Para la poblacion de Oceania
+### Para la poblacion de Oceania
 
     vcftools --vcf EU_OC_US.vcf --window-pi 200000 --indv FR07958834 --indv FR07958842 --indv FR07958850 --out OC
 
-#Para la poblacion de Norteamerica
+### Para la poblacion de Norteamerica
 
     vcftools --vcf EU_OC_US.vcf --window-pi 200000 --indv GNB12-1 --indv GNB12-10 --indv GNB12-11 --out US
 
 4.3 - Calcular el desequilibrio de ligamiento (LD) para las tres poblaciones 
 
-#Para la poblacion de Europa
+### Para la poblacion de Europa
 
     vcftools --vcf EU_OC_US.vcf --geno-r2 --chr 1 --ld-window-bp 100000 --min-r2 0.001 --indv 2_WG0341511-DNA_A02_5408 --indv 3_WG0341511-DNA_A03_5416 --indv 5_WG0341511-DNA_A05_5450 --out EU
 
-#Para la poblacion de Oceania
+### Para la poblacion de Oceania
 
     vcftools --vcf EU_OC_US.vcf --geno-r2 --chr 1 --ld-window-bp 100000 --min-r2 0.001 --indv FR07958834 --indv FR07958842 --indv FR07958850 --out OC
 
-#Para la poblacion de Norteamerica
+### Para la poblacion de Norteamerica
     
     vcftools --vcf EU_OC_US.vcf --geno-r2 --chr 1 --ld-window-bp 100000 --min-r2 0.001 --indv GNB12-1 --indv GNB12-10 --indv GNB12-11 --out US
 
+
+```{r, warning=FALSE, message = FALSE}
 EU <- read_delim("EU.geno.ld", delim = "\t")
 OC <- read_delim("OC.geno.ld", delim = "\t")
 US <- read_delim("US.geno.ld", delim = "\t")
@@ -191,13 +212,15 @@ dd <- bind_rows(EU2,OC2,US2)
 
 dd$pop <- rep(c("EU","OC","US"),c(nrow(EU2),nrow(OC2),nrow(US2))) 
 
-write_csv(dd,"EU_OC_US.windowed.ld.csv")  
+write_csv(dd,"EU_OC_US.windowed.ld.csv")
+```
+
 
 4.4 - Graficos de heterogocidad individual, diversidad de nucleotidos y LD
 
-library(tidyverse)
+### Heterogocidad individual
 
-#Heterogocidad individual
+```{r, warning=FALSE, message = FALSE}
 
 het <- read_delim("EU_OC_US.het",delim = "\t")
 het
@@ -210,8 +233,11 @@ A <- ggplot(het,aes(x = Population, y = Heterozygosity, col = Population)) +
   xlab("")
 A
 
-#Diversidad de nucleotidos
+```
 
+### Diversidad de nucleotidos
+
+```{r, warning=FALSE, message = FALSE}
 pi_EU <- read_delim("EU.windowed.pi",delim = "\t")
 pi_EU
 
@@ -233,8 +259,11 @@ B <- ggplot(pi_all,aes(x = Population, y = PI, col = Population))+
       ylab(expression(pi))
 B
 
-#Desequilibrio de ligamiento
+```
 
+### Desequilibrio de ligamiento
+
+```{r, message = FALSE}
 ld <- read_csv("EU_OC_US.windowed.ld.csv")
 ld
 
@@ -247,12 +276,16 @@ C <- ggplot(ld,aes(x = dist/1000, y = meanR2, col = pop)) +
       scale_colour_discrete(name = "Population")
 C
 
+```
+
+
 4.5 - Grafico de paneles multiples
 
+```{r, message = FALSE}
 library(cowplot)
 top_row <- plot_grid(A,B,labels = "AUTO")
 plot_grid(top_row,C,nrow = 2,labels = c("","C"))
-
+```
 
 ### 5 - Analisis de estructura poblacional
 
@@ -284,9 +317,11 @@ plot_grid(top_row,C,nrow = 2,labels = c("","C"))
 
     plink --bfile EU_OC_US.FilteredPrunedUnrel --pca 4 --out EU_OC_US.FilteredPrunedUnrel --allow-extra-chr --chr-set 29
     
-5.7 - Graficos de PCA
+5.7 - Graficos de PCA con R
 
-    pca1 <- read_delim("EU_OC_US.FilteredPrunedUnrel.eigenvec", delim = " ",col_names = F)
+```{r, message = FALSE}
+
+pca1 <- read_delim("EU_OC_US.FilteredPrunedUnrel.eigenvec", delim = " ",col_names = F)
     head(pca1)
 
     colnames(pca1) <- c("Population","Individual",paste0("PC",c(1:4)))
@@ -307,6 +342,8 @@ plot_grid(top_row,C,nrow = 2,labels = c("","C"))
       theme_bw()+
       scale_colour_manual(values = mycols)
     D
+```
+
     
 ### 6 - Analisis de admixture
 
@@ -325,7 +362,7 @@ ADMIXTURE genera 2 archivos: .Q que contiene asignaciones de grupos para cada in
 
 6.3 - Graficos de ADMIXTURE para 2, 4 y 6 poblaciones
 
-```{r, echo=FALSE}
+```{r, echo=TRUE, message = FALSE}
 library(readr)
 source("Admixture_plot.R")
 
@@ -344,13 +381,17 @@ source("Admixture_plot.R")
     H
 ```
 
-6.4 Grafico de paneles multiples
+  
+```{r, message = FALSE, echo=FALSE}
 
-    left_col <- plot_grid(D,nrow = 1)
+# 6.4 Grafico de paneles multiples
+  # left_col <- plot_grid(D,nrow = 1)
+  # 
+  # right_col <- plot_grid(E,G,H,nrow = 3,rel_heights = c(0.5,0.5,1))
+  # 
+  # plot_grid(left_col,right_col,ncol = 2)
 
-    right_col <- plot_grid(E,G,H,nrow = 3,rel_heights = c(0.5,0.5,1))
-
-    plot_grid(left_col,right_col,ncol = 2)
+```
 
 
 ### 7 - REFERENCIAS

@@ -1,0 +1,28 @@
+PLINK v1.90b6.12 64-bit (28 Oct 2019)
+Options in effect:
+  --allow-extra-chr
+  --bfile EU_OC_NA.FilteredPrunedUnrel
+  --chr-set 29
+  --make-bed
+  --out EU_OC_NA.Thinned
+  --thin 0.01
+
+Hostname: test-pomeo.pucv.cl
+Working directory: /home2/bdgenomica/population
+Start time: Thu Jul  1 10:41:31 2021
+
+Random number seed: 1625150491
+128660 MB RAM detected; reserving 64330 MB for main workspace.
+426 variants loaded from .bim file.
+5 samples (0 males, 0 females, 5 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to EU_OC_NA.Thinned.nosex .
+--thin: 423 variants removed (3 remaining).
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 5 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+3 variants and 5 samples pass filters and QC.
+Note: No phenotypes present.
+--make-bed to EU_OC_NA.Thinned.bed + EU_OC_NA.Thinned.bim +
+EU_OC_NA.Thinned.fam ... done.
+
+End time: Thu Jul  1 10:41:31 2021

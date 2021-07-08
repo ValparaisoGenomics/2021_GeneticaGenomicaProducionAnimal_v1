@@ -1,0 +1,33 @@
+PLINK v1.90b6.12 64-bit (28 Oct 2019)
+Options in effect:
+  --allow-extra-chr
+  --bfile EU_OC_NA.FilteredPrunedUnrel
+  --chr-set 29
+  --cluster
+  --matrix
+  --out ibd_view
+
+Hostname: test-pomeo.pucv.cl
+Working directory: /home2/bdgenomica/population
+Start time: Thu Jul  1 10:32:29 2021
+
+Note: --matrix flag deprecated.  Migrate to "--distance ibs flat-missing",
+"--r2 square", etc.
+Random number seed: 1625149949
+128660 MB RAM detected; reserving 64330 MB for main workspace.
+426 variants loaded from .bim file.
+5 samples (0 males, 0 females, 5 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to ibd_view.nosex .
+Using up to 11 threads (change this with --threads).
+Before main variant filters, 5 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.944601.
+426 variants and 5 samples pass filters and QC.
+Note: No phenotypes present.
+Distance matrix calculation complete.
+IBS matrix written to ibd_view.mibs , and IDs to ibd_view.mibs.id .
+Clustering... done.
+Cluster solution written to ibd_view.cluster1 , ibd_view.cluster2 , and
+ibd_view.cluster3 .
+
+End time: Thu Jul  1 10:32:29 2021

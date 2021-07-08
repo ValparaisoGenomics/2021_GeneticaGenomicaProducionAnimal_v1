@@ -1,0 +1,279 @@
+---
+title: "Guía Introduccion a los estudios de asociación genómica"
+subtitle: 'Curso Genética y Genómica en Produccion Animal'
+author:
+ name: Dr. Jose A. Gallardo.
+ affiliation: Pontificia Universidad Catolica de Valparaiso
+ email: <jose.gallardo@pucv.cl>
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: hide
+  pdf_document: default
+  word_document: default
+---
+
+<style>
+#TOC {
+  color: black;
+  font-familiy: Calibri;
+  font-size: 14px;
+  border-color: #708090; 
+}
+body {
+   color: black;
+   font-familiy: Calibri;
+}
+
+pre {
+  color: black;
+  background-color: #F8F8FF;
+}
+# header {
+  color: #800000;
+  font-familiy: Calibri;
+  background-color: #F5F5F5;
+  opacity: 0.8;
+  font-size: 16px;
+}
+</style>
+
+```{r setup, include=FALSE, warning=FALSE, comment=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(utils)
+library(rrBLUP)
+library(ggplot2)
+library(dplyr)
+```
+
+### LIBRERIAS R
+
+Para realizar esta práctica se usarán las siguientes librerías de R
+
+**utils**
+Utilizada para importar big data usando la función **read.delim()**.
+
+**rrBLUP**
+rrBLUP: Software for genomic prediction with the RR-BLUP mixed model (Endelman 2011).
+
+**ggplot2**
+Para realizar gráficas avanzadas de regresión lineal.
+
+### Objetivos del trabajo practico
+
+- Realizar un análisis de asociación genómico usando datos simulados de genotipos y fenotipos.
+
+### Simulación de datos
+
+Los datos fueron simulados de la siguiente manera.
+
+**Genotipos**  
+**geno** = Set de datos de genotipo con 200 animales con 1000 SNP distribuidos en 10 cromosomas.
+
+**Fenotipos**
+**pheno** = Set de datos con variable cuantitativa continua y, con promedio 0 y varianza 5.
+
+**QTL y heredabilidad del rasgo pheno 1**
+**QTLs**: 10, 1 por cromosoma.
+
+**heredabilidad** = 0.5
+
+```{r echo=FALSE}
+
+# # 1. Genera población de 200 individuos endogámicos con 1000 SNP cada uno
+# 
+# M <- matrix(rep(0,200*1000),1000,200)
+# for (i in 1:200) {
+#   M[,i] <- ifelse(runif(1000)<0.5,-1,1)
+# }
+# colnames(M) <- 1:200
+# geno <- data.frame(marker=1:1000,chrom=rep(1,1000),pos=1:1000,M,check.names=FALSE)
+# 
+# head(geno)
+# dim(geno)
+# 
+# write.table(geno, file = "geno.txt", sep = " ", col.names = TRUE)
+
+# # 2. Genera población de 200 individuos no endogámicos con 1000 SNP cada uno
+# 
+# M <- matrix(rep(0,200*1000),1000,200)
+# for (i in 1:200) {
+#   M[,i] <- rbinom(1000,2,0.5)-1
+# }
+# colnames(M) <- 1:200
+# geno <- data.frame(marker=1:1000,chrom=rep(1,1000),pos=1:1000,M,check.names=FALSE)
+# 
+# head(geno)
+# dim(geno)
+# 
+# write.table(geno, file = "geno_1.txt", sep = " ", col.names = TRUE)
+
+
+
+# Construye vector de efectos fijos (u) para 5 marcadores y vector de efectos aleatorios (g) para cada individuo.
+
+# QTL <- 100*(1:10)
+# u <- rep(0,1000)
+# u[QTL] <- 1
+# table(u)
+# g <- as.vector(crossprod(M,u))
+# hist(g)
+
+# Construye vector aleatorio de fenotipos con heredabilidad 0.5  
+# h2 <- 0.5
+# y <- g + rnorm(200,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+# hist(y)
+# 
+# 
+# sd <- sqrt((1-h2)/h2*var(g))
+# sd*sd 
+# pheno_1 <- data.frame(line=1:200,y=y)
+# dim(pheno)
+# head(pheno)
+# 
+# write.table(pheno_1, file = "pheno_1.txt", sep = " ", col.names = TRUE)
+```
+
+
+### Actividades
+
+### 1 - Conectar a proyecto Rstudio.cloud
+
+Conecte a Rstudio Cloud usando el siguiente [link](https://rstudio.cloud/spaces/132848/project/2694637)
+
+### 2 - Inportar y explorar archivo de genotipos y fenotipos
+
+**a).** Importa datos geno y pheno
+
+Importe el archivo de genotipos **geno.txt** y fenotipos **Pheno.txt** usando la función **read.delim**.
+
+```{r, warning=FALSE, message=FALSE}
+
+geno <- read.delim("geno.txt", sep = "\t", dec = ",", header = T)
+pheno <- read.delim("pheno.txt", sep = "\t", dec = ",", header = T)
+
+```
+
+**b).** Explorar datos.
+
+Luego realice un análisis exploratorio de ambos set de datos con las funciones **head()**, **dim()**. También realice un histograma de la variable cuantitativa  **y** del archivo **pheno**, use la función **hist()**.
+
+¿Cómo están codificados los genotipos de cada SNP?  
+¿Observa heterocigotos?  
+
+```{r, warning=FALSE, message=FALSE}
+
+dim(geno)
+dim(pheno)
+
+head(geno[1:6,1:6])
+head(pheno)
+
+hist(pheno$y)
+
+```
+### 3 - GWAS
+
+**a)** Investigue el uso de la función **A.mat** de la librería **rrBLUP** y calcule la matriz de parentesco genómico para el set de datos **geno**. Explore la matriz con las funciones **dim()**, **head()** y **hist()**. 
+
+```{r}
+# Calcula y grafica matriz de parentesco genómico según método de Van Raden para los 200 animales
+A <- A.mat(geno[4:203]) 
+dim(A)
+head(A[1:6,1:6])
+hist(A)
+```
+
+**b)**  Ahora, cree un objeto llamado **endogamia** con la diagonal de la matriz y grafique con **hist()**. Dado que la diagonal contiene el parentesco del individuo con sigo mismo (E(diagonal)= 1+f), según [Endelman and Jannink, 2012](https://www.g3journal.org/content/2/11/1405) esto permite estimar el coeficiente de endogamia de la población.
+
+```{r}
+endogamia <- diag(A)
+hist(endogamia, main = "Histograma de endogamia")
+```
+
+¿Cuál es el nivel de endogamia promedio de esta población?.  
+¿Que significa un valor de endogamia de 1.1?  
+¿Que representa un valor de endogamia de 0.90?
+
+**c)** Investigue el uso de la función **GWAS()** de la librería **rrBLUP** y realice un análisis de asociación genómica GWAS. Incluya el argumento *plot=TRUE*. Almacene el resultado del GWAS en un objeto denominado **score** y responda:
+
+Visualmente  
+¿Cuantos QTLs fueron detectados por el análisis GWAS? 
+¿En qué cromosomas se encuentran? 
+
+```{r}
+score <- GWAS(pheno,geno, plot=TRUE)
+class(score)
+```
+### 4 - QTLs
+
+Ahora exploraremos el efecto de los QTLs detectados por el GWAS
+
+**a)** Explore el objeto **score** con el comando **head()** y **View()**. 
+
+```{r}
+# View(scores)
+head(score)
+```
+
+¿Qué SNP fueron significativos?  
+**Sugerencia** Extraiga el score de los SNP significativos (score>5) usando la función **filter()** de la librería **dplyr*
+
+```{r}
+dplyr::filter(score, y > 5)
+```
+
+
+¿Con que nivel de significancia se concluye que fueron significativos?. *
+**Sugerencia**
+note que el score corresponde a -log(p), donde p es la probabilidad o significancia. Transforme el score a p usando **exp()**
+
+```{r, echo=TRUE}
+
+# snp300
+exp(-7.5047236) 
+# pruebe calcular log(-0.000550478)
+
+# snp1000
+exp(-8.5080997)
+# pruebe calcular log(-0.000201827)
+
+```
+ 
+**b)** Realice un gráfico de [regresión lineal](http://www.sthda.com/english/articles/40-regression-analysis/167-simple-linear-regression-in-r/) de fenotipo en función de los genotipo para cada SNP significativo.
+
+Sugerencia: Transponga la matriz geno y cree un nuevo data.frame solo con los snp signiticativos, luego una al data.frame el rasgo cuantitativo.
+
+```{r}
+t_geno_300 <- t(geno[300,4:203])+1
+t_geno_1000 <- t(geno[1000,4:203])+1
+qtl <- data.frame(t_geno_300,t_geno_1000,pheno$y)
+
+head(qtl)
+
+qtl.1 <- ggplot(qtl, aes(x = X300, y = pheno.y))
+qtl.1 + geom_point() + xlab("snp 300") +  ylab("Pheno")+ geom_smooth(method=lm)
+
+qtl.2 <- ggplot(qtl, aes(x = X1000, y = pheno.y))
+qtl.2 + geom_point() + xlab("snp 1000") +  ylab("Pheno")+ geom_smooth(method=lm)
+
+```
+
+**c)** Estime el efecto (beta o pendiente) de los QTLs con mayor score usando un modelo lineal **lm()**.
+
+```{r}
+lm.qtl.300 <- lm(pheno.y ~ X300, data = qtl)
+summary(lm.qtl.300)
+cat("El efecto del snp300 sobre el rasgo cuantitativo 1.8121")
+
+lm.qtl.1000 <- lm(pheno.y ~ X1000, data = qtl)
+summary(lm.qtl.1000)
+cat("El efecto del snp1000 sobre el rasgo cuantitativo 1.8549")
+```
+
+### 7 - Referencias
+
+**Jeffrey B. Endelman 2011.** Ridge Regression and Other Kernels for Genomic Selection with R Package rrBLUP. https://doi.org/10.3835/plantgenome2011.08.0024

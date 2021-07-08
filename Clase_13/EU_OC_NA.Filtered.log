@@ -1,0 +1,62 @@
+PLINK v1.90b6.12 64-bit (28 Oct 2019)
+Options in effect:
+  --allow-extra-chr
+  --bfile EU_OC_NA.Filtered
+  --chr-set 29
+  --indep-pairwise 50 10 0.05
+  --make-bed
+  --out EU_OC_NA.Filtered
+
+Hostname: test-pomeo.pucv.cl
+Working directory: /home2/bdgenomica/population
+Start time: Thu Jul  1 10:28:21 2021
+
+Random number seed: 1625149701
+128660 MB RAM detected; reserving 64330 MB for main workspace.
+Warning: --make-bed input and output filenames match.  Appending '~' to input
+filenames.
+15284 variants loaded from .bim file.
+9 samples (0 males, 0 females, 9 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to EU_OC_NA.Filtered.nosex .
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 9 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.827299.
+15284 variants and 9 samples pass filters and QC.
+Note: No phenotypes present.
+--make-bed to EU_OC_NA.Filtered.bed + EU_OC_NA.Filtered.bim +
+EU_OC_NA.Filtered.fam ... done.
+Pruned 1045 variants from chromosome 1, leaving 28.
+Pruned 322 variants from chromosome 2, leaving 10.
+Pruned 542 variants from chromosome 3, leaving 17.
+Pruned 661 variants from chromosome 4, leaving 23.
+Pruned 660 variants from chromosome 5, leaving 21.
+Pruned 615 variants from chromosome 6, leaving 18.
+Pruned 500 variants from chromosome 7, leaving 11.
+Pruned 159 variants from chromosome 8, leaving 3.
+Pruned 752 variants from chromosome 9, leaving 21.
+Pruned 802 variants from chromosome 10, leaving 24.
+Pruned 694 variants from chromosome 11, leaving 16.
+Pruned 658 variants from chromosome 12, leaving 20.
+Pruned 675 variants from chromosome 13, leaving 17.
+Pruned 587 variants from chromosome 14, leaving 18.
+Pruned 593 variants from chromosome 15, leaving 15.
+Pruned 563 variants from chromosome 16, leaving 13.
+Pruned 267 variants from chromosome 17, leaving 11.
+Pruned 460 variants from chromosome 18, leaving 12.
+Pruned 610 variants from chromosome 19, leaving 18.
+Pruned 695 variants from chromosome 20, leaving 18.
+Pruned 301 variants from chromosome 21, leaving 7.
+Pruned 481 variants from chromosome 22, leaving 15.
+Pruned 357 variants from chromosome 23, leaving 10.
+Pruned 314 variants from chromosome 24, leaving 9.
+Pruned 350 variants from chromosome 25, leaving 11.
+Pruned 266 variants from chromosome 26, leaving 10.
+Pruned 439 variants from chromosome 27, leaving 10.
+Pruned 226 variants from chromosome 28, leaving 7.
+Pruned 264 variants from chromosome 29, leaving 13.
+Pruning complete.  14858 of 15284 variants removed.
+Marker lists written to EU_OC_NA.Filtered.prune.in and
+EU_OC_NA.Filtered.prune.out .
+
+End time: Thu Jul  1 10:28:22 2021

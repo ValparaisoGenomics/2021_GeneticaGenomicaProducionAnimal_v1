@@ -1,0 +1,28 @@
+PLINK v1.90b6.12 64-bit (28 Oct 2019)
+Options in effect:
+  --allow-extra-chr
+  --bfile EU_OC_NA.FilteredPruned
+  --chr-set 29
+  --out EU_OC_NA.FilteredPruned
+  --rel-cutoff 0.4
+
+Hostname: test-pomeo.pucv.cl
+Working directory: /home2/bdgenomica/population
+Start time: Thu Jul  1 10:28:52 2021
+
+Random number seed: 1625149732
+128660 MB RAM detected; reserving 64330 MB for main workspace.
+426 variants loaded from .bim file.
+9 samples (0 males, 0 females, 9 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to EU_OC_NA.FilteredPruned.nosex .
+Using up to 11 threads (change this with --threads).
+Before main variant filters, 9 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.907407.
+426 variants and 9 samples pass filters and QC (before --rel-cutoff).
+Note: No phenotypes present.
+Relationship matrix calculation complete.
+4 samples excluded by --rel-cutoff.
+Remaining sample IDs written to EU_OC_NA.FilteredPruned.rel.id .
+
+End time: Thu Jul  1 10:28:52 2021

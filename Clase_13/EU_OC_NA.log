@@ -1,0 +1,30 @@
+PLINK v1.90b6.12 64-bit (28 Oct 2019)
+Options in effect:
+  --allow-extra-chr
+  --chr-set 29
+  --file EU_OC_NA
+  --make-bed
+  --out EU_OC_NA
+
+Hostname: test-pomeo.pucv.cl
+Working directory: /home2/bdgenomica/population
+Start time: Thu Jul  1 10:27:55 2021
+
+Random number seed: 1625149675
+128660 MB RAM detected; reserving 64330 MB for main workspace.
+Scanning .ped file... done.
+Performing single-pass .bed write (21446 variants, 9 samples).
+--file: EU_OC_NA-temporary.bed + EU_OC_NA-temporary.bim +
+EU_OC_NA-temporary.fam written.
+21446 variants loaded from .bim file.
+9 samples (0 males, 0 females, 9 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to EU_OC_NA.nosex .
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 9 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.750044.
+21446 variants and 9 samples pass filters and QC.
+Note: No phenotypes present.
+--make-bed to EU_OC_NA.bed + EU_OC_NA.bim + EU_OC_NA.fam ... done.
+
+End time: Thu Jul  1 10:27:55 2021
