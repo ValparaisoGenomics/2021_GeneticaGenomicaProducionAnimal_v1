@@ -2,7 +2,7 @@
 Curso de postgrado de Genética y Genómica en Producción Animal para alumnos del Doctorado en Biotecnología, Programa conjunto entre la Pontificia Universidad Católica de Valparaíso y la Universidad Técnica Federico Santa María.
 
 ## Profesor
-Dr. José Gallardo  
+Dr. José Gallardo Matus   
 Doctor en Ciencias por la Universidad de Chile, Chile.  
 Profesor Adjunto de la Pontificia Universidad Católica de Valparaíso.  
 jose.gallardo@pucv.cl  
